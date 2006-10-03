@@ -21,6 +21,15 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */ 
 
+/* OPTIONS */
+add_option("msgs",              $msg,           "Message strings");
+add_option(TP_OPT_USERNAME,   	"3hough",       "YouTube username.");
+add_option(TP_OPT_VIDWIDTH,      "425",          "Max width (px) of main video");
+add_option(TP_OPT_VIDHEIGHT,     "350",          "Max height (px) of main video");
+add_option(TP_OPT_THUMBWIDTH,        "130",          "Max width (px) of video thumbnails");
+add_option("thumbHeight",       "97",           "Max height (px) of video thumbnails");
+add_option("devID",             "qh7CQ9xJIIc",  'YouTube developer ID');
+
 function tubepress_add_options_page() {
 	if (function_exists('add_options_page')) {
 		add_options_page(message('options_panel_title'), message('options_panel_menuitem'), 9, 'tubepress.php', 'tubepress_options_subpanel');

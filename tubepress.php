@@ -34,12 +34,11 @@ require("tubepress_strings.php");
  * and replaces it with YouTube gallery if it's found
 */
 function tubepress_showgallery ($content = '') {
-
 	/* Bail out fast if not found */
 	if (!strpos($content,TP_KEYWORD)) return $content;
 
 	/* Grab the XML from YouTube's API */
-	$youtube_xml = get_youtube_xml(get_option('devID'), get_option('username')); 
+	$youtube_xml = get_youtube_xml(get_option(TP_OPT_DEVID), get_option(TP_OPT_USERNAME)); 
 	
 	/* Loop through each video and generate the HTML for each */
 	$videoCount = 0;
@@ -63,8 +62,9 @@ function tubepress_showgallery ($content = '') {
 }
 
 function printHTML_videoheader() {
+	$cssContainer = TP_CSS_CONTAINER;
 	return <<<EOT
-		<div class=TP_CSS_CONTAINER>
+		<div class=$cssContainer>
 EOT;
 }
 
@@ -79,20 +79,27 @@ function printHTML_bigvid($vid) {
 	$id = 		$vid['id'];
 	$title = 	$vid['title'];
 	$length = 	humanTime($vid['length_seconds']);
-	$height = 	get_option('mainVidHeight');
-	$width = 	get_option('mainVidWidth');
+	$height = 	get_option(TP_OPT_VIDHEIGHT);
+	$width = 	get_option(TP_OPT_VIDWIDTH);
+
+	$cssMainVidID = TP_CSS_MAINVIDID;
+	$cssMainVid =   TP_CSS_MAINVID;
+	$cssMainMeta =  TP_CSS_MAINMETA;
+	$cssThumbContainer =  TP_CSS_THUMBS;
+
+	$mainVideoHeader = TP_MAINVID_HEADER;
 
 	return <<<EOT
-		<div id="tubepress_the_video" class="tubepress_video_full">
-			<div class="tubepress_meta_large">
-				Latest post: $title ($length)
+		<div id="$cssMainVidID" class="$cssMainVid">
+			<div class="$cssMainMeta">
+				$mainVideoHeader $title ($length)
 			</div>
 			<object width="$width" height="$height">
 				<param name="movie" value="http://www.youtube.com/v/$id" />
 				<embed src="http://www.youtube.com/v/$id" type="application/x-shockwave-flash" width="$width" height="$height" />
 			</object>
-		</div> <!-- tubepress_video_full -->
-		<div class="tubepress_video_thumbs">
+		</div> <!-- $cssMainVid -->
+		<div class=$cssThumbContainer">
 EOT;
 }
 
@@ -112,15 +119,18 @@ function printHTML_smallvid($vid) {
 	$view_count = 		number_format($vid['view_count']);
 	$id = 			$vid['id'];
 
-	$thumbHeight = 	get_option('thumbHeight');
-	$thumbWidth = 	get_option('thumbWidth');
-	$height = 	get_option('mainVidHeight');
-	$width = 	get_option('mainVidWidth');
+	$thumbHeight = 	get_option(TP_OPT_THUMBHEIGHT);
+	$thumbWidth = 	get_option(TP_OPT_THUMBWIDTH);
+	$height = 	get_option(TP_OPT_VIDHEIGHT');
+	$width = 	get_option(TP_OPT_VIDWIDTH);
 	$caption = 	$title . "(" . $length . ")";
 
+	$cssThumb = TP_CSS_THUMB;
+	$cssThumbImg = TP_CSS_THUMBIMG;
+
 return <<<EOT
-	<div class="tubepress_video_thumb">
-		<div class="tubepress_video_thumb_img">
+	<div class="$cssThumb">
+		<div class="cssThumbImg">
 			<a title= href="#" onclick="javascript: playVideo('$id', '$height', '$width', '$caption'); return true;">
 			<img alt="$title"  src="$thumbnail_url" width="$thumbWidth"  height="$thumbHeight"/></a>
 			<div id="tubepress_thumb_meta_$id" class="tubepress_video_thumb_meta" >
@@ -140,21 +150,22 @@ EOT;
  * REST API
 */
 function get_youtube_xml($devID, $username) {
-	$request = "http://www.youtube.com/api2_rest?method=youtube.users.list_favorite_videos&dev_id=" . $devID . "&user=" . $username;
+	$request = TP_YOUTUBE_RESTURL . "&dev_id=" . $devID . "&user=" . $username;
 	$ch = curl_init($request);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
 	$result=curl_exec ($ch);
 	curl_close ($ch);
 	$xml = new SimpleXMLElement($result);
-	return (array)$xml->TP_MASTERNODE;
+	$masternode = TP_MASTERNODE;
+	return (array)$xml->$masternode;
 }
 
 function insert_tubepress_js() {
-	echo '\t<script type="text/javascript" src="wp-content/plugins/tubepress/tubepress.js"></script>\n';
+	echo '<script type="text/javascript" src="wp-content/plugins/tubepress/tubepress.js"></script>';
 }
 
 function insert_tubepress_css() {
-	echo '\t<link rel="stylesheet" href="wp-content/plugins/tubepress/tubepress.css" type="text/css"></link>';
+	echo '<link rel="stylesheet" href="wp-content/plugins/tubepress/tubepress.css" type="text/css"></link>';
 }
 
 function message($myString) {
@@ -163,7 +174,6 @@ function message($myString) {
 }
 
 /* MESSAGES */
-$msg['devIDlink'] = 		TP_YOUTUBEDEVLINK;
 $msg['success'] = 		"Options updated.";
 $msg['errorXML'] = 		"ERROR: Could not retrieve gallery information from YouTube";
 $msg['optionsPanelTitle'] = 	"TubePress Configuration";
@@ -173,16 +183,6 @@ $msg['optionsPanelMenuItem'] = 	"TubePress";
 add_action('admin_menu', 	'tubepress_add_options_page');
 add_action('wp_head', 		'insert_tubepress_css');
 add_action('wp_head', 		'insert_tubepress_js');
-
-/* OPTIONS */
-add_option("msgs",		$msg,		"Message strings");
-add_option("username", 		"3hough", 	"YouTube username.");
-add_option("mainVidWidth", 	"425", 		"Max width (px) of main video");
-add_option("mainVidHeight", 	"350", 		"Max height (px) of main video");
-add_option("thumbWidth", 	"130", 		"Max width (px) of video thumbnails");
-add_option("thumbHeight", 	"97", 		"Max height (px) of video thumbnails");
-add_option("devIDlink",		TP_YOUTUBEDEVLINK, "Link to access YouTube developer ID");
-add_option("devID", 		"qh7CQ9xJIIc", 	'YouTube developer ID');
 
 /* FILTERS */
 add_filter('the_content', 'tubepress_showgallery');
