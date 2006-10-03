@@ -27,7 +27,7 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */ 
-
+require("tubepress_strings.php");
 
 /*
  * Main filter hook. Looks for [tubepress] keyword
@@ -36,8 +36,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 function tubepress_showgallery ($content = '') {
 
 	/* Bail out fast if not found */
-	$keyword = "[tubepress]";
-	if (!strpos($content,$keyword)) return $content;
+	if (!strpos($content,TP_KEYWORD)) return $content;
 
 	/* Grab the XML from YouTube's API */
 	$youtube_xml = get_youtube_xml(get_option('devID'), get_option('username')); 
@@ -60,12 +59,12 @@ function tubepress_showgallery ($content = '') {
 	$newcontent .= printHTML_videofooter();
 
 	/* We're done, so let's insert the gallery where the keyword is */
-	return str_replace($keyword, $newcontent, $content);
+	return str_replace(TP_KEYWORD, $newcontent, $content);
 }
 
 function printHTML_videoheader() {
 	return <<<EOT
-		<div class="tubepress_container">
+		<div class=TP_CSS_CONTAINER>
 EOT;
 }
 
@@ -142,13 +141,12 @@ EOT;
 */
 function get_youtube_xml($devID, $username) {
 	$request = "http://www.youtube.com/api2_rest?method=youtube.users.list_favorite_videos&dev_id=" . $devID . "&user=" . $username;
-	$master_node = "video_list";
 	$ch = curl_init($request);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
 	$result=curl_exec ($ch);
 	curl_close ($ch);
 	$xml = new SimpleXMLElement($result);
-	return (array)$xml->$master_node;
+	return (array)$xml->TP_MASTERNODE;
 }
 
 function insert_tubepress_js() {
@@ -165,7 +163,7 @@ function message($myString) {
 }
 
 /* MESSAGES */
-$msg['devIDlink'] = 		"http://www.youtube.com/my_profile_dev";
+$msg['devIDlink'] = 		TP_YOUTUBEDEVLINK;
 $msg['success'] = 		"Options updated.";
 $msg['errorXML'] = 		"ERROR: Could not retrieve gallery information from YouTube";
 $msg['optionsPanelTitle'] = 	"TubePress Configuration";
@@ -183,9 +181,13 @@ add_option("mainVidWidth", 	"425", 		"Max width (px) of main video");
 add_option("mainVidHeight", 	"350", 		"Max height (px) of main video");
 add_option("thumbWidth", 	"130", 		"Max width (px) of video thumbnails");
 add_option("thumbHeight", 	"97", 		"Max height (px) of video thumbnails");
-add_option("devIDlink",		"http://www.youtube.com/my_profile_dev", "Link to access YouTube developer ID");
+add_option("devIDlink",		TP_YOUTUBEDEVLINK, "Link to access YouTube developer ID");
 add_option("devID", 		"qh7CQ9xJIIc", 	'YouTube developer ID');
 
 /* FILTERS */
 add_filter('the_content', 'tubepress_showgallery');
 
+/* FILES */
+require("tubepress_options.php");
+
+?>
