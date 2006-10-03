@@ -55,7 +55,7 @@ function tubepress_showgallery ($content = '') {
 		}
 	}
 	if ($videoCount == 0) {
-		$newcontent .= "ERROR: Could not retrieve favorites from YouTube.";
+		$newcontent .= message('error_xml');
 	}
 	$newcontent .= printHTML_videofooter();
 
@@ -161,97 +161,48 @@ function insert_tubepress_css() {
 
 function tubepress_add_options_page() {
 	if (function_exists('add_options_page')) {
-		add_options_page('TubePress Configuation', 'TubePress', 9, 'tubepress.php', 'tubepress_options_subpanel');
+		add_options_page(message('options_panel_title'), message('options_panel_menuitem'), 9, 'tubepress.php', 'tubepress_options_subpanel');
     	}
 }
 
 function tubepress_options_subpanel() {
+	$youTubeAccountInfo = array(
+		array('devID', 'YouTube developer ID', 'Available from somewhere'),
+		array('username', 'YouTube username', '') 
+	);
+	$videoDisplayOptions = array(
+		array('mainVidWidth', 'Max width (px) of main video', 'Default is 425'),
+		array('mainVidHeight', 'Max height (px) of main video', 'Default is 350'),
+		array('thumbWidth', 'Max width (px) of video thumbs', 'Default is 130'),
+		array('thumbHeight', 'Max height (px) of video thumbs', 'Default is 97')
+	);
 
 	if (isset($_POST['tubepress_save'])) {
-		if (isset($_POST['devID'])) 		update_option('devID', 		$_POST['devID']);
-		if (isset($_POST['username'])) 		update_option('username', 	$_POST['username']);
-		if (isset($_POST['mainVidWidth'])) 	update_option('mainVidWidth', 	$_POST['mainVidWidth']);
-		if (isset($_POST['mainVidHeight'])) 	update_option('mainVidHeight', 	$_POST['mainVidHeight']);
-		if (isset($_POST['thumbWidth'])) 	update_option('thumbWidth', 	$_POST['thumbWidth']);
-		if (isset($_POST['thumbHeight'])) 	update_option('thumbHeight', 	$_POST['thumbHeight']);
-
-print <<<EOT
+		$allOptions = array($youTubeAccountInfo, $$videoDisplayOptions);
+		foreach ($allOptions as $k => $optionArray) {
+			foreach ($optionArray as $t => $option) {
+				if (isset($_POST[$option[0]])) update_option($option[0], $_POST[$option[0]]);
+			}
+		}
+	
+		print <<<EOT
 		<div class="updated fade">
 			<p><strong>
-    			Options updated.
+    			message('success');
 			</strong></p>
 		</div>
 EOT;
 	}
-	$devID = 		get_option('devID');
-	$username = 		get_option('username');
-	$mainVidWidth = 	get_option('mainVidWidth');
-	$mainVidHeight = 	get_option('mainVidHeight');
-	$thumbWidth = 		get_option('thumbWidth');
-	$thumbHeight = 		get_option('thumbHeight');
 
-print <<<EOT
+	print <<<EOT
 	<div class=wrap>
   		<form method="post">
-    			<h2>TubePress Options</h2>
-     			<fieldset name="set1">
-				<legend>YouTube account</legend>
-				<table class="editform optiontable">
-					<tr valign="top">
-						<th scope="row">YouTube developer ID:</th>
-						<td>
-							<input name="devID" type="text" id="dev_id" class="code" value="$devID" size="40" />
-							<br />
-							Available from <a href="http://www.youtube.com/my_profile_dev">http://www.youtube.com/my_profile_dev</a>
-						</td>
+		<h2>TubePress Options</h2>
+EOT;
+	printHTML_optionsArray($youTubeAccountInfo, "YouTube account");
+	printHTML_optionsArray($videoDisplayOptions, "Video display");
 
-					</tr>
-					<tr>
-						<th scope="row">YouTube username:</th>
-						<td>
-							<input name="username" type="text" id="dev_id" class="code" value="$username" size="40" />
-						</td>
-
-					</tr>
-				</table>
-     			</fieldset>
-     			<fieldset name="set2">
-				<legend>Video display</legend>
-				<table class="editform optiontable">
-					<tr valign="top">
-						<th scope="row">Main video width:</th>
-						<td>
-							<input name="mainVidWidth" type="text" id="mainVidWidth" class="code" value="$mainVidWidth" size="40" />
-							<br/>Default: 425
-						</td>
-
-					</tr>
-					<tr valign="top">
-						<th scope="row">Main video height:</th>
-						<td>
-							<input name="mainVidHeight" type="text" id="mainVidHeight" class="code" value="$mainVidHeight" size="40" />
-							<br/>Default: 350
-						</td>
-
-					</tr>
-					<tr valign="top">
-						<th scope="row">Thumbnail width:</th>
-						<td>
-							<input name="thumbWidth" type="text" id="thumbWidth" class="code" value="$thumbWidth" size="40" />
-							<br/>Default: 130
-						</td>
-
-					</tr>
-					<tr>
-						<th scope="row">Thumbnail height:</th>
-						<td>
-							<input name="thumbHeight" type="text" id="thumbHeight" class="code" value="$thumbHeight" size="40" />
-							<br/>Default: 97
-						</td>
-
-					</tr>
-				</table>
-     			</fieldset>
+	print <<<EOT
 		<input type="submit" name="tubepress_save" value="Save" />
   		</form>
  	</div>
@@ -259,18 +210,59 @@ EOT;
 
 }
 
+function printHTML_optionsArray($theArray, $arrayName) {
+	print <<<EOT
+
+			<feildset name="$arrayName">
+				<table class="editform optiontable">
+				<legend>$arrayName</legend>
+EOT;
+	foreach ($theArray as $k => $option) {
+		$optionName = $option[0];
+		$optionDesc = $option[1];
+		$optionDefault = $option[2];
+		$optionValue = get_option($optionName);
+		print<<<EOT 
+					<tr valign="top">
+						<th scope="row">$optionDesc:</th>
+						<td>
+							<input name="$optionName" type="text" id="$optionName" class="code" value="$optionValue" size="40" />
+							<br />$optionDefault
+						</td>
+
+					</tr>
+EOT;
+	}
+				</table>
+     			</fieldset>
+}
+
+
+function message($myString) {
+	return get_option('msgs')['$myString'];
+}
+
+/* MESSAGES */
+$msg['devIDlink'] = 		"http://www.youtube.com/my_profile_dev";
+$msg['success'] = 		"Options updated.";
+$msg['errorXML'] = 		"ERROR: Could not retrieve gallery information from YouTube";
+$msg['optionsPanelTitle'] = 	"TubePress Configuration";
+$msg['optionsPanelMenuItem'] = 	"TubePress";
+
 /* ACTIONS */
 add_action('admin_menu', 	'tubepress_add_options_page');
 add_action('wp_head', 		'insert_tubepress_css');
 add_action('wp_head', 		'insert_tubepress_js');
 
 /* OPTIONS */
-add_option("devID", 		"qh7CQ9xJIIc", 	'YouTube developer ID. Available from <a href="http://www.youtube.com/my_profile_dev">http://www.youtube.com/my_profile_dev</a>');
+add_option("msgs",		$msg,		"Message strings");
 add_option("username", 		"3hough", 	"YouTube username.");
 add_option("mainVidWidth", 	"425", 		"Max width (px) of main video");
 add_option("mainVidHeight", 	"350", 		"Max height (px) of main video");
 add_option("thumbWidth", 	"130", 		"Max width (px) of video thumbnails");
 add_option("thumbHeight", 	"97", 		"Max height (px) of video thumbnails");
+add_option("devIDlink",		messsage('devIDlink'), "Link to access YouTube developer ID";
+add_option("devID", 		"qh7CQ9xJIIc", 	'YouTube developer ID');
 
 /* FILTERS */
 add_filter('the_content', 'tubepress_showgallery');
