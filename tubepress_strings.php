@@ -27,25 +27,29 @@ define("TP_MSG_OPTPANELMENU",	"TubePress"				);
 define("TP_MSG_OPTSUCCESS",	"Options updated"			);
 
 /* General */
-define("TP_KEYWORD", 		"[tubepress]"				);
 define("TP_MASTERNODE", 	"video_list"				);
 define("TP_YOUTUBEDEVLINK", 	"http://www.youtube.com/my_profile_dev"	);
 define("TP_YOUTUBE_RESTURL",	"http://www.youtube.com/api2_rest?method=youtube.users.list_favorite_videos");
 define("TP_MAINVID_HEADER",	"Latest post:"				);
 
 /* OPTIONS */
+define("TP_OPT_KEYWORD", 		"[tubepress]"				);
 define("TP_OPT_DEVID",			"devID"					);
 define("TP_OPT_USERNAME",		"username"				);
 define("TP_OPT_VIDWIDTH",		"mainVidWidth"				);
 define("TP_OPT_VIDHEIGHT",		"mainVidHeight"				);
 define("TP_OPT_THUMBWIDTH",		"thumbWidth"				);
 define("TP_OPT_THUMBHEIGHT",		"thumbHeight"				);
+define("TP_OPT_KEYWORD_DESC",		"Display keyword"			);
 define("TP_OPT_DEVID_DESC",		"YouTube developer ID"			);
 define("TP_OPT_USERNAME_DESC",		"YouTube username"			);
 define("TP_OPT_VIDWIDTH_DESC",		"Max width (px) of main video"		);
 define("TP_OPT_VIDHEIGHT_DESC",		"Max height (px) of main video"		);
 define("TP_OPT_THUMBWIDTH_DESC",	"Max width (px) of thumbs"		);
 define("TP_OPT_THUMBHEIGHT_DESC",	"Max height (px) of thumbs"		);
+define("TP_OPT_KEYWORD_DEF",		"The trigger you insert (in plaintext) into your posts to display your
+YouTube gallery. Be careful how you choose... you could end up with a dozen copies of your gallery if you choose
+something like 'the'!!");
 define("TP_OPT_DEVID_DEF",    		'Available from <a href="' . TP_YOUTUBEDEVLINK . '">' . TP_YOUTUBEDEVLINK . '</a>');
 define("TP_OPT_USERNAME_DEF",  		""                      		);
 define("TP_OPT_VIDWIDTH_DEF",  		"Default is 425"          		);

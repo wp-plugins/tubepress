@@ -35,7 +35,7 @@ require("tubepress_strings.php");
 */
 function tubepress_showgallery ($content = '') {
 	/* Bail out fast if not found */
-	if (!strpos($content,TP_KEYWORD)) return $content;
+	if (!strpos($content,TP_OPT_KEYWORD)) return $content;
 
 	/* Grab the XML from YouTube's API */
 	$youtube_xml = get_youtube_xml(get_option(TP_OPT_DEVID), get_option(TP_OPT_USERNAME)); 
@@ -58,7 +58,7 @@ function tubepress_showgallery ($content = '') {
 	$newcontent .= printHTML_videofooter();
 
 	/* We're done, so let's insert the gallery where the keyword is */
-	return str_replace(TP_KEYWORD, $newcontent, $content);
+	return str_replace(TP_OPT_KEYWORD, $newcontent, $content);
 }
 
 function printHTML_videoheader() {

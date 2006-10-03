@@ -22,6 +22,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */ 
 
 /* OPTIONS */
+add_option(TP_OPT_KEYWORD,	"[tubepress]",	TP_OPT_KEYWORD_DESC);
 add_option(TP_OPT_USERNAME,   	"3hough",       TP_OPT_USERNAME_DESC);
 add_option(TP_OPT_VIDWIDTH,      "425",         TP_OPT_VIDWIDTH_DESC);
 add_option(TP_OPT_VIDHEIGHT,     "350",         TP_OPT_VIDHEIGHT_DESC);
@@ -41,6 +42,7 @@ function tubepress_options_subpanel() {
 		array(TP_OPT_USERNAME, TP_OPT_USERNAME_DESC, TP_OPT_USERNAME_DEF) 
 	);
 	$videoDisplayOptions = array(
+		array(TP_OPT_KEYWORD, TP_OPT_KEYWORD_DESC, TP_OPT_KEYWORD_DEF),
 		array(TP_OPT_VIDWIDTH, TP_OPT_VIDWIDTH_DESC, TP_OPT_VIDWIDTH_DEF),
 		array(TP_OPT_VIDHEIGHT, TP_OPT_VIDHEIGHT_DESC, TP_OPT_VIDHEIGHT_DEF),
 		array(TP_OPT_THUMBWIDTH, TP_OPT_THUMBWIDTH_DESC, TP_OPT_THUMBWIDTH_DEF),
@@ -72,7 +74,7 @@ EOT;
 		<h2>TubePress Options</h2>
 EOT;
 	printHTML_optionsArray($youTubeAccountInfo, "YouTube account", "text", 30);
-	printHTML_optionsArray($videoDisplayOptions, "Video display", "text", 9);
+	printHTML_optionsArray($videoDisplayOptions, "Video display", "text", 20);
 
 	print <<<EOT
 		<input type="submit" name="tubepress_save" value="Save" />
