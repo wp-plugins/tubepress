@@ -222,7 +222,7 @@ EOT;
 		$optionDesc = $option[1];
 		$optionDefault = $option[2];
 		$optionValue = get_option($optionName);
-		print<<<EOT 
+		print <<<EOT
 					<tr valign="top">
 						<th scope="row">$optionDesc:</th>
 						<td>
@@ -233,13 +233,16 @@ EOT;
 					</tr>
 EOT;
 	}
+print <<<EOT
 				</table>
      			</fieldset>
+EOT;
 }
 
 
 function message($myString) {
-	return get_option('msgs')['$myString'];
+	$msgs = get_option('msgs');
+	return $msgs[$myString];
 }
 
 /* MESSAGES */
@@ -261,7 +264,7 @@ add_option("mainVidWidth", 	"425", 		"Max width (px) of main video");
 add_option("mainVidHeight", 	"350", 		"Max height (px) of main video");
 add_option("thumbWidth", 	"130", 		"Max width (px) of video thumbnails");
 add_option("thumbHeight", 	"97", 		"Max height (px) of video thumbnails");
-add_option("devIDlink",		messsage('devIDlink'), "Link to access YouTube developer ID";
+add_option("devIDlink",		"http://www.youtube.com/my_profile_dev", "Link to access YouTube developer ID");
 add_option("devID", 		"qh7CQ9xJIIc", 	'YouTube developer ID');
 
 /* FILTERS */
