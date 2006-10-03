@@ -99,7 +99,7 @@ function printHTML_bigvid($vid) {
 				<embed src="http://www.youtube.com/v/$id" type="application/x-shockwave-flash" width="$width" height="$height" />
 			</object>
 		</div> <!-- $cssMainVid -->
-		<div class=$cssThumbContainer">
+		<div class="$cssThumbContainer">
 EOT;
 }
 
@@ -121,7 +121,7 @@ function printHTML_smallvid($vid) {
 
 	$thumbHeight = 	get_option(TP_OPT_THUMBHEIGHT);
 	$thumbWidth = 	get_option(TP_OPT_THUMBWIDTH);
-	$height = 	get_option(TP_OPT_VIDHEIGHT');
+	$height = 	get_option(TP_OPT_VIDHEIGHT);
 	$width = 	get_option(TP_OPT_VIDWIDTH);
 	$caption = 	$title . "(" . $length . ")";
 
@@ -130,8 +130,8 @@ function printHTML_smallvid($vid) {
 
 return <<<EOT
 	<div class="$cssThumb">
-		<div class="cssThumbImg">
-			<a title= href="#" onclick="javascript: playVideo('$id', '$height', '$width', '$caption'); return true;">
+		<div class="$cssThumbImg">
+			 <a href='#' onclick="javascript: playVideo('$id', '$height', '$width', '$caption'); return true;">
 			<img alt="$title"  src="$thumbnail_url" width="$thumbWidth"  height="$thumbHeight"/></a>
 			<div id="tubepress_thumb_meta_$id" class="tubepress_video_thumb_meta" >
 			<div class="tubepress_thumb_meta_label">

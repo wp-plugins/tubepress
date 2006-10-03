@@ -22,44 +22,45 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */ 
 
 /* OPTIONS */
-add_option("msgs",              $msg,           "Message strings");
-add_option(TP_OPT_USERNAME,   	"3hough",       "YouTube username.");
-add_option(TP_OPT_VIDWIDTH,      "425",          "Max width (px) of main video");
-add_option(TP_OPT_VIDHEIGHT,     "350",          "Max height (px) of main video");
-add_option(TP_OPT_THUMBWIDTH,        "130",          "Max width (px) of video thumbnails");
-add_option("thumbHeight",       "97",           "Max height (px) of video thumbnails");
-add_option("devID",             "qh7CQ9xJIIc",  'YouTube developer ID');
+add_option(TP_OPT_USERNAME,   	"3hough",       TP_OPT_USERNAME_DESC);
+add_option(TP_OPT_VIDWIDTH,      "425",         TP_OPT_VIDWIDTH_DESC);
+add_option(TP_OPT_VIDHEIGHT,     "350",         TP_OPT_VIDHEIGHT_DESC);
+add_option(TP_OPT_THUMBWIDTH,        "130",     TP_OPT_THUMBWIDTH_DESC);
+add_option(TP_OPT_THUMBEIGHT,       "97",       TP_OPT_THUMBHEIGHT_DESC);
+add_option(TP_OPT_DEVID,             "qh7CQ9xJIIc",  TP_OPT_DEVID_DESC);
 
 function tubepress_add_options_page() {
 	if (function_exists('add_options_page')) {
-		add_options_page(message('options_panel_title'), message('options_panel_menuitem'), 9, 'tubepress.php', 'tubepress_options_subpanel');
+		add_options_page(TP_MSG_OPTPANELTITLE, TP_MSG_OPTPANELMENU, 9, 'tubepress.php', 'tubepress_options_subpanel');
     	}
 }
 
 function tubepress_options_subpanel() {
 	$youTubeAccountInfo = array(
-		array('devID', 'YouTube developer ID', 'Available from somewhere'),
-		array('username', 'YouTube username', '') 
+		array(TP_OPT_DEVID, TP_OPT_DEVID_DESC, TP_OPT_DEVID_DEF),
+		array(TP_OPT_USERNAME, TP_OPT_USERNAME_DESC, TP_OPT_USERNAME_DEF) 
 	);
 	$videoDisplayOptions = array(
-		array('mainVidWidth', 'Max width (px) of main video', 'Default is 425'),
-		array('mainVidHeight', 'Max height (px) of main video', 'Default is 350'),
-		array('thumbWidth', 'Max width (px) of video thumbs', 'Default is 130'),
-		array('thumbHeight', 'Max height (px) of video thumbs', 'Default is 97')
+		array(TP_OPT_VIDWIDTH, TP_OPT_VIDWIDTH_DESC, TP_OPT_VIDWIDTH_DEF),
+		array(TP_OPT_VIDHEIGHT, TP_OPT_VIDHEIGHT_DESC, TP_OPT_VIDHEIGHT_DEF),
+		array(TP_OPT_THUMBWIDTH, TP_OPT_THUMBWIDTH_DESC, TP_OPT_THUMBWIDTH_DEF),
+		array(TP_OPT_THUMBHEIGHT, TP_OPT_THUMBHEIGHT_DESC, TP_OPT_THUMBHEIGHT_DEF)
 	);
 
 	if (isset($_POST['tubepress_save'])) {
-		$allOptions = array($youTubeAccountInfo, $$videoDisplayOptions);
+		$allOptions = array($youTubeAccountInfo, $videoDisplayOptions);
 		foreach ($allOptions as $k => $optionArray) {
 			foreach ($optionArray as $t => $option) {
 				if (isset($_POST[$option[0]])) update_option($option[0], $_POST[$option[0]]);
 			}
 		}
 	
+		$success = TP_MSG_OPTSUCCESS;
+		$cssSuccess = TP_CSS_SUCCESS;
 		print <<<EOT
-		<div class="updated fade">
+		<div id="message" class="$cssSuccess">
 			<p><strong>
-    			message('success');
+    			$success
 			</strong></p>
 		</div>
 EOT;
@@ -70,8 +71,8 @@ EOT;
   		<form method="post">
 		<h2>TubePress Options</h2>
 EOT;
-	printHTML_optionsArray($youTubeAccountInfo, "YouTube account");
-	printHTML_optionsArray($videoDisplayOptions, "Video display");
+	printHTML_optionsArray($youTubeAccountInfo, "YouTube account", "text", 30);
+	printHTML_optionsArray($videoDisplayOptions, "Video display", "text", 9);
 
 	print <<<EOT
 		<input type="submit" name="tubepress_save" value="Save" />
@@ -81,7 +82,7 @@ EOT;
 
 }
 
-function printHTML_optionsArray($theArray, $arrayName) {
+function printHTML_optionsArray($theArray, $arrayName, $inputType, $inputSize=20) {
 	print <<<EOT
 
 			<feildset name="$arrayName">
@@ -97,7 +98,7 @@ EOT;
 					<tr valign="top">
 						<th scope="row">$optionDesc:</th>
 						<td>
-							<input name="$optionName" type="text" id="$optionName" class="code" value="$optionValue" size="40" />
+							<input name="$optionName" type="$inputType" id="$optionName" class="code" value="$optionValue" size="$inputSize" />
 							<br />$optionDefault
 						</td>
 
