@@ -161,11 +161,11 @@ function get_youtube_xml($devID, $username) {
 }
 
 function insert_tubepress_js() {
-	echo '<script type="text/javascript" src="wp-content/plugins/tubepress/tubepress.js"></script>';
+	echo '<script type="text/javascript" src="' . get_settings('site_url') . '/wp-content/plugins/tubepress/tubepress.js"></script>';
 }
 
 function insert_tubepress_css() {
-	echo '<link rel="stylesheet" href="wp-content/plugins/tubepress/tubepress.css" type="text/css"></link>';
+	echo '<link rel="stylesheet" href="' . get_settings('site_url') . '/wp-content/plugins/tubepress/tubepress.css" type="text/css"></link>';
 }
 
 function message($myString) {
