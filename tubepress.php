@@ -4,7 +4,7 @@ Plugin Name: TubePress
 Plugin URI: http://ehough.com/?page_id=20
 Description: Displays a gallery of your YouTube favorites in WordPress
 Author: Eric Hough
-Version: 0.1
+Version: 0.3
 Author URI: http://ehough.com
 
 THANKS:
@@ -161,11 +161,11 @@ function get_youtube_xml($devID, $username) {
 }
 
 function insert_tubepress_js() {
-	echo '<script type="text/javascript" src="' . get_settings('site_url') . '/wp-content/plugins/tubepress/tubepress.js"></script>';
+	echo '<script type="text/javascript" src="' . get_settings('siteurl') . '/wp-content/plugins/tubepress/tubepress.js"></script>';
 }
 
 function insert_tubepress_css() {
-	echo '<link rel="stylesheet" href="' . get_settings('site_url') . '/wp-content/plugins/tubepress/tubepress.css" type="text/css"></link>';
+	echo '<link rel="stylesheet" href="' . get_settings('siteurl') . '/wp-content/plugins/tubepress/tubepress.css" type="text/css"></link>';
 }
 
 function message($myString) {
