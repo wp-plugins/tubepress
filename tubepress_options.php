@@ -29,6 +29,7 @@ add_option(TP_OPT_VIDHEIGHT,     "350",         TP_OPT_VIDHEIGHT_DESC);
 add_option(TP_OPT_THUMBWIDTH,        "130",     TP_OPT_THUMBWIDTH_DESC);
 add_option(TP_OPT_THUMBEIGHT,       "97",       TP_OPT_THUMBHEIGHT_DESC);
 add_option(TP_OPT_DEVID,             "qh7CQ9xJIIc",  TP_OPT_DEVID_DESC);
+add_option(TP_OPT_SEARCHBY,	"favorites",	TP_OPT_SEARCHBY_DESC);
 
 function tubepress_add_options_page() {
 	if (function_exists('add_options_page')) {
@@ -41,6 +42,11 @@ function tubepress_options_subpanel() {
 		array(TP_OPT_DEVID, TP_OPT_DEVID_DESC, TP_OPT_DEVID_DEF),
 		array(TP_OPT_USERNAME, TP_OPT_USERNAME_DESC, TP_OPT_USERNAME_DEF) 
 	);
+	$videoSearchOptions = array(
+		array(TP_OPT_SEARCHBYFAV, TP_OPT_SEARCHBYFAV_DESC, ''),
+		array(TP_OPT_SEARCHBYTAG, TP_OPT_SEARCHBYTAG_DESC, ''),
+		array(TP_OPT_SEARCHBYUSER, TP_OPT_SEARCHBYUSER_DESC, '')		
+	);
 	$videoDisplayOptions = array(
 		array(TP_OPT_KEYWORD, TP_OPT_KEYWORD_DESC, TP_OPT_KEYWORD_DEF),
 		array(TP_OPT_VIDWIDTH, TP_OPT_VIDWIDTH_DESC, TP_OPT_VIDWIDTH_DEF),
@@ -50,7 +56,7 @@ function tubepress_options_subpanel() {
 	);
 
 	if (isset($_POST['tubepress_save'])) {
-		$allOptions = array($youTubeAccountInfo, $videoDisplayOptions);
+		$allOptions = array($youTubeAccountInfo, $videoSearchOptions, $videoDisplayOptions);
 		foreach ($allOptions as $k => $optionArray) {
 			foreach ($optionArray as $t => $option) {
 				if (isset($_POST[$option[0]])) update_option($option[0], $_POST[$option[0]]);
@@ -73,7 +79,9 @@ EOT;
   		<form method="post">
 		<h2>TubePress Options</h2>
 EOT;
+
 	printHTML_optionsArray($youTubeAccountInfo, "YouTube account", "text", 30);
+	printHTML_optionsArray($videoSearchOptions, "Which videos?", "radio", 20, TP_OPT_SEARCHBY);
 	printHTML_optionsArray($videoDisplayOptions, "Video display", "text", 20);
 
 	print <<<EOT
@@ -84,7 +92,7 @@ EOT;
 
 }
 
-function printHTML_optionsArray($theArray, $arrayName, $inputType, $inputSize=20) {
+function printHTML_optionsArray($theArray, $arrayName, $inputType, $inputSize=20, $radioName='') {
 	print <<<EOT
 
 			<feildset name="$arrayName">
@@ -93,6 +101,7 @@ function printHTML_optionsArray($theArray, $arrayName, $inputType, $inputSize=20
 EOT;
 	foreach ($theArray as $k => $option) {
 		$optionName = $option[0];
+		if ($inputType == 'radio') $optionName = $radioName;
 		$optionDesc = $option[1];
 		$optionDefault = $option[2];
 		$optionValue = get_option($optionName);

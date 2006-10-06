@@ -64,7 +64,8 @@ function tubepress_showgallery ($content = '') {
 function printHTML_videoheader() {
 	$cssContainer = TP_CSS_CONTAINER;
 	return <<<EOT
-		<div class=$cssContainer>
+		</p><!-- for XHTML validation -->
+		<div class="$cssContainer">
 EOT;
 }
 
@@ -72,15 +73,16 @@ function printHTML_videofooter() {
 	return <<<EOT
 			</div>
 		</div>
+		<p><!-- for XHTML validation -->
 EOT;
 }
 
 function printHTML_bigvid($vid) {
 	$id = 		$vid['id'];
-	$title = 	$vid['title'];
+	$title = 	htmlentities($vid['title'], ENT_QUOTES);
 	$length = 	humanTime($vid['length_seconds']);
-	$height = 	get_option(TP_OPT_VIDHEIGHT);
-	$width = 	get_option(TP_OPT_VIDWIDTH);
+	$height = 	get_option(TP_OPT_VIDHEIGHT) . "px";
+	$width = 	get_option(TP_OPT_VIDWIDTH) . "px";
 
 	$cssMainVidID = TP_CSS_MAINVIDID;
 	$cssMainVid =   TP_CSS_MAINVID;
@@ -94,9 +96,8 @@ function printHTML_bigvid($vid) {
 			<div class="$cssMainMeta">
 				$mainVideoHeader $title ($length)
 			</div>
-			<object width="$width" height="$height">
+			<object type="application/x-shockwave-flash" style="width:$width; height:$height;" data="http://www.youtube.com/v/$id" >
 				<param name="movie" value="http://www.youtube.com/v/$id" />
-				<embed src="http://www.youtube.com/v/$id" type="application/x-shockwave-flash" width="$width" height="$height" />
 			</object>
 		</div> <!-- $cssMainVid -->
 		<div class="$cssThumbContainer">
@@ -114,7 +115,7 @@ function humanTime($length_seconds) {
 function printHTML_smallvid($vid) {
 
 	$length = 		humanTime($vid['length_seconds']);
-	$title = 		$vid['title'];
+	$title = 		htmlentities($vid['title'], ENT_QUOTES);
 	$thumbnail_url = 	$vid['thumbnail_url'];
 	$view_count = 		number_format($vid['view_count']);
 	$id = 			$vid['id'];

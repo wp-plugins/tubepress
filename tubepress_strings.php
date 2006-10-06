@@ -33,29 +33,35 @@ define("TP_YOUTUBE_RESTURL",	"http://www.youtube.com/api2_rest?method=youtube.us
 define("TP_MAINVID_HEADER",	"Latest post:"				);
 
 /* OPTIONS */
-define("TP_OPT_KEYWORD", 		"[tubepress]"				);
 define("TP_OPT_DEVID",			"devID"					);
-define("TP_OPT_USERNAME",		"username"				);
-define("TP_OPT_VIDWIDTH",		"mainVidWidth"				);
-define("TP_OPT_VIDHEIGHT",		"mainVidHeight"				);
-define("TP_OPT_THUMBWIDTH",		"thumbWidth"				);
-define("TP_OPT_THUMBHEIGHT",		"thumbHeight"				);
-define("TP_OPT_KEYWORD_DESC",		"Display keyword"			);
 define("TP_OPT_DEVID_DESC",		"YouTube developer ID"			);
-define("TP_OPT_USERNAME_DESC",		"YouTube username"			);
-define("TP_OPT_VIDWIDTH_DESC",		"Max width (px) of main video"		);
-define("TP_OPT_VIDHEIGHT_DESC",		"Max height (px) of main video"		);
-define("TP_OPT_THUMBWIDTH_DESC",	"Max width (px) of thumbs"		);
-define("TP_OPT_THUMBHEIGHT_DESC",	"Max height (px) of thumbs"		);
-define("TP_OPT_KEYWORD_DEF",		"The trigger you insert (in plaintext) into your posts to display your
-YouTube gallery. Be careful how you choose... you could end up with a dozen copies of your gallery if you choose
-something like 'the'!!");
 define("TP_OPT_DEVID_DEF",    		'Available from <a href="' . TP_YOUTUBEDEVLINK . '">' . TP_YOUTUBEDEVLINK . '</a>');
-define("TP_OPT_USERNAME_DEF",  		""                      		);
-define("TP_OPT_VIDWIDTH_DEF",  		"Default is 425"          		);
-define("TP_OPT_VIDHEIGHT_DEF", 		"Default is 350"         		);
-define("TP_OPT_THUMBWIDTH_DEF",     	"Default is 130"      			);
+define("TP_OPT_KEYWORD", 		"[tubepress]"				);
+define("TP_OPT_KEYWORD_DESC",		"Display keyword"			);
+define("TP_OPT_KEYWORD_DEF",		"The trigger you insert (in plaintext) into your posts to display your YouTube gallery. Be careful how you choose... you could end up with a dozen copies of your gallery if you choosesomething like 'the'!!");
+define("TP_OPT_SEARCHBY", 		"searchBy"				);
+define("TP_OPT_SEARCHBY_VAL",		"searchByValue"				);
+define("TP_OPT_SEARCHBY_FAV",		"favorites"				);
+define("TP_OPT_SEARCHBY_FAV_DESC",	"your favorites"			);
+define("TP_OPT_SEARCHBY_VALTAG",	"tag"					);
+define("TP_OPT_SEARCHBY_VALTAG_DESC",	"these tag(s)"				);
+define("TP_OPT_SEARCHBY_VALUSER",	"user"					);
+define("TP_OPT_SEARCHBYUSER_DESC",	"this user"				);
+define("TP_OPT_THUMBHEIGHT",		"thumbHeight"				);
+define("TP_OPT_THUMBHEIGHT_DESC",	"Max height (px) of thumbs"		);
 define("TP_OPT_THUMBHEIGHT_DEF",       	"Default is 97"     			);
+define("TP_OPT_THUMBWIDTH",		"thumbWidth"				);
+define("TP_OPT_THUMBWIDTH_DESC",	"Max width (px) of thumbs"		);
+define("TP_OPT_THUMBWIDTH_DEF",     	"Default is 130"      			);
+define("TP_OPT_USERNAME",		"username"				);
+define("TP_OPT_USERNAME_DESC",		"YouTube username"			);
+define("TP_OPT_USERNAME_DEF",  		""                      		);
+define("TP_OPT_VIDHEIGHT",		"mainVidHeight"				);
+define("TP_OPT_VIDHEIGHT_DESC",		"Max height (px) of main video"		);
+define("TP_OPT_VIDHEIGHT_DEF", 		"Default is 350"         		);
+define("TP_OPT_VIDWIDTH",		"mainVidWidth"				);
+define("TP_OPT_VIDWIDTH_DESC",		"Max width (px) of main video"		);
+define("TP_OPT_VIDWIDTH_DEF",  		"Default is 425"          		);
 
 
 /* CSS */
