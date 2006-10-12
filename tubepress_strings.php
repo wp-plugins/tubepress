@@ -29,8 +29,18 @@ define("TP_MSG_OPTSUCCESS",	"Options updated"			);
 /* General */
 define("TP_MASTERNODE", 	"video_list"				);
 define("TP_YOUTUBEDEVLINK", 	"http://www.youtube.com/my_profile_dev"	);
-define("TP_YOUTUBE_RESTURL",	"http://www.youtube.com/api2_rest?method=youtube.users.list_favorite_videos");
+define("TP_YOUTUBE_RESTURL",	"http://www.youtube.com/api2_rest?");
 define("TP_MAINVID_HEADER",	"Latest post:"				);
+
+/* Searching */
+define("TP_SRCH_FAV",		"favorites"				);
+define("TP_SRCH_FAV_DESC",	"your favorites"			);
+define("TP_SRCH_TAG",		"tag"					);
+define("TP_SRCH_TAG_DESC",	"this tag"				);
+define("TP_SRCH_USER",		"user"					);
+define("TP_SRCH_USER_DESC",	"this user"				);
+define("TP_SRCH_YV",		"yourvideos"				);
+define("TP_SRCH_YV_DESC",	"your videos"				);
 
 /* OPTIONS */
 define("TP_OPT_DEVID",			"devID"					);
@@ -40,13 +50,8 @@ define("TP_OPT_KEYWORD", 		"[tubepress]"				);
 define("TP_OPT_KEYWORD_DESC",		"Display keyword"			);
 define("TP_OPT_KEYWORD_DEF",		"The trigger you insert (in plaintext) into your posts to display your YouTube gallery. Be careful how you choose... you could end up with a dozen copies of your gallery if you choosesomething like 'the'!!");
 define("TP_OPT_SEARCHBY", 		"searchBy"				);
-define("TP_OPT_SEARCHBY_VAL",		"searchByValue"				);
-define("TP_OPT_SEARCHBY_FAV",		"favorites"				);
-define("TP_OPT_SEARCHBY_FAV_DESC",	"your favorites"			);
-define("TP_OPT_SEARCHBY_VALTAG",	"tag"					);
-define("TP_OPT_SEARCHBY_VALTAG_DESC",	"these tag(s)"				);
-define("TP_OPT_SEARCHBY_VALUSER",	"user"					);
-define("TP_OPT_SEARCHBYUSER_DESC",	"this user"				);
+define("TP_OPT_SEARCHBY_TAGVAL",	"searchByTagValue"			);
+define("TP_OPT_SEARCHBY_USERVAL",	"searchByUserValue"			);
 define("TP_OPT_THUMBHEIGHT",		"thumbHeight"				);
 define("TP_OPT_THUMBHEIGHT_DESC",	"Max height (px) of thumbs"		);
 define("TP_OPT_THUMBHEIGHT_DEF",       	"Default is 97"     			);

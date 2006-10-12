@@ -28,7 +28,6 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */ 
 require("tubepress_strings.php");
-
 /*
  * Main filter hook. Looks for [tubepress] keyword
  * and replaces it with YouTube gallery if it's found
@@ -38,7 +37,7 @@ function tubepress_showgallery ($content = '') {
 	if (!strpos($content,TP_OPT_KEYWORD)) return $content;
 
 	/* Grab the XML from YouTube's API */
-	$youtube_xml = get_youtube_xml(get_option(TP_OPT_DEVID), get_option(TP_OPT_USERNAME)); 
+	$youtube_xml = get_youtube_xml(get_option(TP_OPT_DEVID)); 
 	
 	/* Loop through each video and generate the HTML for each */
 	$videoCount = 0;
@@ -150,13 +149,30 @@ EOT;
  * Connects to YouTube and grabs gallery info over
  * REST API
 */
-function get_youtube_xml($devID, $username) {
-	$request = TP_YOUTUBE_RESTURL . "&dev_id=" . $devID . "&user=" . $username;
+function get_youtube_xml($devID) {
+	$request = TP_YOUTUBE_RESTURL;
+	
+	switch (get_option(TP_OPT_SEARCHBY)) {
+		case TP_SRCH_USER:
+			$request .= "method=youtube.videos.list_by_user&user=" . get_option(TP_OPT_SEARCHBY_USERVAL);
+			break;
+		case TP_SRCH_FAV:
+			$request .= "method=youtube.users.list_favorite_videos&user=" . get_option(TP_OPT_USERNAME);
+			break;
+		case TP_SRCH_TAG:
+			$request .= "method=youtube.videos.list_by_tag&tag=" . get_option(TP_OPT_SEARCHBY_TAGVAL);
+			break;
+		case TP_SRCH_YV:
+			$request .= "method=youtube.videos.list_by_user&user=" . get_option(TP_OPT_USERNAME);
+			break;
+	}
+
+	$request .= "&dev_id=" . $devID;
 	$ch = curl_init($request);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
 	$result=curl_exec ($ch);
-	curl_close ($ch);
 	$xml = new SimpleXMLElement($result);
+	curl_close ($ch);
 	$masternode = TP_MASTERNODE;
 	return (array)$xml->$masternode;
 }
