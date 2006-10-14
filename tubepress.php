@@ -4,7 +4,7 @@ Plugin Name: TubePress
 Plugin URI: http://ehough.com/?page_id=20
 Description: Displays a gallery of your YouTube favorites in WordPress
 Author: Eric Hough
-Version: 0.3
+Version: 0.5
 Author URI: http://ehough.com
 
 THANKS:
@@ -107,7 +107,9 @@ function humanTime($length_seconds) {
 	/* convert the time to human-friendly */
         $seconds = 	$length_seconds;
         $length = 	intval($seconds/60);
-        $length .= 	":" . $seconds%60;
+       	$leftOverSeconds = $seconds%60;
+	if ($leftOverSeconds < 10) $leftOverSeconds = "0" . $leftOverSeconds;
+	$length .= 	":" . $leftOverSeconds;
 	return $length;
 }
 
