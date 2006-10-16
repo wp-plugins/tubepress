@@ -1,5 +1,5 @@
 .thumb {
-        margin: 4px 20px 10px 20px;
+        margin: 4px 10px 10px 10px;
         float: left;
         width: 120px;
         line-height: 1.1em;
@@ -19,6 +19,7 @@
 .tubepress_title, .tubepress_title a, .tubepress_title a:hover {
         font-size: 12px;
         font-weight: bold;
+	text-align: left;
 }
 
 .runtime {

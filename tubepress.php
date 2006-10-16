@@ -29,6 +29,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */ 
 require("tubepress_strings.php");
 require("simpleXML/IsterXmlSimpleXMLImpl.php");
+require(ABSPATH . "wp-includes/class-snoopy.php");
 /*
  * Main filter hook. Looks for [tubepress] keyword
  * and replaces it with YouTube gallery if it's found
