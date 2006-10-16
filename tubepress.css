@@ -1,35 +1,34 @@
+.thumb {
+        margin: 4px 20px 10px 20px;
+        float: left;
+        width: 120px;
+        line-height: 1.1em;
+        font-size: 11px;
+	height: 200px;
+}
+
 .tubepress_video_full {
         text-align:center;
 }
 .tubepress_video_thumbs {
-	height: 470px;
-	overflow:scroll;
-	border: 1px inset gray;
+        height: 500px;
+        overflow:scroll;
+        border: 1px solid gray;
 }
-.tubepress_video_thumb {
-	font-size: smaller;
-	text-align:center;
+
+.tubepress_title, .tubepress_title a, .tubepress_title a:hover {
+        font-size: 12px;
+        font-weight: bold;
 }
-.tubepress_video_thumb_meta {
-	text-align: left;
+
+.runtime {
+        font-size: 11px;
+        color: #000;
+        font-weight: bold;
 }
-.tubepress_video_thumb_meta .tubepress_thumb_meta_label {
-}
-.tubepress_video_thumb_img {
-	margin: 0px;  
-      	padding: 4px;
-	width: 30%;   
-        height: 220px;
-        float:left;
-        text-align:left;
-}
-.tubepress_video_thumb_img img {
-	background-color: #fff;
-	border: 1px solid #a9a9a9;
-	margin: 6px 6px 6px 6px;
-	padding: 4px;
-}
-.tubepress_gallery_footer {
-	clear:left;
+
+.tubepress_meta {
+        color: #666;
+        font-style: italic;
 }
 

@@ -1,10 +1,10 @@
 <?php
 /*
 Plugin Name: TubePress
-Plugin URI: http://ehough.com/?page_id=20
-Description: Displays a gallery of your YouTube favorites in WordPress
+Plugin URI: http://ehough.com/youtube/tubepress
+Description: Displays configurable YouTube galleries in WordPress
 Author: Eric Hough
-Version: 0.5
+Version: 0.6
 Author URI: http://ehough.com
 
 THANKS:
@@ -28,6 +28,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */ 
 require("tubepress_strings.php");
+require("simpleXML/IsterXmlSimpleXMLImpl.php");
 /*
  * Main filter hook. Looks for [tubepress] keyword
  * and replaces it with YouTube gallery if it's found
@@ -39,20 +40,20 @@ function tubepress_showgallery ($content = '') {
 	/* Grab the XML from YouTube's API */
 	$youtube_xml = get_youtube_xml(get_option(TP_OPT_DEVID)); 
 	
+	if ($youtube_xml == TP_XMLERR) {
+                return str_replace(TP_OPT_KEYWORD, TP_MSG_TIMEOUT, $content);
+        }
+
 	/* Loop through each video and generate the HTML for each */
 	$videoCount = 0;
 	$newcontent = printHTML_videoheader();
-	foreach ($youtube_xml as $k => $v) {
-		if (is_array($v)) {
-			foreach ($v as $k2=>$v2) {
-				$vid = (array)$v2;
-				if ($videoCount++ ==0) $newcontent .= printHTML_bigvid($vid);
-				$newcontent .= printHTML_smallvid($vid);
-			}		
-		}
-	}
+	foreach ($youtube_xml->children() as $vid) {
+                        if ($videoCount++ ==0) $newcontent .= printHTML_bigvid($vid);
+                        $newcontent .= printHTML_smallvid($vid);
+                }
+	
 	if ($videoCount == 0) {
-		$newcontent .= message('error_xml');
+		$newcontent .= TP_MSG_YTERR;
 	}
 	$newcontent .= printHTML_videofooter();
 
@@ -77,9 +78,9 @@ EOT;
 }
 
 function printHTML_bigvid($vid) {
-	$id = 		$vid['id'];
-	$title = 	htmlentities($vid['title'], ENT_QUOTES);
-	$length = 	humanTime($vid['length_seconds']);
+	$id = 		$vid->id->CDATA();
+	$title = 	htmlentities($vid->title->CDATA(), ENT_QUOTES);
+	$length = 	humanTime($vid->length_seconds->CDATA());
 	$height = 	get_option(TP_OPT_VIDHEIGHT) . "px";
 	$width = 	get_option(TP_OPT_VIDWIDTH) . "px";
 
@@ -93,8 +94,8 @@ function printHTML_bigvid($vid) {
 	return <<<EOT
 		<div id="$cssMainVidID" class="$cssMainVid">
 			<div class="$cssMainMeta">
-				$mainVideoHeader $title ($length)
-			</div>
+                                <span class="tubepress_meta">$mainVideoHeader</span> <span class="tubepress_title">$title</span> <span class="runtime">($length)</span>
+                        </div>
 			<object type="application/x-shockwave-flash" style="width:$width; height:$height;" data="http://www.youtube.com/v/$id" >
 				<param name="movie" value="http://www.youtube.com/v/$id" />
 			</object>
@@ -115,11 +116,14 @@ function humanTime($length_seconds) {
 
 function printHTML_smallvid($vid) {
 
-	$length = 		humanTime($vid['length_seconds']);
-	$title = 		htmlentities($vid['title'], ENT_QUOTES);
-	$thumbnail_url = 	$vid['thumbnail_url'];
-	$view_count = 		number_format($vid['view_count']);
-	$id = 			$vid['id'];
+	$length = 		humanTime($vid->length_seconds->CDATA());
+	$title = 		htmlentities($vid->title->CDATA(), ENT_QUOTES);
+	$thumbnail_url = 	$vid->thumbnail_url->CDATA();
+	$view_count = 		number_format($vid->view_count->CDATA());
+	$id = 			$vid->id->CDATA();
+	$rating =               $vid->rating_avg->CDATA();
+        $author =               $vid->author->CDATA();
+        $description =          $vid->description->CDATA();
 
 	$thumbHeight = 	get_option(TP_OPT_THUMBHEIGHT);
 	$thumbWidth = 	get_option(TP_OPT_THUMBWIDTH);
@@ -131,19 +135,21 @@ function printHTML_smallvid($vid) {
 	$cssThumbImg = TP_CSS_THUMBIMG;
 
 return <<<EOT
-	<div class="$cssThumb">
-		<div class="$cssThumbImg">
-			 <a href='#' onclick="javascript: playVideo('$id', '$height', '$width', '$caption'); return true;">
-			<img alt="$title"  src="$thumbnail_url" width="$thumbWidth"  height="$thumbHeight"/></a>
-			<div id="tubepress_thumb_meta_$id" class="tubepress_video_thumb_meta" >
-			<div class="tubepress_thumb_meta_label">
-				Title: $title<br/>
-				Length: $length<br/>
-				Views: $view_count<br/>
-			</div>
-		</div>
-	</div>
-	</div>
+	<div class="thumb">
+                <div class="vstill">
+                         <a href='#' onclick="javascript: playVideo('$id', '$height', '$width','$title', '$length'); return true;">
+                        <img alt="$title"  src="$thumbnail_url" width="$thumbWidth"  height="$thumbHeight" class="vimg" /></a>
+                </div>
+                <div class="tubepress_title">
+                        <a href='#' onclick="javascript: playVideo('$id', '$height', '$width', '$title', '$length'); return true;">$title</a><br/>
+                        <span class="runtime">$length</span>
+                </div>
+                <span class="tubepress_meta">Views: </span>$view_count<br/>
+                <span class="tubepress_meta">Rating: </span>$rating<br/>
+                <span class="tubepress_meta">Author: </span>$author<br/>
+  
+
+        </div>
 EOT;
 }
 
@@ -170,13 +176,13 @@ function get_youtube_xml($devID) {
 	}
 
 	$request .= "&dev_id=" . $devID;
-	$ch = curl_init($request);
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
-	$result=curl_exec ($ch);
-	$xml = new SimpleXMLElement($result);
-	curl_close ($ch);
-	$masternode = TP_MASTERNODE;
-	return (array)$xml->$masternode;
+	$snoopy = new snoopy;
+        $snoopy->read_timeout = get_option(TP_OPT_TIMEOUT);
+        $snoopy->fetch($request);
+        if ($snoopy->results == "") return TP_XMLERR;
+        $impl = new IsterXmlSimpleXMLImpl;
+        $results = $impl->load_string($snoopy->results);
+        return $results->ut_response->video_list;
 }
 
 function insert_tubepress_js() {
@@ -186,17 +192,6 @@ function insert_tubepress_js() {
 function insert_tubepress_css() {
 	echo '<link rel="stylesheet" href="' . get_settings('siteurl') . '/wp-content/plugins/tubepress/tubepress.css" type="text/css"></link>';
 }
-
-function message($myString) {
-	$msgs = get_option('msgs');
-	return $msgs[$myString];
-}
-
-/* MESSAGES */
-$msg['success'] = 		"Options updated.";
-$msg['errorXML'] = 		"ERROR: Could not retrieve gallery information from YouTube";
-$msg['optionsPanelTitle'] = 	"TubePress Configuration";
-$msg['optionsPanelMenuItem'] = 	"TubePress";
 
 /* ACTIONS */
 add_action('admin_menu', 	'tubepress_add_options_page');

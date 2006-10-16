@@ -32,6 +32,7 @@ add_option(TP_OPT_DEVID,             	"qh7CQ9xJIIc",  TP_OPT_DEVID_DESC);
 add_option(TP_OPT_SEARCHBY,		TP_SRCH_FAV,	'');
 add_option(TP_OPT_SEARCHBY_TAGVAL, 	"colbert",	'');
 add_option(TP_OPT_SEARCHBY_USERVAL, 	"3hough", 	'');
+add_option(TP_OPT_TIMEOUT,		"6",		TP_OPT_TIMEOUT_DESC);
 
 function tubepress_add_options_page() {
 	if (function_exists('add_options_page')) {
@@ -57,9 +58,12 @@ function tubepress_options_subpanel() {
 		array(TP_OPT_THUMBWIDTH, TP_OPT_THUMBWIDTH_DESC, TP_OPT_THUMBWIDTH_DEF),
 		array(TP_OPT_THUMBHEIGHT, TP_OPT_THUMBHEIGHT_DESC, TP_OPT_THUMBHEIGHT_DEF)
 	);
+	$advancedOptions = array(
+		array(TP_OPT_TIMEOUT, TP_OPT_TIMEOUT_DESC, TP_OPT_TIMEOUT_DEF)
+	);
 
 	if (isset($_POST['tubepress_save'])) {
-		$allOptions = array($youTubeAccountInfo, $videoDisplayOptions);
+		$allOptions = array($youTubeAccountInfo, $videoDisplayOptions, $advancedOptions);
 		foreach ($allOptions as $k => $optionArray) {
 			foreach ($optionArray as $t => $option) {
 				if (isset($_POST[$option[0]])) update_option($option[0], $_POST[$option[0]]);
@@ -89,6 +93,7 @@ EOT;
 	printHTML_optionsArray($youTubeAccountInfo, "YouTube account", "text", 30);
 	printHTML_searchArray($videoSearchOptions, "Which videos?");
 	printHTML_optionsArray($videoDisplayOptions, "Video display", "text", 20);
+	printHTML_optionsArray($advancedOptions, "Advanced", "text", 20);
 
 	print <<<EOT
 		<input type="submit" name="tubepress_save" value="Save" />

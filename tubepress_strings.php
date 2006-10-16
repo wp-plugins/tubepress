@@ -25,12 +25,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 define("TP_MSG_OPTPANELTITLE",	"TubePress Options"			);
 define("TP_MSG_OPTPANELMENU",	"TubePress"				);
 define("TP_MSG_OPTSUCCESS",	"Options updated"			);
+define("TP_MSG_TIMEOUT",	"Timed out while contacting YouTube. Please try again later.");
+define("TP_MSG_YTERR",		"Could not retrieve any videos from YouTube. Please check your configuration.");
 
 /* General */
 define("TP_MASTERNODE", 	"video_list"				);
 define("TP_YOUTUBEDEVLINK", 	"http://www.youtube.com/my_profile_dev"	);
 define("TP_YOUTUBE_RESTURL",	"http://www.youtube.com/api2_rest?");
 define("TP_MAINVID_HEADER",	"Latest post:"				);
+define("TP_XMLERR",		"No videos"				);
 
 /* Searching */
 define("TP_SRCH_FAV",		"favorites"				);
@@ -67,7 +70,9 @@ define("TP_OPT_VIDHEIGHT_DEF", 		"Default is 350"         		);
 define("TP_OPT_VIDWIDTH",		"mainVidWidth"				);
 define("TP_OPT_VIDWIDTH_DESC",		"Max width (px) of main video"		);
 define("TP_OPT_VIDWIDTH_DEF",  		"Default is 425"          		);
-
+define("TP_OPT_TIMEOUT",		"timeout");
+define("TP_OPT_TIMEOUT_DESC",		"How long to wait (in seconds) for YouTube to respond");
+define("TP_OPT_TIMEOUT_DEF",		"Default is 6 seconds");
 
 /* CSS */
 define("TP_CSS_CONTAINER", 	"tubepress_container"			);
