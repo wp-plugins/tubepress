@@ -1,4 +1,4 @@
-.thumb {
+.tubepress_thumb {
         margin: 4px 10px 10px 10px;
         float: left;
         width: 120px;
@@ -7,7 +7,12 @@
 	height: 200px;
 }
 
-.tubepress_video_full {
+.tubepress_meta {
+        color: #666;
+        font-style: italic;
+}
+
+.tubepress_mainvideo {
         text-align:center;
 }
 .tubepress_video_thumbs {
@@ -28,8 +33,4 @@
         font-weight: bold;
 }
 
-.tubepress_meta {
-        color: #666;
-        font-style: italic;
-}
 

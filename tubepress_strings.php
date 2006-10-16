@@ -49,18 +49,18 @@ define("TP_SRCH_YV_DESC",	"your videos"				);
 define("TP_OPT_DEVID",			"devID"					);
 define("TP_OPT_DEVID_DESC",		"YouTube developer ID"			);
 define("TP_OPT_DEVID_DEF",    		'Available from <a href="' . TP_YOUTUBEDEVLINK . '">' . TP_YOUTUBEDEVLINK . '</a>');
-define("TP_OPT_KEYWORD", 		"[tubepress]"				);
+define("TP_OPT_KEYWORD", 		"tubepress"				);
 define("TP_OPT_KEYWORD_DESC",		"Display keyword"			);
-define("TP_OPT_KEYWORD_DEF",		"The trigger you insert (in plaintext) into your posts to display your YouTube gallery. Be careful how you choose... you could end up with a dozen copies of your gallery if you choosesomething like 'the'!!");
+define("TP_OPT_KEYWORD_DEF",		"The trigger you insert (in plaintext, between square brackets) into your posts to display your YouTube gallery.");
 define("TP_OPT_SEARCHBY", 		"searchBy"				);
 define("TP_OPT_SEARCHBY_TAGVAL",	"searchByTagValue"			);
 define("TP_OPT_SEARCHBY_USERVAL",	"searchByUserValue"			);
 define("TP_OPT_THUMBHEIGHT",		"thumbHeight"				);
 define("TP_OPT_THUMBHEIGHT_DESC",	"Max height (px) of thumbs"		);
-define("TP_OPT_THUMBHEIGHT_DEF",       	"Default is 97"     			);
+define("TP_OPT_THUMBHEIGHT_DEF",       	"Default is 90"     			);
 define("TP_OPT_THUMBWIDTH",		"thumbWidth"				);
 define("TP_OPT_THUMBWIDTH_DESC",	"Max width (px) of thumbs"		);
-define("TP_OPT_THUMBWIDTH_DEF",     	"Default is 130"      			);
+define("TP_OPT_THUMBWIDTH_DEF",     	"Default is 120"      			);
 define("TP_OPT_USERNAME",		"username"				);
 define("TP_OPT_USERNAME_DESC",		"YouTube username"			);
 define("TP_OPT_USERNAME_DEF",  		""                      		);
@@ -76,12 +76,13 @@ define("TP_OPT_TIMEOUT_DEF",		"Default is 6 seconds");
 
 /* CSS */
 define("TP_CSS_CONTAINER", 	"tubepress_container"			);
-define("TP_CSS_MAINVIDID", 	"tubepress_the_video"			);
-define("TP_CSS_MAINVID",	"tubepress_video_full"			);
-define("TP_CSS_MAINMETA",	"tubepress_meta_large"			);
+define("TP_CSS_MAINVIDID", 	"tubepress_mainvideo"			);
+define("TP_CSS_MAINVID",	"tubepress_mainvideo"			);
+define("TP_CSS_META",		"tubepress_meta"			);
 define("TP_CSS_THUMBS",		"tubepress_video_thumbs"		);
-define("TP_CSS_THUMB",		"tubepress_video_thumb"			);
+define("TP_CSS_THUMB",		"tubepress_thumb"			);
 define("TP_CSS_THUMBIMG",	"tubepress_video_thumb_img"		);
 define("TP_CSS_SUCCESS",	"updated fade"				);
-
+define("TP_CSS_RUNTIME",	"runtime"				);
+define("TP_CSS_TITLE",		"tubepress_title"			);
 ?>

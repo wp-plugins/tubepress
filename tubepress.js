@@ -1,5 +1,5 @@
 function playVideo(id, height, width, title, time) {
-	document.getElementById('tubepress_the_video').innerHTML = ' \
+	document.getElementById('tubepress_mainvideo').innerHTML = ' \
 		<a name="tubepress_video"></a> \
 			<span class="tubepress_title">' + title + '</span> \
 			<span class="runtime">(' + time + ') \

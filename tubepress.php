@@ -28,21 +28,27 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */ 
 require("tubepress_strings.php");
-require("simpleXML/IsterXmlSimpleXMLImpl.php");
-require(ABSPATH . "wp-includes/class-snoopy.php");
+class_exists('IsterXmlSimpleXMLImpl') ||	require("simpleXML/IsterXmlSimpleXMLImpl.php");
+class_exists('Snoopy') || 			require(ABSPATH . "wp-includes/class-snoopy.php");
 /*
  * Main filter hook. Looks for [tubepress] keyword
  * and replaces it with YouTube gallery if it's found
 */
 function tubepress_showgallery ($content = '') {
+	$keyword = get_option(TP_OPT_KEYWORD);
+
 	/* Bail out fast if not found */
-	if (!strpos($content,TP_OPT_KEYWORD)) return $content;
+	if (!strpos($content,$keyword)) return $content;
+
+	/* backwards compatability for previous versions of tubepress */
+	if (substr($keyword, 0, 1) != "[") $keyword = "[" . $keyword;
+	if (substr($keyword, -1, 1) != "]") $keyword .= "]";
 
 	/* Grab the XML from YouTube's API */
 	$youtube_xml = get_youtube_xml(get_option(TP_OPT_DEVID)); 
 	
 	if ($youtube_xml == TP_XMLERR) {
-                return str_replace(TP_OPT_KEYWORD, TP_MSG_TIMEOUT, $content);
+                return str_replace($keyword, TP_MSG_TIMEOUT, $content);
         }
 
 	/* Loop through each video and generate the HTML for each */
@@ -59,7 +65,7 @@ function tubepress_showgallery ($content = '') {
 	$newcontent .= printHTML_videofooter();
 
 	/* We're done, so let's insert the gallery where the keyword is */
-	return str_replace(TP_OPT_KEYWORD, $newcontent, $content);
+	return str_replace($keyword, $newcontent, $content);
 }
 
 function printHTML_videoheader() {
@@ -67,6 +73,7 @@ function printHTML_videoheader() {
 	return <<<EOT
 		</p><!-- for XHTML validation -->
 		<div class="$cssContainer">
+
 EOT;
 }
 
@@ -87,16 +94,16 @@ function printHTML_bigvid($vid) {
 
 	$cssMainVidID = TP_CSS_MAINVIDID;
 	$cssMainVid =   TP_CSS_MAINVID;
-	$cssMainMeta =  TP_CSS_MAINMETA;
+	$cssMeta =  	TP_CSS_META;
 	$cssThumbContainer =  TP_CSS_THUMBS;
-
 	$mainVideoHeader = TP_MAINVID_HEADER;
+	$cssRunTime = TP_CSS_RUNTIME;
+	$cssTitle = TP_CSS_TITLE;
 
 	return <<<EOT
 		<div id="$cssMainVidID" class="$cssMainVid">
-			<div class="$cssMainMeta">
-                                <span class="tubepress_meta">$mainVideoHeader</span> <span class="tubepress_title">$title</span> <span class="runtime">($length)</span>
-                        </div>
+                        <span class="$cssMeta">$mainVideoHeader</span> <span class="$cssTitle">$title</span> <span class="$cssRunTime">($length)</span>
+                        
 			<object type="application/x-shockwave-flash" style="width:$width; height:$height;" data="http://www.youtube.com/v/$id" >
 				<param name="movie" value="http://www.youtube.com/v/$id" />
 			</object>
@@ -134,20 +141,23 @@ function printHTML_smallvid($vid) {
 
 	$cssThumb = TP_CSS_THUMB;
 	$cssThumbImg = TP_CSS_THUMBIMG;
+	$cssMeta = TP_CSS_META;
+	$cssRunTime = TP_CSS_RUNTIME;
+	$cssTitle = TP_CSS_TITLE;
 
 return <<<EOT
-	<div class="thumb">
-                <div class="vstill">
+	<div class="$cssThumb">
+                <div class="$cssThumbImg">
                          <a href='#' onclick="javascript: playVideo('$id', '$height', '$width','$title', '$length'); return true;">
-                        <img alt="$title"  src="$thumbnail_url" width="$thumbWidth"  height="$thumbHeight" class="vimg" /></a>
+                        <img alt="$title"  src="$thumbnail_url" width="$thumbWidth"  height="$thumbHeight"  /></a>
                 </div>
-                <div class="tubepress_title">
+                <div class="$cssTitle">
                         <a href='#' onclick="javascript: playVideo('$id', '$height', '$width', '$title', '$length'); return true;">$title</a><br/>
-                        <span class="runtime">$length</span>
+                        <span class="$cssRunTime">$length</span>
                 </div>
-                <span class="tubepress_meta">Views: </span>$view_count<br/>
-                <span class="tubepress_meta">Rating: </span>$rating<br/>
-                <span class="tubepress_meta">Author: </span>$author<br/>
+                <span class="$cssMeta">Views: </span>$view_count<br/>
+                <span class="$cssMeta">Rating: </span>$rating<br/>
+                <span class="$cssMeta">Author: </span>$author<br/>
   
 
         </div>
