@@ -22,67 +22,59 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */ 
 
 /* OPTIONS */
-add_option(TP_OPT_KEYWORD,		"[tubepress]",	TP_OPT_KEYWORD_DESC);
-add_option(TP_OPT_USERNAME,   		"3hough",       TP_OPT_USERNAME_DESC);
-add_option(TP_OPT_VIDWIDTH,      	"425",         	TP_OPT_VIDWIDTH_DESC);
-add_option(TP_OPT_VIDHEIGHT,     	"350",         	TP_OPT_VIDHEIGHT_DESC);
-add_option(TP_OPT_THUMBWIDTH,        	"120",     	TP_OPT_THUMBWIDTH_DESC);
-add_option(TP_OPT_THUMBEIGHT,       	"90",       	TP_OPT_THUMBHEIGHT_DESC);
-add_option(TP_OPT_DEVID,             	"qh7CQ9xJIIc",  TP_OPT_DEVID_DESC);
-add_option(TP_OPT_SEARCHBY,		TP_SRCH_FAV,	'');
-add_option(TP_OPT_SEARCHBY_TAGVAL, 	"colbert",	'');
-add_option(TP_OPT_SEARCHBY_USERVAL, 	"3hough", 	'');
-add_option(TP_OPT_TIMEOUT,		"6",		TP_OPT_TIMEOUT_DESC);
+add_option(TP_OPT_KEYWORD,			"[tubepress]",	TP_OPT_KEYWORD_DESC);
+add_option(TP_OPT_USERNAME,			"3hough",       TP_OPT_USERNAME_DESC);
+add_option(TP_OPT_VIDWIDTH,			"425",         	TP_OPT_VIDWIDTH_DESC);
+add_option(TP_OPT_VIDHEIGHT,		"350",         	TP_OPT_VIDHEIGHT_DESC);
+add_option(TP_OPT_THUMBWIDTH,		"120",     		TP_OPT_THUMBWIDTH_DESC);
+add_option(TP_OPT_THUMBEIGHT,		"90",       	TP_OPT_THUMBHEIGHT_DESC);
+add_option(TP_OPT_DEVID,			"qh7CQ9xJIIc",  TP_OPT_DEVID_DESC);
+add_option(TP_OPT_SEARCHBY,			TP_SRCH_FAV,	'');
+add_option(TP_OPT_SEARCHBY_TAGVAL, 	"colbert",		'');
+add_option(TP_OPT_SEARCHBY_USERVAL,	"3hough", 		'');
+add_option(TP_OPT_TIMEOUT,			"6",			TP_OPT_TIMEOUT_DESC);
+	
+$metas = array(
+	TP_VID_TITLE => true, 	TP_VID_LENGTH => true, 	TP_VID_VIEW => false, 
+	TP_VID_AUTHOR => false, TP_VID_ID => false, 	TP_VID_RATING_AVG => false,
+	TP_VID_RATING_CNT => false, 					TP_VID_DESC => false,
+	TP_VID_UPLOAD_TIME => false, 					TP_VID_COMMENT_CNT =>false,
+	TP_VID_TAGS => false, 							TP_VID_URL => false);
+add_option("TP_VID_METAS",			$metas,			'');
 
 function tubepress_add_options_page() {
-	if (function_exists('add_options_page')) {
+	if (function_exists('add_options_page'))
 		add_options_page(TP_MSG_OPTPANELTITLE, TP_MSG_OPTPANELMENU, 9, 'tubepress.php', 'tubepress_options_subpanel');
-    	}
 }
 
 function tubepress_options_subpanel() {
 	$youTubeAccountInfo = array(
-		array(TP_OPT_DEVID, TP_OPT_DEVID_DESC, TP_OPT_DEVID_DEF),
-		array(TP_OPT_USERNAME, TP_OPT_USERNAME_DESC, TP_OPT_USERNAME_DEF) 
+		new tubepressOption(TP_OPT_DEVID, TP_OPT_DEVID_DESC, TP_OPT_DEVID_DEF),
+		new tubepressOption(TP_OPT_USERNAME, TP_OPT_USERNAME_DESC, TP_OPT_USERNAME_DEF) 
 	);
 	$videoSearchOptions = array(
-		array(TP_SRCH_YV, TP_SRCH_YV_DESC, ''),
-		array(TP_SRCH_FAV, TP_SRCH_FAV_DESC, ''),
-		array(TP_SRCH_TAG, TP_SRCH_TAG_DESC, ''),
-		array(TP_SRCH_USER, TP_SRCH_USER_DESC, '')		
+		new tubepressOption(TP_SRCH_YV, TP_SRCH_YV_DESC, ''),
+		new tubepressOption(TP_SRCH_FAV, TP_SRCH_FAV_DESC, ''),
+		new tubepressOption(TP_SRCH_TAG, TP_SRCH_TAG_DESC, ''),
+		new tubepressOption(TP_SRCH_USER, TP_SRCH_USER_DESC, '')		
 	);
 	$videoDisplayOptions = array(
-		array(TP_OPT_KEYWORD, TP_OPT_KEYWORD_DESC, TP_OPT_KEYWORD_DEF),
-		array(TP_OPT_VIDWIDTH, TP_OPT_VIDWIDTH_DESC, TP_OPT_VIDWIDTH_DEF),
-		array(TP_OPT_VIDHEIGHT, TP_OPT_VIDHEIGHT_DESC, TP_OPT_VIDHEIGHT_DEF),
-		array(TP_OPT_THUMBWIDTH, TP_OPT_THUMBWIDTH_DESC, TP_OPT_THUMBWIDTH_DEF),
-		array(TP_OPT_THUMBHEIGHT, TP_OPT_THUMBHEIGHT_DESC, TP_OPT_THUMBHEIGHT_DEF)
+		new tubepressOption(TP_OPT_KEYWORD, TP_OPT_KEYWORD_DESC, TP_OPT_KEYWORD_DEF),
+		new tubepressOption(TP_OPT_VIDWIDTH, TP_OPT_VIDWIDTH_DESC, TP_OPT_VIDWIDTH_DEF),
+		new tubepressOption(TP_OPT_VIDHEIGHT, TP_OPT_VIDHEIGHT_DESC, TP_OPT_VIDHEIGHT_DEF),
+		new tubepressOption(TP_OPT_THUMBWIDTH, TP_OPT_THUMBWIDTH_DESC, TP_OPT_THUMBWIDTH_DEF),
+		new tubepressOption(TP_OPT_THUMBHEIGHT, TP_OPT_THUMBHEIGHT_DESC, TP_OPT_THUMBHEIGHT_DEF)
 	);
 	$advancedOptions = array(
-		array(TP_OPT_TIMEOUT, TP_OPT_TIMEOUT_DESC, TP_OPT_TIMEOUT_DEF)
+		new tubepressOption(TP_OPT_TIMEOUT, TP_OPT_TIMEOUT_DESC, TP_OPT_TIMEOUT_DEF)
 	);
-
-	if (isset($_POST['tubepress_save'])) {
-		$allOptions = array($youTubeAccountInfo, $videoDisplayOptions, $advancedOptions);
-		foreach ($allOptions as $k => $optionArray) {
-			foreach ($optionArray as $t => $option) {
-				if (isset($_POST[$option[0]])) update_option($option[0], $_POST[$option[0]]);
-			}
-		}
-		if (isset($_POST[TP_OPT_SEARCHBY])) update_option(TP_OPT_SEARCHBY, $_POST[TP_OPT_SEARCHBY]);
-		if (isset($_POST[TP_OPT_SEARCHBY_USERVAL])) update_option(TP_OPT_SEARCHBY_USERVAL, $_POST[TP_OPT_SEARCHBY_USERVAL]);
-		if (isset($_POST[TP_OPT_SEARCHBY_TAGVAL])) update_option(TP_OPT_SEARCHBY_TAGVAL, $_POST[TP_OPT_SEARCHBY_TAGVAL]);
+	$searchOptions = array(
+		new tubepressOption(TP_OPT_SEARCHBY, TP_OPT_SEARCHBY_USERVAL, TP_OPT_SEARCHBY_TAGVAL)
+	);
+	$allOptions = array($youTubeAccountInfo, $videoDisplayOptions, $advancedOptions, $searchOptions);
 	
-		$success = TP_MSG_OPTSUCCESS;
-		$cssSuccess = TP_CSS_SUCCESS;
-		print <<<EOT
-		<div id="message" class="$cssSuccess">
-			<p><strong>
-    			$success
-			</strong></p>
-		</div>
-EOT;
-	}
+	/* are we updating options? */
+	if (isset($_POST['tubepress_save'])) tubepress_update_options($allOptions);
 
 	print <<<EOT
 	<div class="wrap">
@@ -90,10 +82,11 @@ EOT;
 		<h2>TubePress Options</h2>
 EOT;
 
-	printHTML_optionsArray($youTubeAccountInfo, "YouTube account", "text", 30);
-	printHTML_searchArray($videoSearchOptions, "Which videos?");
-	printHTML_optionsArray($videoDisplayOptions, "Video display", "text", 20);
-	printHTML_optionsArray($advancedOptions, "Advanced", "text", 20);
+	tubepress_printHTML_genericOptionsArray($youTubeAccountInfo, "YouTube account", 30);
+	tubepress_printHTML_searchArray($videoSearchOptions, "Which videos?");
+	tubepress_printHTML_genericOptionsArray($videoDisplayOptions, "Video display", 20);
+	printHTML_metaArray(get_option(TP_VID_METAS), "Video meta display");
+	tubepress_printHTML_genericOptionsArray($advancedOptions, "Advanced", 20);
 
 	print <<<EOT
 		<input type="submit" name="tubepress_save" value="Save" />
@@ -102,24 +95,82 @@ EOT;
 EOT;
 
 }
+function tubepress_update_options($allOptions) {
+	
+	foreach ($allOptions as $k => $optionArray) {
+		foreach ($optionArray as $t => $option) {
+			switch ($option->name) {
+				default:
+					update_option($option->name, $_POST[$option->name]);
+			}
+		}
+	}
+		
+	$metas = get_option(TP_VID_METAS);
+	foreach (array_keys($metas) as $meta) {
+		if (isset($_POST[$meta])) $metas[$meta] = true;
+		else $metas[$meta] = false;
+	}
+	update_option(TP_VID_METAS, $metas);
+			
+	$success = TP_MSG_OPTSUCCESS;
+	$cssSuccess = TP_CSS_SUCCESS;
+	print <<<EOT
+			<div id="message" class="$cssSuccess">
+				<p><strong>
+	    			$success
+				</strong></p>
+			</div>
+EOT;
+}
 
-function printHTML_searchArray($theArray, $arrayName, $inputSize=20) {
-	$radioName = TP_OPT_SEARCHBY;
+function printHTML_metaArray($theArray, $arrayName) {
 	print <<<EOT
 			<fieldset>
 				<legend>$arrayName</legend>
 
 				<table class="editform optiontable">
-					<tr valign="top">
-						<th scope="row">$optionDesc</th>
 EOT;
 	foreach ($theArray as $k => $option) {
-		$optionName = $option[0];
-		$optionDesc = $option[1];
-		$optionDefault = $option[2];
+		$optionName = $option->name;
+		$optionDesc = $option->description;
+		$optionDefault = $option->defaultValue;
 		$optionValue = get_option($optionName);
 		$selected = "";
-		if ($option[0] == get_option(TP_OPT_SEARCHBY))
+		if ($option->name == get_option(TP_OPT_SEARCHBY))
+			$selected = "CHECKED";
+		if ($optionName == TP_SRCH_TAG)
+			$inputBox = '<input type="text" name="' . TP_OPT_SEARCHBY_TAGVAL . '" size="' . $inputSize . '" value="' . get_option(TP_OPT_SEARCHBY_TAGVAL) . '" />';
+print <<<EOT
+		<tr>
+			<th>$optionDesc</th>
+			<td>
+				<input type="radio" name="$radioName" value="$optionName" $selected /> $inputBox
+			</td>
+		</tr>
+EOT;
+	}
+print <<<EOT
+					</tr>
+				</table>
+     			</fieldset>
+EOT;
+}
+
+function tubepress_printHTML_searchArray($theArray, $arrayName, $inputSize=20) {
+	$radioName = TP_OPT_SEARCHBY;
+	print <<<EOT
+			<fieldset>
+				<legend>$arrayName</legend>
+				<table class="editform optiontable">
+EOT;
+	foreach ($theArray as $k => $option) {
+		$optionName = $option->name;
+		$optionDesc = $option->description;
+		$optionDefault = $option->defaultValue;
+		$optionValue = get_option($optionName);
+		$selected = "";
+		if ($option->name == get_option(TP_OPT_SEARCHBY))
 			$selected = "CHECKED";
 		$inputBox = "";
 		if ($optionName == TP_SRCH_TAG)
@@ -142,7 +193,7 @@ print <<<EOT
 EOT;
 }
 
-function printHTML_optionsArray($theArray, $arrayName, $inputType, $inputSize=20, $radioName='') {
+function tubepress_printHTML_genericOptionsArray($theArray, $arrayName, $inputSize=20, $radioName='') {
 	print <<<EOT
 
 			<fieldset>
@@ -150,16 +201,16 @@ function printHTML_optionsArray($theArray, $arrayName, $inputType, $inputSize=20
 				<table class="editform optiontable">
 EOT;
 	foreach ($theArray as $k => $option) {
-		$optionName = $option[0];
+		$optionName = $option->name;
 		if ($inputType == 'radio') $optionName = $radioName;
-		$optionDesc = $option[1];
-		$optionDefault = $option[2];
+		$optionDesc = $option->descriptions;
+		$optionDefault = $option->defaultValue;
 		$optionValue = get_option($optionName);
 		print <<<EOT
 					<tr valign="top">
 						<th scope="row">$optionDesc:</th>
 						<td>
-							<input name="$optionName" type="$inputType" id="$optionName" class="code" value="$optionValue" size="$inputSize" />
+							<input name="$optionName" type="text" id="$optionName" class="code" value="$optionValue" size="$inputSize" />
 							<br />$optionDefault
 						</td>
 
@@ -170,5 +221,17 @@ print <<<EOT
 				</table>
      			</fieldset>
 EOT;
+}
+
+class tubepressOption {
+	var $name;
+	var $description;
+	var $defaultValue;
+	
+	function tubePressOption($theName, $theDesc, $theValue) {
+		$this->name = $theName;
+		$this->description = $theDesc;
+		$this->defaultValue = $theValue;	
+	}
 }
 ?>

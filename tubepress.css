@@ -1,36 +1,36 @@
 .tubepress_thumb {
-        margin: 4px 10px 10px 10px;
-        float: left;
-        width: 120px;
-        line-height: 1.1em;
-        font-size: 11px;
+	margin: 4px 10px 10px 10px;
+	float: left;
+	width: 120px;
+	line-height: 1.1em;
+	font-size: 11px;
 	height: 200px;
 }
 
 .tubepress_meta {
-        color: #666;
-        font-style: italic;
+	color: #666;
+	font-style: italic;
 }
 
 .tubepress_mainvideo {
-        text-align:center;
+	text-align:center;
 }
 .tubepress_video_thumbs {
-        height: 500px;
-        overflow:scroll;
-        border: 1px solid gray;
+	height: 500px;
+	overflow:scroll;
+	border: 1px solid gray;
 }
 
 .tubepress_title, .tubepress_title a, .tubepress_title a:hover {
-        font-size: 12px;
-        font-weight: bold;
+	font-size: 12px;
+	font-weight: bold;
 	text-align: left;
 }
 
-.runtime {
-        font-size: 11px;
-        color: #000;
-        font-weight: bold;
+.tubepress_runtime {
+	font-size: 11px;
+	color: #000;
+	font-weight: bold;
 }
 
 

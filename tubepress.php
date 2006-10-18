@@ -27,16 +27,18 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */ 
+
+/* Imports */
 require("tubepress_strings.php");
 class_exists('IsterXmlSimpleXMLImpl') ||	require("simpleXML/IsterXmlSimpleXMLImpl.php");
-class_exists('Snoopy') || 			require(ABSPATH . "wp-includes/class-snoopy.php");
+class_exists('Snoopy') || 					require(ABSPATH . "wp-includes/class-snoopy.php");
+
 /*
- * Main filter hook. Looks for [tubepress] keyword
+ * Main filter hook. Looks for  keyword
  * and replaces it with YouTube gallery if it's found
 */
 function tubepress_showgallery ($content = '') {
 	$keyword = get_option(TP_OPT_KEYWORD);
-
 	/* Bail out fast if not found */
 	if (!strpos($content,$keyword)) return $content;
 
@@ -46,22 +48,27 @@ function tubepress_showgallery ($content = '') {
 
 	/* Grab the XML from YouTube's API */
 	$youtube_xml = get_youtube_xml(get_option(TP_OPT_DEVID)); 
-	
-	if ($youtube_xml == TP_XMLERR) {
-                return str_replace($keyword, TP_MSG_TIMEOUT, $content);
-        }
 
-	/* Loop through each video and generate the HTML for each */
+	/* convert to TubePressVideos and get which meta tags we're displaying */
+	//$videoResults = processVideos($metaMap, $youtube_xml);
+	
+	/* Check for a YouTube timeout */
+	if ($youtube_xml == TP_XMLERR)
+		return str_replace($keyword, TP_MSG_TIMEOUT, $content);
+
+	/* Loop through each video */
 	$videoCount = 0;
 	$newcontent = printHTML_videoheader();
 	foreach ($youtube_xml->children() as $vid) {
-                        if ($videoCount++ ==0) $newcontent .= printHTML_bigvid($vid);
-                        $newcontent .= printHTML_smallvid($vid);
-                }
-	
-	if ($videoCount == 0) {
-		$newcontent .= TP_MSG_YTERR;
+		$video = new tubepressVideo($vid);
+		if ($videoCount++ ==0) $newcontent .= printHTML_bigvid($video);
+		$newcontent .= printHTML_smallvid($video);
 	}
+	
+	/* Did we get any videos? */
+	if ($videoCount == 0) $newcontent .= TP_MSG_YTERR;
+	
+	/* push out the footer */
 	$newcontent .= printHTML_videofooter();
 
 	/* We're done, so let's insert the gallery where the keyword is */
@@ -73,7 +80,6 @@ function printHTML_videoheader() {
 	return <<<EOT
 		</p><!-- for XHTML validation -->
 		<div class="$cssContainer">
-
 EOT;
 }
 
@@ -86,82 +92,64 @@ EOT;
 }
 
 function printHTML_bigvid($vid) {
-	$id = 		$vid->id->CDATA();
-	$title = 	htmlentities($vid->title->CDATA(), ENT_QUOTES);
-	$length = 	humanTime($vid->length_seconds->CDATA());
-	$height = 	get_option(TP_OPT_VIDHEIGHT) . "px";
-	$width = 	get_option(TP_OPT_VIDWIDTH) . "px";
 
-	$cssMainVidID = TP_CSS_MAINVIDID;
-	$cssMainVid =   TP_CSS_MAINVID;
-	$cssMeta =  	TP_CSS_META;
-	$cssThumbContainer =  TP_CSS_THUMBS;
-	$mainVideoHeader = TP_MAINVID_HEADER;
-	$cssRunTime = TP_CSS_RUNTIME;
-	$cssTitle = TP_CSS_TITLE;
+	$cssMainVidID = 		TP_CSS_MAINVIDID;
+	$cssMainVid =   		TP_CSS_MAINVID;
+	$cssMeta =  			TP_CSS_META;
+	$cssThumbContainer =  	TP_CSS_THUMBS;
+	$mainVideoHeader = 		TP_MAINVID_HEADER;
+	$cssRunTime = 			TP_CSS_RUNTIME;
+	$cssTitle = 			TP_CSS_TITLE;
 
 	return <<<EOT
 		<div id="$cssMainVidID" class="$cssMainVid">
-                        <span class="$cssMeta">$mainVideoHeader</span> <span class="$cssTitle">$title</span> <span class="$cssRunTime">($length)</span>
+        	<span class="$cssMeta">$mainVideoHeader</span> 
+			<span class="$cssTitle">$vid->title</span> 
+			<span class="$cssRunTime">($vid->length)</span>
                         
-			<object type="application/x-shockwave-flash" style="width:$width; height:$height;" data="http://www.youtube.com/v/$id" >
-				<param name="movie" value="http://www.youtube.com/v/$id" />
+			<object type="application/x-shockwave-flash" style="width:$vid->width; height:$vid->height;" data="http://www.youtube.com/v/$vid->id" >
+				<param name="movie" value="http://www.youtube.com/v/$vid->id" />
 			</object>
 		</div> <!-- $cssMainVid -->
 		<div class="$cssThumbContainer">
 EOT;
 }
 
-function humanTime($length_seconds) {
-	/* convert the time to human-friendly */
-        $seconds = 	$length_seconds;
-        $length = 	intval($seconds/60);
-       	$leftOverSeconds = $seconds%60;
-	if ($leftOverSeconds < 10) $leftOverSeconds = "0" . $leftOverSeconds;
-	$length .= 	":" . $leftOverSeconds;
-	return $length;
-}
-
 function printHTML_smallvid($vid) {
+	$caption = 		$title . "(" . $length . ")";
 
-	$length = 		humanTime($vid->length_seconds->CDATA());
-	$title = 		htmlentities($vid->title->CDATA(), ENT_QUOTES);
-	$thumbnail_url = 	$vid->thumbnail_url->CDATA();
-	$view_count = 		number_format($vid->view_count->CDATA());
-	$id = 			$vid->id->CDATA();
-	$rating =               $vid->rating_avg->CDATA();
-        $author =               $vid->author->CDATA();
-        $description =          $vid->description->CDATA();
-
-	$thumbHeight = 	get_option(TP_OPT_THUMBHEIGHT);
-	$thumbWidth = 	get_option(TP_OPT_THUMBWIDTH);
-	$height = 	get_option(TP_OPT_VIDHEIGHT);
-	$width = 	get_option(TP_OPT_VIDWIDTH);
-	$caption = 	$title . "(" . $length . ")";
-
-	$cssThumb = TP_CSS_THUMB;
-	$cssThumbImg = TP_CSS_THUMBIMG;
-	$cssMeta = TP_CSS_META;
-	$cssRunTime = TP_CSS_RUNTIME;
-	$cssTitle = TP_CSS_TITLE;
+	$cssThumb = 	TP_CSS_THUMB;
+	$cssThumbImg = 	TP_CSS_THUMBIMG;
+	$cssMeta = 		TP_CSS_META;
+	$cssRunTime = 	TP_CSS_RUNTIME;
+	$cssTitle = 	TP_CSS_TITLE;
 
 return <<<EOT
 	<div class="$cssThumb">
-                <div class="$cssThumbImg">
-                         <a href='#' onclick="javascript: playVideo('$id', '$height', '$width','$title', '$length'); return true;">
-                        <img alt="$title"  src="$thumbnail_url" width="$thumbWidth"  height="$thumbHeight"  /></a>
-                </div>
-                <div class="$cssTitle">
-                        <a href='#' onclick="javascript: playVideo('$id', '$height', '$width', '$title', '$length'); return true;">$title</a><br/>
-                        <span class="$cssRunTime">$length</span>
-                </div>
-                <span class="$cssMeta">Views: </span>$view_count<br/>
-                <span class="$cssMeta">Rating: </span>$rating<br/>
-                <span class="$cssMeta">Author: </span>$author<br/>
-  
-
-        </div>
+		<div class="$cssThumbImg">
+			<a href='#' onclick="javascript: playVideo('$vid->id', '$vid->height', '$vid->width','$vid->title', '$vid->length'); return true;">
+				<img alt="$vid->title"  src="$vid->thumbnail_url" width="$vid->thumbWidth"  height="$vid->thumbHeight"  />
+			</a>
+		</div>
+		<div class="$cssTitle">
+			<a href='#' onclick="javascript: playVideo('$vid->id', '$vid->height', '$vid->width', '$vid->title', '$vid->length'); return true;">$vid->title</a><br/>
+			<span class="$cssRunTime">$vid->length</span>
+		</div>
+		<span class="$cssMeta">Views: </span>$vid->view_count<br/>
+		<span class="$cssMeta">Rating: </span>$vid->rating_avg<br/>
+		<span class="$cssMeta">Author: </span>$vid->author<br/>
+	</div><!-- $cssThumb -->
 EOT;
+}
+
+function humanTime($length_seconds) {
+	/* convert the time to human-friendly */
+	$seconds = $length_seconds;
+	$length = intval($seconds/60);
+	$leftOverSeconds = $seconds%60;
+	if ($leftOverSeconds < 10) $leftOverSeconds = "0" . $leftOverSeconds;
+	$length .= 	":" . $leftOverSeconds;
+	return $length;
 }
 
 /*
@@ -188,12 +176,12 @@ function get_youtube_xml($devID) {
 
 	$request .= "&dev_id=" . $devID;
 	$snoopy = new snoopy;
-        $snoopy->read_timeout = get_option(TP_OPT_TIMEOUT);
-        $snoopy->fetch($request);
-        if ($snoopy->results == "") return TP_XMLERR;
-        $impl = new IsterXmlSimpleXMLImpl;
-        $results = $impl->load_string($snoopy->results);
-        return $results->ut_response->video_list;
+	$snoopy->read_timeout = get_option(TP_OPT_TIMEOUT);
+	$snoopy->fetch($request);
+	if ($snoopy->results == "") return TP_XMLERR;
+	$impl = new IsterXmlSimpleXMLImpl;
+	$results = $impl->load_string($snoopy->results);
+	return $results->ut_response->video_list;
 }
 
 function insert_tubepress_js() {
@@ -215,4 +203,42 @@ add_filter('the_content', 'tubepress_showgallery');
 /* FILES */
 require("tubepress_options.php");
 
+class tubepressVideo {
+	var $title;
+	var $length;
+	var $view_count;
+	var $author;
+	var $id;
+	var $rating_avg;
+	var $rating_count;
+	var $description;
+	var $upload_time;
+	var $comment_count;
+	var $tags;
+	var $url;
+	var $thumbnail_url;
+	var $thumbHeight;
+	var $thumbWidth;
+	var $height;
+	var $width;
+	function tubepressVideo($videoXML) {
+		$this->author = 		$videoXML->author->CDATA();
+		$this->id = 			$videoXML->id->CDATA();
+		$this->title = 			htmlentities($videoXML->title->CDATA(), ENT_QUOTES);
+		$this->length = 		humanTime($videoXML->length_seconds->CDATA());
+		$this->rating_avg = 	$videoXML->rating_avg->CDATA();
+		$this->rating_count = 	$videoXML->rating_count->CDATA();
+		$this->description = 	$videoXML->description->CDATA();
+		$this->view_count = 	number_format($videoXML->view_count->CDATA());
+		$this->upload_time = 	date("M j, Y", $videoXML->upload_time->CDATA());
+		$this->comment_count = 	$videoXML->comment_count->CDATA();
+		$this->tags = 			$videoXML->tags->CDATA();
+		$this->url = 			$videoXML->url->CDATA();
+		$this->thumbnail_url = 	$videoXML->thumbnail_url->CDATA();
+		$this->thumbHeight = 	get_option(TP_OPT_THUMBHEIGHT) . "px";
+		$this->thumbWidth = 	get_option(TP_OPT_THUMBWIDTH) . "px";
+		$this->height = 		get_option(TP_OPT_VIDHEIGHT) . "px";
+		$this->width = 			get_option(TP_OPT_VIDWIDTH) . "px";
+	}
+}
 ?>
