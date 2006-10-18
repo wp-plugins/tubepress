@@ -73,7 +73,7 @@ function tubepress_showgallery ($content = '') {
 	if ($videoCount == 0) $newcontent .= TP_MSG_YTERR;
 	
 	/* push out the footer */
-	$newcontent .= printHTML_videofooter();
+	$newcontent .= printHTML_videofooter($css);
 
 	/* We're done, so let's insert the gallery where the keyword is */
 	return str_replace($keyword, $newcontent, $content);
