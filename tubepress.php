@@ -30,6 +30,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 /* Imports */
 require("tubepress_strings.php");
+require("tubepress_classes.php");
 class_exists('IsterXmlSimpleXMLImpl') ||	require("simpleXML/IsterXmlSimpleXMLImpl.php");
 class_exists('Snoopy') || 					require(ABSPATH . "wp-includes/class-snoopy.php");
 
@@ -56,13 +57,16 @@ function tubepress_showgallery ($content = '') {
 	if ($youtube_xml == TP_XMLERR)
 		return str_replace($keyword, TP_MSG_TIMEOUT, $content);
 
+	/* get css */
+	$css = new tubepressCSS();
+		
 	/* Loop through each video */
 	$videoCount = 0;
-	$newcontent = printHTML_videoheader();
+	$newcontent = printHTML_videoheader($css);
 	foreach ($youtube_xml->children() as $vid) {
 		$video = new tubepressVideo($vid);
-		if ($videoCount++ ==0) $newcontent .= printHTML_bigvid($video);
-		$newcontent .= printHTML_smallvid($video);
+		if ($videoCount++ ==0) $newcontent .= printHTML_bigvid($video, $css);
+		$newcontent .= printHTML_smallvid($video, $css);
 	}
 	
 	/* Did we get any videos? */
@@ -75,15 +79,14 @@ function tubepress_showgallery ($content = '') {
 	return str_replace($keyword, $newcontent, $content);
 }
 
-function printHTML_videoheader() {
-	$cssContainer = TP_CSS_CONTAINER;
+function printHTML_videoheader($css) {
 	return <<<EOT
 		</p><!-- for XHTML validation -->
-		<div class="$cssContainer">
+		<div class="$css->container">
 EOT;
 }
 
-function printHTML_videofooter() {
+function printHTML_videofooter($css) {
 	return <<<EOT
 			</div>
 		</div>
@@ -91,54 +94,40 @@ function printHTML_videofooter() {
 EOT;
 }
 
-function printHTML_bigvid($vid) {
-
-	$cssMainVidID = 		TP_CSS_MAINVIDID;
-	$cssMainVid =   		TP_CSS_MAINVID;
-	$cssMeta =  			TP_CSS_META;
-	$cssThumbContainer =  	TP_CSS_THUMBS;
+function printHTML_bigvid($vid, $css) {
 	$mainVideoHeader = 		TP_MAINVID_HEADER;
-	$cssRunTime = 			TP_CSS_RUNTIME;
-	$cssTitle = 			TP_CSS_TITLE;
-
 	return <<<EOT
-		<div id="$cssMainVidID" class="$cssMainVid">
-        	<span class="$cssMeta">$mainVideoHeader</span> 
-			<span class="$cssTitle">$vid->title</span> 
-			<span class="$cssRunTime">($vid->length)</span>
+		<div id="$css->mainVid_id" class="$css->mainVid_class">
+        	<span class="$css->meta_class">$mainVideoHeader</span> 
+			<span class="$css->title_class">$vid->title</span> 
+			<span class="$css->runtime_class">($vid->length)</span>
                         
 			<object type="application/x-shockwave-flash" style="width:$vid->width; height:$vid->height;" data="http://www.youtube.com/v/$vid->id" >
 				<param name="movie" value="http://www.youtube.com/v/$vid->id" />
 			</object>
-		</div> <!-- $cssMainVid -->
-		<div class="$cssThumbContainer">
+		</div> <!-- $css->mainVid_class -->
+		<div class="$css->thumb_container_class">
 EOT;
 }
 
-function printHTML_smallvid($vid) {
-	$caption = 		$title . "(" . $length . ")";
-
-	$cssThumb = 	TP_CSS_THUMB;
-	$cssThumbImg = 	TP_CSS_THUMBIMG;
-	$cssMeta = 		TP_CSS_META;
-	$cssRunTime = 	TP_CSS_RUNTIME;
-	$cssTitle = 	TP_CSS_TITLE;
+function printHTML_smallvid($vid, $css) {
+	$caption = 		$vid->title . "(" . $vid->length . ")";
 
 return <<<EOT
-	<div class="$cssThumb">
-		<div class="$cssThumbImg">
+	<div class="$css->thumb_class">
+		<div class="$css->thumbImg_class">
 			<a href='#' onclick="javascript: playVideo('$vid->id', '$vid->height', '$vid->width','$vid->title', '$vid->length'); return true;">
 				<img alt="$vid->title"  src="$vid->thumbnail_url" width="$vid->thumbWidth"  height="$vid->thumbHeight"  />
 			</a>
 		</div>
-		<div class="$cssTitle">
+		<div class="$css->title_class">
 			<a href='#' onclick="javascript: playVideo('$vid->id', '$vid->height', '$vid->width', '$vid->title', '$vid->length'); return true;">$vid->title</a><br/>
-			<span class="$cssRunTime">$vid->length</span>
+			<span class="$css->runtime_class">$vid->length</span>
 		</div>
-		<span class="$cssMeta">Views: </span>$vid->view_count<br/>
-		<span class="$cssMeta">Rating: </span>$vid->rating_avg<br/>
-		<span class="$cssMeta">Author: </span>$vid->author<br/>
-	</div><!-- $cssThumb -->
+		<span class="$css->meta_class">Views: </span>$vid->view_count<br/>
+		<span class="$css->meta_class">Rating: </span>$vid->rating_avg<br/>
+		<span class="$css->meta_class">Author: </span>$vid->author<br/>
+	</div><!-- $css->thumb_class -->
 EOT;
 }
 
@@ -203,41 +192,5 @@ add_filter('the_content', 'tubepress_showgallery');
 /* FILES */
 require("tubepress_options.php");
 
-class tubepressVideo {
-	var $title, $length;
-	var $view_count;
-	var $author;
-	var $id;
-	var $rating_avg;
-	var $rating_count;
-	var $description;
-	var $upload_time;
-	var $comment_count;
-	var $tags;
-	var $url;
-	var $thumbnail_url;
-	var $thumbHeight;
-	var $thumbWidth;
-	var $height;
-	var $width;
-	function tubepressVideo($videoXML) {
-		$this->author = 		$videoXML->author->CDATA();
-		$this->id = 			$videoXML->id->CDATA();
-		$this->title = 			htmlentities($videoXML->title->CDATA(), ENT_QUOTES);
-		$this->length = 		humanTime($videoXML->length_seconds->CDATA());
-		$this->rating_avg = 	$videoXML->rating_avg->CDATA();
-		$this->rating_count = 	$videoXML->rating_count->CDATA();
-		$this->description = 	$videoXML->description->CDATA();
-		$this->view_count = 	number_format($videoXML->view_count->CDATA());
-		$this->upload_time = 	date("M j, Y", $videoXML->upload_time->CDATA());
-		$this->comment_count = 	$videoXML->comment_count->CDATA();
-		$this->tags = 			$videoXML->tags->CDATA();
-		$this->url = 			$videoXML->url->CDATA();
-		$this->thumbnail_url = 	$videoXML->thumbnail_url->CDATA();
-		$this->thumbHeight = 	get_option(TP_OPT_THUMBHEIGHT) . "px";
-		$this->thumbWidth = 	get_option(TP_OPT_THUMBWIDTH) . "px";
-		$this->height = 		get_option(TP_OPT_VIDHEIGHT) . "px";
-		$this->width = 			get_option(TP_OPT_VIDWIDTH) . "px";
-	}
-}
+
 ?>

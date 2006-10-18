@@ -223,15 +223,4 @@ print <<<EOT
 EOT;
 }
 
-class tubepressOption {
-	var $name;
-	var $description;
-	var $defaultValue;
-	
-	function tubePressOption($theName, $theDesc, $theValue) {
-		$this->name = $theName;
-		$this->description = $theDesc;
-		$this->defaultValue = $theValue;	
-	}
-}
 ?>

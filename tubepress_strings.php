@@ -75,16 +75,7 @@ define("TP_OPT_TIMEOUT_DESC",		"How long to wait (in seconds) for YouTube to res
 define("TP_OPT_TIMEOUT_DEF",		"Default is 6 seconds");
 
 /* CSS */
-define("TP_CSS_CONTAINER", 	"tubepress_container");
-define("TP_CSS_MAINVIDID", 	"tubepress_mainvideo");
-define("TP_CSS_MAINVID",	"tubepress_mainvideo");
-define("TP_CSS_META",		"tubepress_meta");
-define("TP_CSS_THUMBS",		"tubepress_video_thumbs");
-define("TP_CSS_THUMB",		"tubepress_thumb");
-define("TP_CSS_THUMBIMG",	"tubepress_video_thumb_img");
 define("TP_CSS_SUCCESS",	"updated fade");
-define("TP_CSS_RUNTIME",	"tubepress_runtime");
-define("TP_CSS_TITLE",		"tubepress_title");
 
 /* Video meta information */
 define("TP_VID_AUTHOR", 		"author");
