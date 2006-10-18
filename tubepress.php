@@ -204,8 +204,7 @@ add_filter('the_content', 'tubepress_showgallery');
 require("tubepress_options.php");
 
 class tubepressVideo {
-	var $title;
-	var $length;
+	var $title, $length;
 	var $view_count;
 	var $author;
 	var $id;
