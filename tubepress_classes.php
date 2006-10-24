@@ -14,14 +14,56 @@ class tubepressCSS {
 		$this->thumbImg_class =			"tubepress_video_thumb_img";
 		$this->runtime_class = 			"tubepress_runtime";
 		$this->title_class = 			"tubepress_title";
+		$this->success_class = 			"updated fade";
 	}
 }
+
+class tubepressTag {  
+
+	var $tagString, $customOptions;
+
+	function tubepressTag($tagString, $customOptions) {  
+		$this->$tagString = $tagString;  
+		$this->$optionsArray = $customOptions;
+	}  
+
+	function get_option($option = '') {
+		if(!empty($this->$optionsArray) && isset($this->$optionsArray[$option]))
+			return $this->$optionsArray[$option];  
+
+		$searchVariables = get_option(TP_OPTS_SRCHV);
+		$tempArray = array();
+		if (($option == TP_VID_TITLE) || ($option == TP_VID_LENGTH) || ($option == TP_VID_VIEW) || 
+			($option == TP_VID_AUTHOR) || ($option == TP_VID_ID) || ($option == TP_VID_RATING_AVG) || 
+			($option == TP_VID_RATING_CNT) || ($option == TP_VID_DESC) || ($option == TP_VID_UPLOAD_TIME) || 
+			($option == TP_VID_COMMENT_CNT) || ($option == TP_VID_TAGS) || ($option == TP_VID_URL)) {
+			$tempArray = get_option(TP_OPTS_META);
+			}
+		else if (($option == TP_OPT_DEVID) || ($option == TP_OPT_USERNAME)) {
+			$tempArray = get_option(TP_OPTS_ACCT);
+			}
+		else if (($option == TP_SRCH_YV) || ($option == TP_SRCH_FAV) || ($option == TP_SRCH_TAG) || 
+			($option == TP_SRCH_USER)) {
+			$tempArray = get_option(TP_OPTS_SEARCH);
+			}
+		else if (($option == TP_OPT_KEYWORD) || ($option == TP_OPT_VIDWIDTH) || ($option == TP_OPT_VIDHEIGHT) || 
+			($option == TP_OPT_THUMBWIDTH) || ($option == TP_OPT_THUMBHEIGHT)) {
+			$tempArray = get_option(TP_OPTS_DISP);
+			}
+		else if ($option == TP_OPT_TIMEOUT) {
+			$tempArray = get_option(TP_OPTS_ADV);
+			}
+		else if (($option == TP_OPT_SEARCHBY) || ($option == TP_OPT_SEARCHBY_TAGVAL) || ($option == TP_OPT_SEARCHBY_USERVAL)) {
+			$tempArray = get_option(TP_OPTS_SRCHV);
+			}
+		return $tempArray[$option]->value;
+	}  
+}  
 
 class tubepressVideo {
 	var $title, $length, $view_count, $author, $id, $rating_avg,
 		$rating_count, $description, $upload_time, $comment_count,
-		$tags, $url, $thumbnail_url, $thumbHeight, $thumbWidth,
-		$height, $width;
+		$tags, $url, $thumbnail_url;
 		
 	function tubepressVideo($videoXML) {
 		$this->author = 		$videoXML->author->CDATA();
@@ -37,20 +79,17 @@ class tubepressVideo {
 		$this->tags = 			$videoXML->tags->CDATA();
 		$this->url = 			$videoXML->url->CDATA();
 		$this->thumbnail_url = 	$videoXML->thumbnail_url->CDATA();
-		$this->thumbHeight = 	get_option(TP_OPT_THUMBHEIGHT) . "px";
-		$this->thumbWidth = 	get_option(TP_OPT_THUMBWIDTH) . "px";
-		$this->height = 		get_option(TP_OPT_VIDHEIGHT) . "px";
-		$this->width = 			get_option(TP_OPT_VIDWIDTH) . "px";
 	}
 }
 
 class tubepressOption {
-	var $name, $description, $defaultValue;
+	var $name, $title, $description, $value;
 	
-	function tubePressOption($theName, $theDesc, $theValue) {
+	function tubePressOption($theName, $theTitle, $theDesc, $theValue) {
 		$this->name = $theName;
 		$this->description = $theDesc;
-		$this->defaultValue = $theValue;	
+		$this->value = $theValue;
+		$this->title = $theTitle;
 	}
 }
 ?>

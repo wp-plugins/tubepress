@@ -33,62 +33,51 @@ define("TP_MASTERNODE", 		"video_list");
 define("TP_YOUTUBEDEVLINK", 	"http://www.youtube.com/my_profile_dev"	);
 define("TP_YOUTUBE_RESTURL",	"http://www.youtube.com/api2_rest?");
 define("TP_MAINVID_HEADER",		"Latest post:");
-define("TP_XMLERR",				"No videos from YouTube!");
+define("TP_MSG_XMLERR",				"No videos from YouTube!");
 
 /* Searching */
 define("TP_SRCH_FAV",		"favorites");
-define("TP_SRCH_FAV_DESC",	"your favorites");
+define("TP_SRCH_FAV_TITLE",	"your favorites");
 define("TP_SRCH_TAG",		"tag");
-define("TP_SRCH_TAG_DESC",	"this tag");
+define("TP_SRCH_TAG_TITLE",	"this tag");
 define("TP_SRCH_USER",		"user");
-define("TP_SRCH_USER_DESC",	"this user");
+define("TP_SRCH_USER_TITLE",	"this user");
 define("TP_SRCH_YV",		"yourvideos");
-define("TP_SRCH_YV_DESC",	"your videos");
+define("TP_SRCH_YV_TITLE",	"your videos");
 
 /* OPTIONS */
 define("TP_OPT_DEVID",				"devID");
-define("TP_OPT_DEVID_DESC",			"YouTube developer ID");
-define("TP_OPT_DEVID_DEF",			'Available from <a href="' . TP_YOUTUBEDEVLINK . '">' . TP_YOUTUBEDEVLINK . '</a>');
+define("TP_MSG_DEVID_TITLE",			"YouTube developer ID");
+define("TP_MSG_DEVID_DESC",			'Available from <a href="' . TP_YOUTUBEDEVLINK . '">' . TP_YOUTUBEDEVLINK . '</a>');
 define("TP_OPT_KEYWORD", 			"tubepress");
-define("TP_OPT_KEYWORD_DESC",		"Display keyword");
-define("TP_OPT_KEYWORD_DEF",		"The trigger you insert (in plaintext, between square brackets) into your posts to display your YouTube gallery.");
+define("TP_MSG_KEYWORD_TITLE",		"Display keyword");
+define("TP_MSG_KEYWORD_DESC",		"The trigger you insert (in plaintext, between square brackets) into your posts to display your YouTube gallery.");
 define("TP_OPT_SEARCHBY", 			"searchBy");
-define("TP_OPT_SEARCHBY_TAGVAL",	"searchByTagValue");
-define("TP_OPT_SEARCHBY_USERVAL",	"searchByUserValue");
+define("TP_MSG_SEARCHBY_TAGVAL",	"searchByTagValue");
+define("TP_MSG_SEARCHBY_USERVAL",	"searchByUserValue");
 define("TP_OPT_THUMBHEIGHT",		"thumbHeight");
-define("TP_OPT_THUMBHEIGHT_DESC",	"Max height (px) of thumbs");
-define("TP_OPT_THUMBHEIGHT_DEF",  	"Default is 90");
+define("TP_MSG_THUMBHEIGHT_TITLE",	"Max height (px) of thumbs");
+define("TP_MSG_THUMBHEIGHT_DESC",  	"Default is 90");
 define("TP_OPT_THUMBWIDTH",			"thumbWidth");
-define("TP_OPT_THUMBWIDTH_DESC",	"Max width (px) of thumbs");
-define("TP_OPT_THUMBWIDTH_DEF",		"Default is 120");
+define("TP_MSG_THUMBWIDTH_TITLE",	"Max width (px) of thumbs");
+define("TP_MSG_THUMBWIDTH_DESC",		"Default is 120");
 define("TP_OPT_USERNAME",			"username");
-define("TP_OPT_USERNAME_DESC",		"YouTube username");
-define("TP_OPT_USERNAME_DEF",  		"");
+define("TP_MSG_USERNAME_TITLE",		"YouTube username");
+define("TP_MSG_USERNAME_DESC",  		"");
 define("TP_OPT_VIDHEIGHT",			"mainVidHeight");
-define("TP_OPT_VIDHEIGHT_DESC",		"Max height (px) of main video");
-define("TP_OPT_VIDHEIGHT_DEF", 		"Default is 350");
+define("TP_MSG_VIDHEIGHT_TITLE",		"Max height (px) of main video");
+define("TP_MSG_VIDHEIGHT_DESC", 		"Default is 350");
 define("TP_OPT_VIDWIDTH",			"mainVidWidth");
-define("TP_OPT_VIDWIDTH_DESC",		"Max width (px) of main video");
-define("TP_OPT_VIDWIDTH_DEF",  		"Default is 425");
+define("TP_MSG_VIDWIDTH_TITLE",		"Max width (px) of main video");
+define("TP_MSG_VIDWIDTH_DESC",  		"Default is 425");
 define("TP_OPT_TIMEOUT",			"timeout");
-define("TP_OPT_TIMEOUT_DESC",		"How long to wait (in seconds) for YouTube to respond");
-define("TP_OPT_TIMEOUT_DEF",		"Default is 6 seconds");
+define("TP_MSG_TIMEOUT_TITLE",		"How long to wait (in seconds) for YouTube to respond");
+define("TP_MSG_TIMEOUT_DESC",		"Default is 6 seconds");
 
-/* CSS */
-define("TP_CSS_SUCCESS",	"updated fade");
-
-/* Video meta information */
-define("TP_VID_AUTHOR", 		"author");
-define("TP_VID_ID", 			"id");
-define("TP_VID_TITLE", 			"title");
-define("TP_VID_LENGTH", 		"length");
-define("TP_VID_RATING_AVG",		"rating_avg");
-define("TP_VID_RATING_CNT",		"rating_count");
-define("TP_VID_DESC", 			"description");
-define("TP_VID_VIEW", 			"view_count");
-define("TP_VID_UPLOAD_TIME", 	"upload_time");
-define("TP_VID_COMMENT_CNT", 	"comment_count");
-define("TP_VID_TAGS", 			"tags");
-define("TP_VID_URL", 			"url");
-define("TP_VID_METAS",			"tubepress_videoMeta");
+define(TP_OPTS_META,		"metaOptions");
+define(TP_OPTS_ACCT,		"accountInfo");
+define(TP_OPTS_SEARCH,		"videoSearchOptions");
+define(TP_OPTS_DISP,		"videoDisplayOptions");
+define(TP_OPTS_ADV, 		"advancedOptions");
+define(TP_OPTS_SRCHV,		"searchVariables");
 ?>

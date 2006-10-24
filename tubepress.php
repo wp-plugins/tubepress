@@ -41,17 +41,13 @@ class_exists('Snoopy') || 					require(ABSPATH . "wp-includes/class-snoopy.php")
 function tubepress_showgallery ($content = '') {
 	$keyword = get_option(TP_OPT_KEYWORD);
 	/* Bail out fast if not found */
-	if (!strpos($content,$keyword)) return $content;
+	if ((!strpos($content,$keyword)) || (!strpos($content, '[' . $keyword))) return $content;
 
-	/* backwards compatability for previous versions of tubepress */
-	if (substr($keyword, 0, 1) != "[") $keyword = "[" . $keyword;
-	if (substr($keyword, -1, 1) != "]") $keyword .= "]";
-
+	/* Parse the tag  */
+	$options = tubepress_parse_tag($content);
+	
 	/* Grab the XML from YouTube's API */
-	$youtube_xml = get_youtube_xml(get_option(TP_OPT_DEVID)); 
-
-	/* convert to TubePressVideos and get which meta tags we're displaying */
-	//$videoResults = processVideos($metaMap, $youtube_xml);
+	$youtube_xml = get_youtube_xml($options); 
 	
 	/* Check for a YouTube timeout */
 	if ($youtube_xml == TP_XMLERR)
@@ -65,8 +61,8 @@ function tubepress_showgallery ($content = '') {
 	$newcontent = printHTML_videoheader($css);
 	foreach ($youtube_xml->children() as $vid) {
 		$video = new tubepressVideo($vid);
-		if ($videoCount++ ==0) $newcontent .= printHTML_bigvid($video, $css);
-		$newcontent .= printHTML_smallvid($video, $css);
+		if ($videoCount++ ==0) $newcontent .= printHTML_bigvid($video, $css, $options);
+		$newcontent .= printHTML_smallvid($video, $css, $options);
 	}
 	
 	/* Did we get any videos? */
@@ -76,8 +72,32 @@ function tubepress_showgallery ($content = '') {
 	$newcontent .= printHTML_videofooter($css);
 
 	/* We're done, so let's insert the gallery where the keyword is */
-	return str_replace($keyword, $newcontent, $content);
+	return str_replace('[' . $keyword . ']', $newcontent, $content);
 }
+
+function tubepress_parse_tag($content = '') {  
+
+	$optionsArray = array();  
+	$keyword = get_option(TP_OPT_KEYWORD);  
+
+	/* Use a regular expression to match everything in square brackets after the TubePress keyword */
+	$regexp = '\[' . $keyword . ' ([A-Za-z0-9=_ ]+)\]';  
+	preg_match("/$regexp/", $content, $matches);  
+
+	/* Execute if anything was matched by the parentheses */
+	if(isset($matches[1])) {  
+
+		/* Break up the options and store them in an ASSOCIATIVE array */
+		$pairs = explode(" ", $matches[1]);  
+		foreach($pairs as $pair) {  
+			$pieces = explode("=", $pair);  
+			$optionsArray[$pieces[0]] = $pieces[1];  
+			}  
+	}  
+
+	/* Create and return new tubepressTag object */
+	return new tubepressTag($keyword, $matches[0], $optionsArray);  
+}  
 
 function printHTML_videoheader($css) {
 	return <<<EOT
@@ -94,15 +114,17 @@ function printHTML_videofooter($css) {
 EOT;
 }
 
-function printHTML_bigvid($vid, $css) {
-	$mainVideoHeader = 		TP_MAINVID_HEADER;
+function printHTML_bigvid($vid, $css, $options) {
+	$mainVideoHeader = TP_MAINVID_HEADER;
+	$width = $options->get_option(TP_OPT_VIDWIDTH) . "px";
+	$height = $options->get_option(TP_OPT_VIDHEIGHT) . "px";
 	return <<<EOT
 		<div id="$css->mainVid_id" class="$css->mainVid_class">
         	<span class="$css->meta_class">$mainVideoHeader</span> 
 			<span class="$css->title_class">$vid->title</span> 
 			<span class="$css->runtime_class">($vid->length)</span>
                         
-			<object type="application/x-shockwave-flash" style="width:$vid->width; height:$vid->height;" data="http://www.youtube.com/v/$vid->id" >
+			<object type="application/x-shockwave-flash" style="width:$width; height:$height;" data="http://www.youtube.com/v/$vid->id" >
 				<param name="movie" value="http://www.youtube.com/v/$vid->id" />
 			</object>
 		</div> <!-- $css->mainVid_class -->
@@ -110,18 +132,21 @@ function printHTML_bigvid($vid, $css) {
 EOT;
 }
 
-function printHTML_smallvid($vid, $css) {
+function printHTML_smallvid($vid, $css, $options) {
 	$caption = 		$vid->title . "(" . $vid->length . ")";
-
+	$thumbWidth = $options->get_option(TP_OPT_THUMBWIDTH);
+	$thumbHeight = $options->get_option(TP_OPT_THUMBHEIGHT);
+	$vidWidth = $options->get_option(TP_OPT_VIDWIDTH);
+	$vidHeight = $options->get_option(TP_OPT_VIDHEIGHT);
 return <<<EOT
 	<div class="$css->thumb_class">
 		<div class="$css->thumbImg_class">
-			<a href='#' onclick="javascript: playVideo('$vid->id', '$vid->height', '$vid->width','$vid->title', '$vid->length'); return true;">
-				<img alt="$vid->title"  src="$vid->thumbnail_url" width="$vid->thumbWidth"  height="$vid->thumbHeight"  />
+			<a href='#' onclick="javascript: playVideo('$vid->id', '$vidHeight', '$vidWidth','$vid->title', '$vid->length'); return true;">
+				<img alt="$vid->title"  src="$vid->thumbnail_url" width="$thumbWidth"  height="$thumbHeight"  />
 			</a>
 		</div>
 		<div class="$css->title_class">
-			<a href='#' onclick="javascript: playVideo('$vid->id', '$vid->height', '$vid->width', '$vid->title', '$vid->length'); return true;">$vid->title</a><br/>
+			<a href='#' onclick="javascript: playVideo('$vid->id', '$vidHeight', '$vidWidth', '$vid->title', '$vid->length'); return true;">$vid->title</a><br/>
 			<span class="$css->runtime_class">$vid->length</span>
 		</div>
 		<span class="$css->meta_class">Views: </span>$vid->view_count<br/>
@@ -145,27 +170,27 @@ function humanTime($length_seconds) {
  * Connects to YouTube and grabs gallery info over
  * REST API
 */
-function get_youtube_xml($devID) {
+function get_youtube_xml($options) {
 	$request = TP_YOUTUBE_RESTURL;
 	
-	switch (get_option(TP_OPT_SEARCHBY)) {
+	switch ($options->get_option(TP_OPT_SEARCHBY)) {
 		case TP_SRCH_USER:
-			$request .= "method=youtube.videos.list_by_user&user=" . get_option(TP_OPT_SEARCHBY_USERVAL);
+			$request .= "method=youtube.videos.list_by_user&user=" . $options->get_option(TP_OPT_SEARCHBY_USERVAL);
 			break;
 		case TP_SRCH_FAV:
-			$request .= "method=youtube.users.list_favorite_videos&user=" . get_option(TP_OPT_USERNAME);
+			$request .= "method=youtube.users.list_favorite_videos&user=" . $options->get_option(TP_OPT_USERNAME);
 			break;
 		case TP_SRCH_TAG:
-			$request .= "method=youtube.videos.list_by_tag&tag=" . get_option(TP_OPT_SEARCHBY_TAGVAL);
+			$request .= "method=youtube.videos.list_by_tag&tag=" . $options->get_option(TP_OPT_SEARCHBY_TAGVAL);
 			break;
 		case TP_SRCH_YV:
-			$request .= "method=youtube.videos.list_by_user&user=" . get_option(TP_OPT_USERNAME);
+			$request .= "method=youtube.videos.list_by_user&user=" . $options->get_option(TP_OPT_USERNAME);
 			break;
 	}
 
-	$request .= "&dev_id=" . $devID;
+	$request .= "&dev_id=" . $options->get_option(TP_OPT_DEVID);
 	$snoopy = new snoopy;
-	$snoopy->read_timeout = get_option(TP_OPT_TIMEOUT);
+	$snoopy->read_timeout = $options->get_option(TP_OPT_TIMEOUT);
 	$snoopy->fetch($request);
 	if ($snoopy->results == "") return TP_XMLERR;
 	$impl = new IsterXmlSimpleXMLImpl;

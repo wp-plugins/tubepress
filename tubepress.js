@@ -5,7 +5,7 @@ function playVideo(id, height, width, title, time) {
 			<span class="runtime">(' + time + ') \
 			<object width="' + width +'" height="' + height + '"> \
 				<param name="movie" value="http://www.youtube.com/v/' + id + '" /> \
-				<embed src="http://www.youtube.com/v/' + id + '" type="application/x-shockwave-flash" width="' + width + '" height="' + height + '" /> \
+				<embed src="http://www.youtube.com/v/' + id + '" type="application/x-shockwave-flash" width="' + width + 'px" height="' + height + 'px" /> \
 			</object> \
 	';
 	document.location.hash = '#tubepress_video';
