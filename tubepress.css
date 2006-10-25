@@ -1,10 +1,5 @@
-.tubepress_thumb {
-	margin: 4px 10px 10px 10px;
-	float: left;
-	width: 120px;
-	line-height: 1.1em;
-	font-size: 11px;
-	height: 200px;
+.tubepress_mainvideo {
+	text-align:center;
 }
 
 .tubepress_meta {
@@ -12,19 +7,8 @@
 	font-style: italic;
 }
 
-.tubepress_mainvideo {
-	text-align:center;
-}
-.tubepress_video_thumbs {
-	height: 500px;
-	overflow:scroll;
-	border: 1px solid gray;
-}
-
-.tubepress_title, .tubepress_title a, .tubepress_title a:hover {
-	font-size: 12px;
-	font-weight: bold;
-	text-align: left;
+.tubepress_meta_group {
+	padding: 0 6px 0 6px;
 }
 
 .tubepress_runtime {
@@ -33,4 +17,26 @@
 	font-weight: bold;
 }
 
+.tubepress_thumb {
+	float: left;
+	width: 33%;
+	line-height: 1.1em;
+	font-size: 11px;
+	height: 175px;
+}
 
+.tubepress_title, .tubepress_title a, .tubepress_title a:hover {
+	font-size: 12px;
+	font-weight: bold;
+}
+
+.tubepress_video_thumb_img {
+	text-align: center;
+}
+
+.tubepress_video_thumbs {
+	padding: 0 0 0 5px;
+	height: 500px;
+	overflow:scroll;
+	border: 1px solid gray;
+}
