@@ -41,10 +41,10 @@ $accountInfo = array(
 	TP_OPT_DEVID => 	new tubepressOption(TP_OPT_DEVID, TP_MSG_DEVID_TITLE, TP_MSG_DEVID_DESC . ' <a href="' . TP_YOUTUBEDEVLINK . '">' . TP_YOUTUBEDEVLINK . '</a>', "qh7CQ9xJIIc"),
 	TP_OPT_USERNAME => 	new tubepressOption(TP_OPT_USERNAME, TP_MSG_USERNAME_TITLE, TP_MSG_USERNAME_DESC, "3hough"));
 $videoSearchOptions = array(
-	TP_SRCH_YV => 	new tubepressOption(TP_SRCH_YV, 	TP_SRCH_YV_TITLE, '', ''),
-	TP_SRCH_FAV => 	new tubepressOption(TP_SRCH_FAV, 	TP_SRCH_FAV_TITLE, '', ''),
-	TP_SRCH_TAG => 	new tubepressOption(TP_SRCH_TAG, 	TP_SRCH_TAG_TITLE, '', ''),
-	TP_SRCH_USER => new tubepressOption(TP_SRCH_USER, 	TP_SRCH_USER_TITLE, '', ''));
+	TP_SRCH_YV => 	new tubepressOption(TP_SRCH_YV, 	TP_MSG_SRCH_YV_TITLE, '', ''),
+	TP_SRCH_FAV => 	new tubepressOption(TP_SRCH_FAV, 	TP_MSG_SRCH_FAV_TITLE, '', ''),
+	TP_SRCH_TAG => 	new tubepressOption(TP_SRCH_TAG, 	TP_MSG_SRCH_TAG_TITLE, '', ''),
+	TP_SRCH_USER => new tubepressOption(TP_SRCH_USER, 	TP_MSG_SRCH_USER_TITLE, '', ''));
 $videoDisplayOptions = array(
 	TP_OPT_VIDWIDTH => 	new tubepressOption(TP_OPT_VIDWIDTH, TP_MSG_VIDWIDTH_TITLE, TP_MSG_VIDWIDTH_DESC, "425"),
 	TP_OPT_VIDHEIGHT => 	new tubepressOption(TP_OPT_VIDHEIGHT, TP_MSG_VIDHEIGHT_TITLE, TP_MSG_VIDHEIGHT_DESC, "350"),
