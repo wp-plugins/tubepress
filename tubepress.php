@@ -8,8 +8,8 @@ Version: 0.7
 Author URI: http://ehough.com
 
 THANKS:
-Matt Doyle (http://notdrunk.net) was responsible for developing the "option overriding"
-capability of this plugin. All the regexp was his... thanks!
+Matt Doyle (http://notdrunk.net) was responsible for designing and developing the "option overriding"
+capability of this plugin.
 
 This plugin was based on the "mytube" plugin by Vaam Yob (http://rane.hasitsown.com/blog/plink/technical/27/wordpress-youtube-video-gallery-plugin/) and
 some code samples from WaxJelly (http://www.waxjelly.com/2006/08/29/a-more-complex-php-script-using-the-youtube-api-with-video-details-part-2/). Thanks!
@@ -149,7 +149,6 @@ function printHTML_smallvid($vid, $css, $options) {
 	$thumbHeight = 	$options->get_option(TP_OPT_THUMBHEIGHT);
 	$vidWidth = 	$options->get_option(TP_OPT_VIDWIDTH);
 	$vidHeight = 	$options->get_option(TP_OPT_VIDHEIGHT);
-	$metaOptions = 	get_option(TP_OPTS_META);
 
 $content = <<<EOT
 	<div class="$css->thumb_class">
@@ -162,7 +161,7 @@ $content = <<<EOT
 		<div class="$css->meta_group">
 		<div class="$css->title_class">
 EOT;
-	if ($metaOptions[TP_VID_TITLE]->value == true) {
+	if ($options->get_option(TP_VID_TITLE) == true) {
 		$content .= <<<EOP
 			<a href='#' onclick="javascript: playVideo('{$vid->metaValues[TP_VID_ID]}', '$vidHeight', '$vidWidth', '{$vid->metaValues[TP_VID_TITLE]}', '{$vid->metaValues[TP_VID_LENGTH]}'); return true;">{$vid->metaValues[TP_VID_TITLE]}</a><br/>
 EOP;
@@ -170,14 +169,14 @@ EOP;
 	$content .= <<<EOT
 		</div>
 EOT;
-	if ($metaOptions[TP_VID_LENGTH]->value == true) {
+	if ($options->get_option(TP_VID_LENGTH) == true) {
 		$content .= <<<EOP
 			<span class="$css->runtime_class">{$vid->metaValues[TP_VID_LENGTH]}</span><br/>
 EOP;
 	}
 	foreach ($metaOptions as $option) {
 		if (($option->name == TP_VID_LENGTH) || ($option->name == TP_VID_TITLE)) continue;
-		if ($option->value) {
+		if ($options->get_option($option->name)) {
 			$content .=  '<span class="' . $css->meta_class . '">';		
 			switch($option->name) {
 				case TP_VID_DESC:
