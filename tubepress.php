@@ -44,7 +44,7 @@ class_exists('Snoopy') || 					require(ABSPATH . "wp-includes/class-snoopy.php")
 function tubepress_showgallery ($content = '') {
 	$quickOpts = get_option(TP_OPTS_ADV);
 	$keyword = $quickOpts[TP_OPT_KEYWORD];
-	
+
 	/* Bail out fast if not found */
  	if (!strpos($content, '[' . $keyword->value)) return $content;
 
@@ -102,7 +102,7 @@ function tubepress_parse_tag($content = '', $keyword) {
 		$pairs = explode(" ", $matches[1]);  
 		foreach($pairs as $pair) {  
 			$pieces = explode("=", $pair);  
-			$optionsArray[$pieces[0]] = $pieces[1];  
+			$optionsArray[$pieces[0]] = $pieces[1];
 			}  
 	}  
 
@@ -133,7 +133,7 @@ function printHTML_bigvid($vid, $css, $options) {
 		<div id="$css->mainVid_id" class="$css->mainVid_class">
         	<span class="$css->meta_class">$header</span> 
 			<span class="$css->title_class">{$vid->metaValues[TP_VID_TITLE]}</span>
-			<span class="$css->runtime_class">{$vid->metaValues[TP_VID_LENGTH]}</span>
+			<span class="$css->runtime_class">({$vid->metaValues[TP_VID_LENGTH]})</span>
                         
 			<object type="application/x-shockwave-flash" style="width:$width; height:$height;" data="http://www.youtube.com/v/{$vid->metaValues[TP_VID_ID]}" >
 				<param name="movie" value="http://www.youtube.com/v/{$vid->metaValues[TP_VID_ID]}" />
@@ -149,6 +149,7 @@ function printHTML_smallvid($vid, $css, $options) {
 	$thumbHeight = 	$options->get_option(TP_OPT_THUMBHEIGHT);
 	$vidWidth = 	$options->get_option(TP_OPT_VIDWIDTH);
 	$vidHeight = 	$options->get_option(TP_OPT_VIDHEIGHT);
+	$metaOptions = get_option(TP_OPTS_META);
 
 $content = <<<EOT
 	<div class="$css->thumb_class">
@@ -174,9 +175,10 @@ EOT;
 			<span class="$css->runtime_class">{$vid->metaValues[TP_VID_LENGTH]}</span><br/>
 EOP;
 	}
+
 	foreach ($metaOptions as $option) {
 		if (($option->name == TP_VID_LENGTH) || ($option->name == TP_VID_TITLE)) continue;
-		if ($options->get_option($option->name)) {
+		if ($options->get_option($option->name) == "true") {
 			$content .=  '<span class="' . $css->meta_class . '">';		
 			switch($option->name) {
 				case TP_VID_DESC:
@@ -252,6 +254,7 @@ function get_youtube_xml($options) {
 	$request .= "&dev_id=" . $options->get_option(TP_OPT_DEVID);
 	$snoopy = new snoopy;
 	$snoopy->read_timeout = $options->get_option(TP_OPT_TIMEOUT);
+
 	$snoopy->fetch($request);
 	if ($snoopy->results == "") return TP_XMLERR;
 	$impl = new IsterXmlSimpleXMLImpl;

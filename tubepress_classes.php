@@ -35,6 +35,7 @@ class tubepressTag {
 		if(!empty($this->customOptions) && isset($this->customOptions[$option]))
 			return $this->customOptions[$option];  
 
+
 		$allOptions = array(get_option(TP_OPTS_META),get_option(TP_OPTS_ACCT),
 				get_option(TP_OPTS_SEARCH), get_option(TP_OPTS_DISP),
 				get_option(TP_OPTS_ADV), get_option(TP_OPTS_SRCHV)); 
