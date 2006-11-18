@@ -54,9 +54,9 @@ $advancedOptions = array(
 	TP_OPT_KEYWORD => 	new tubepressOption(TP_OPT_KEYWORD, TP_MSG_KEYWORD_TITLE, TP_MSG_KEYWORD_DESC, "tubepress"),
 	TP_OPT_TIMEOUT => new tubepressOption(TP_OPT_TIMEOUT, TP_MSG_TIMEOUT_TITLE, TP_MSG_TIMEOUT_DESC, "6"));
 $searchVariables = array(
-	TP_OPT_SEARCHBY => 		new tubepressOption(TP_OPT_SEARCHBY, '', '', TP_SRCH_FAV),
-	TP_SRCH_TAGVAL => 	new tubepressOption(TP_SRCH_TAGVAL, '', '', "colbert"),
-	TP_SRCH_USERVAL => 	new tubepressOption(TP_SRCH_USERVAL, '', '', "3hough"));
+	TP_OPT_SEARCHBY => 		new tubepressOption(TP_OPT_SEARCHBY, ' ', '', "favorites"),
+	TP_SRCH_TAGVAL => 	new tubepressOption(TP_SRCH_TAGVAL, ' ', '', "colbert"),
+	TP_SRCH_USERVAL => 	new tubepressOption(TP_SRCH_USERVAL, ' ', '', "3hough"));
 
 
 add_option(TP_OPTS_META,		$metaOptions);
@@ -112,8 +112,8 @@ function tubepress_update_options() {
 	
 	foreach ($mostOptions as $arrayName) {
 		$optionArray = get_option($arrayName);
-		foreach ($optionArray as $option) {
-			
+		foreach (array_keys($optionArray) as $index) {
+			$option =& $optionArray[$index];
 			$optionValue = $_POST[$option->name];
 			
 			/* This is where I should do error checking */
@@ -131,7 +131,8 @@ function tubepress_update_options() {
 	
 	/* We treat meta values differently since they rely on true/false */
 	$metaOptions = get_option(TP_OPTS_META);
-	foreach ($metaOptions as $metaOption) {
+	foreach (array_keys($metaOptions) as $index) {
+		$metaOption =& $metaOptions[$index];
 		if (in_array($metaOption->name, $_POST['meta'])) $metaOptions[$metaOption->name]->value = true;
 		else $metaOptions[$metaOption->name]->value = false;
 	}
