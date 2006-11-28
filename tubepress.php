@@ -4,7 +4,7 @@ Plugin Name: TubePress
 Plugin URI: http://ehough.com/youtube/tubepress
 Description: Displays configurable YouTube galleries in WordPress
 Author: Eric Hough
-Version: 0.7
+Version: 0.8
 Author URI: http://ehough.com
 
 THANKS:

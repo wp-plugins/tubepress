@@ -21,6 +21,14 @@ and some code samples from WaxJelly (http://www.waxjelly.com/2006/08/29/a-more-c
 
 -----VERSION HISTORY-----
 
+Version 0.8 Released, Nov 17, 2006
+
+    * Major bug fix with PHP4. Thanks to Fabien and Paige for reporting it.
+
+Version 0.7 Released, Nov 4, 2006
+
+    * Override global settings on a per-page basis! This will allow you to have one page with your videos (that you
+
 Version 0.6 Released, Oct 16, 2006
 
     * Now works with PHP4!
@@ -48,4 +56,5 @@ Version 0.3 Released, Oct 5, 2006
 Version 0.2 Released, Oct 4, 2006
 
     * Fixed major bug with CSS file path
+
 
