@@ -57,14 +57,23 @@ $searchVariables = array(
 	TP_OPT_SEARCHBY => 		new tubepressOption(TP_OPT_SEARCHBY, ' ', '', "favorites"),
 	TP_SRCH_TAGVAL => 	new tubepressOption(TP_SRCH_TAGVAL, ' ', '', "colbert"),
 	TP_SRCH_USERVAL => 	new tubepressOption(TP_SRCH_USERVAL, ' ', '', "3hough"));
+$videoPlayerLocationOptions = array(
+	TP_PLAYIN_NORMAL =>	new tubepressOption(TP_PLAYIN_NORMAL, TP_MSG_PLAYIN_NORMAL_TITLE, '', ''),
+	TP_PLAYIN_NW =>		new tubepressOption(TP_PLAYIN_NW, TP_MSG_PLAYIN_NW_TITLE, '', ''),
+	TP_PLAYIN_YT =>		new tubepressOption(TP_PLAYIN_YT, TP_MSG_PLAYIN_YT_TITLE, '', ''),
+	TP_PLAYIN_POPUP =>	new tubepressOption(TP_PLAYIN_POPUP, TP_MSG_PLAYIN_POPUP_TITLE, '', ''),
+	TP_PLAYIN_LB =>		new tubePressOption(TP_PLAYIN_LB, TP_MSG_PLAYIN_LB_TITLE, '', ''));
+$videoPlayerMenu = array(
+	TP_OPT_PLAYIN =>	new tubepressOption(TP_OPT_PLAYIN, TP_MSG_PLAYIN_TITLE, '', TP_PLAYIN_NORMAL));
 
-
-add_option(TP_OPTS_META,		$metaOptions);
+add_option(TP_OPTS_META,		$metaOptions);	
 add_option(TP_OPTS_ACCT,		$accountInfo);
 add_option(TP_OPTS_SEARCH,		$videoSearchOptions);
 add_option(TP_OPTS_DISP,		$videoDisplayOptions);
 add_option(TP_OPTS_ADV, 		$advancedOptions);
 add_option(TP_OPTS_SRCHV,		$searchVariables);
+add_option(TP_OPTS_PLAYERLOCATION, $videoPlayerLocationOptions);
+add_option(TP_OPTS_PLAYERMENU,	$videoPlayerMenu);
 
 /* Adds our options page to the main WP options panel */
 function tubepress_add_options_page() {
@@ -86,6 +95,7 @@ EOT;
 
 	tubepress_printHTML_genericOptionsArray(	get_option(TP_OPTS_ACCT), TP_MSG_ACCT, 30);
 	tubepress_printHTML_searchArray(		get_option(TP_OPTS_SEARCH), TP_MSG_WHICHVIDS);
+	tubepress_printHTML_playerLocationMenu();
 	tubepress_printHTML_genericOptionsArray(	get_option(TP_OPTS_DISP), TP_MSG_VIDDISP, 20);
 	tubepress_printHTML_metaArray(		get_option(TP_OPTS_META), TP_MSG_META, $metas);
 	tubepress_printHTML_genericOptionsArray(	get_option(TP_OPTS_ADV), TP_MSG_ADV, 20);
@@ -99,16 +109,42 @@ EOT;
 
 }
 
+function tubepress_printHTML_playerLocationMenu() {
+	$locationVars = get_option(TP_OPTS_PLAYERLOCATION);
+	$theArray = get_option(TP_OPTS_PLAYERMENU);
+	$theOption = $theArray[TP_OPT_PLAYIN];
+	tubepress_printHTML_optionHeader("");
+
+print <<<EOT
+			<tr>
+			<th>$theOption->title</th>
+			<td><select name="$theOption->name">
+EOT;
+	foreach ($locationVars as $location) {
+		$selected = "";
+		if ($location->name == $theOption->value)
+			$selected = "selected";
+		$inputBox = "";
+print <<<EOT
+		<option value="$location->name" $selected />$location->title
+EOT;
+	}
+print <<<EOT
+		</select>	
+	</td>
+		</tr>
+EOT;
+	tubepress_printHTML_optionFooter();
+}
+
 /* Go through all the post variables and update the corresponding
  * database entries.
 */
 function tubepress_update_options() {
 	$css = new tubepressCSS();
-	
-	//TODO fix search tag stuff
 
 	$mostOptions = array(TP_OPTS_ACCT, TP_OPTS_SEARCH,
-		TP_OPTS_DISP, TP_OPTS_ADV, TP_OPTS_SRCHV);
+		TP_OPTS_DISP, TP_OPTS_ADV, TP_OPTS_SRCHV, TP_OPTS_PLAYERMENU);
 	
 	foreach ($mostOptions as $arrayName) {
 		$optionArray = get_option($arrayName);
@@ -137,6 +173,7 @@ function tubepress_update_options() {
 		else $metaOptions[$metaOption->name]->value = false;
 	}
 	update_option(TP_OPTS_META, $metaOptions);
+	
 	$successMSG = TP_MSG_OPTSUCCESS;
 	print <<<EOT
 			<div id="message" class="$css->success_class">

@@ -32,14 +32,15 @@ class tubepressTag {
 	}  
 
 	function get_option($option = '') {
-		if(!empty($this->customOptions) && isset($this->customOptions[$option]))
+		if(!empty($this->customOptions) && isset($this->customOptions[$option])) {
 			return $this->customOptions[$option];  
+		}
 
 
 		$allOptions = array(get_option(TP_OPTS_META),get_option(TP_OPTS_ACCT),
 				get_option(TP_OPTS_SEARCH), get_option(TP_OPTS_DISP),
-				get_option(TP_OPTS_ADV), get_option(TP_OPTS_SRCHV)); 
-
+				get_option(TP_OPTS_ADV), get_option(TP_OPTS_SRCHV), get_option(TP_OPTS_PLAYERMENU)); 
+				
 		foreach ($allOptions as $optionArray) {
 			foreach ($optionArray as $optionItem) {
 				if ($optionItem->name == $option) return $optionItem->value;

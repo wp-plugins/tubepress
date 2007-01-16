@@ -4,7 +4,7 @@ Plugin Name: TubePress
 Plugin URI: http://ehough.com/youtube/tubepress
 Description: Displays configurable YouTube galleries in WordPress
 Author: Eric Hough
-Version: 0.8
+Version: 0.9
 Author URI: http://ehough.com
 
 THANKS:
@@ -50,21 +50,24 @@ function tubepress_showgallery ($content = '') {
 
 	/* Parse the tag  */
 	$options = tubepress_parse_tag($content, $keyword->value);
+
+	/* Are we printing a single video? */
+	$singleVidMode  = printingSingleVideo($options);
 	
 	/* Grab the XML from YouTube's API */
-	$youtube_xml = get_youtube_xml($options); 
+	if (!$singleVidMode) $youtube_xml = get_youtube_xml($options); 
 
 	/* Print the header no matter what */
 	$newcontent = printHTML_videoheader($css);
 	
 	$error = false;
 	/* Check for a YouTube timeout */
-	if ($youtube_xml == TP_XMLERR) {
+	if (($youtube_xml == TP_XMLERR) && (!$singleVidMode)) {
 		$error = true;
 		$newcontent .= TP_MSG_TIMEOUT;
 	}
 	/* Did we get any videos? */
-	if ($youtube_xml == "") {
+	if (($youtube_xml == "") && (!$singleVidMode)) {
 		$error = true;
 		$newcontent .= TP_MSG_YTERR;
 	}
@@ -74,10 +77,13 @@ function tubepress_showgallery ($content = '') {
 	/* Loop through each video */
 	$videoCount = 0;
 	if ($error == false) {
-		foreach ($youtube_xml->children() as $vid) {
-			$video = new tubepressVideo($vid);
-			if ($videoCount++ == 0) $newcontent .= printHTML_bigvid($video, $css, $options);
-			$newcontent .= printHTML_smallvid($video, $css, $options);
+		if ($singleVidMode) $newcontent .= printSingleVideo($css, $options);
+		else {
+			foreach ($youtube_xml->children() as $vid) {
+				$video = new tubepressVideo($vid);
+				if ($videoCount++ == 0) $newcontent .= printHTML_bigvid($video, $css, $options);
+				$newcontent .= printHTML_smallvid($video, $css, $options);
+			}
 		}
 	}
 	/* push out the footer */
@@ -86,6 +92,23 @@ function tubepress_showgallery ($content = '') {
 	/* We're done, so let's insert the gallery where the keyword is */
 	//return str_replace('[' . $keyword->value . ']', $newcontent, $content);
 	return str_replace($options->tagString, $newcontent, $content);
+}
+
+function printingSingleVideo($options) {
+	return (($options->get_option(TP_OPT_PLAYIN) == TP_PLAYIN_NW) && isset($_GET['tubepress_id']));
+}
+
+function printSingleVideo($css, $options) {
+	$width = $options->get_option(TP_OPT_VIDWIDTH) . "px";
+	$height = $options->get_option(TP_OPT_VIDHEIGHT) . "px";
+	return <<<EOT
+		<div id="$css->mainVid_id" class="$css->mainVid_class">
+			<object type="application/x-shockwave-flash" style="width:$width; height:$height;" data="http://www.youtube.com/v/{$_GET['tubepress_id']}" >
+				<param name="movie" value="http://www.youtube.com/v/{$_GET['tubepress_id']}" />
+			</object>
+		</div>
+		<a href="javascript:backToGallery();">Back to gallery</a>
+EOT;
 }
 
 function tubepress_parse_tag($content = '', $keyword) {  
@@ -103,7 +126,7 @@ function tubepress_parse_tag($content = '', $keyword) {
 		foreach($pairs as $pair) {  
 			$pieces = explode("=", $pair);  
 			$optionsArray[$pieces[0]] = $pieces[1];
-			}  
+			}
 	}  
 
 	/* Create and return new tubepressTag object */
@@ -126,6 +149,8 @@ EOT;
 }
 
 function printHTML_bigvid($vid, $css, $options) {
+	if ($options->get_option(TP_OPT_PLAYIN) != TP_PLAYIN_NORMAL) return;
+	
 	$width = $options->get_option(TP_OPT_VIDWIDTH) . "px";
 	$height = $options->get_option(TP_OPT_VIDHEIGHT) . "px";
 	$header = TP_MSG_MAINVID_HEADER;
@@ -149,13 +174,30 @@ function printHTML_smallvid($vid, $css, $options) {
 	$thumbHeight = 	$options->get_option(TP_OPT_THUMBHEIGHT);
 	$vidWidth = 	$options->get_option(TP_OPT_VIDWIDTH);
 	$vidHeight = 	$options->get_option(TP_OPT_VIDHEIGHT);
+	$location = 	$options->get_option(TP_OPT_PLAYIN);
+	$url = 			get_settings('siteurl');
 	$metaOptions = get_option(TP_OPTS_META);
-
+	$title = htmlspecialchars($vid->metaValues[TP_VID_TITLE]);
+	
 $content = <<<EOT
 	<div class="$css->thumb_class">
 		<div class="$css->thumbImg_class">
-			<a href='#' onclick="javascript: playVideo('{$vid->metaValues[TP_VID_ID]}', '$vidHeight', '$vidWidth','{$vid->metaValues[TP_VID_TITLE]}', '{$vid->metaValues[TP_VID_LENGTH]}'); return true;">
-				<img alt="{$vid->metaValues[TP_VID_TITLE]}"  src="{$vid->metaValues[TP_VID_THUMBURL]}" width="$thumbWidth"  height="$thumbHeight"  />
+EOT;
+	if ($options->get_option(TP_OPT_PLAYIN) == TP_PLAYIN_LB) {
+$content .= <<<EOX
+		<div id="{$vid->metaValues[TP_VID_ID]}" style="display:none">
+		<object type="application/x-shockwave-flash" style="width:{$vidWidth}px; height:{$vidHeight}px;" data="http://www.youtube.com/v/{$vid->metaValues[TP_VID_ID]}" >
+				<param name="movie" value="http://www.youtube.com/v/{$vid->metaValues[TP_VID_ID]}" />
+			</object>
+		</div>
+		<a href='#TB_inline?height=350&width=425&inlineId={$vid->metaValues[TP_VID_ID]}' class='thickbox' title='{$vid->metaValues[TP_VID_TITLE]}'>
+EOX;
+	} else {
+		$content .= "<a href=\"#\" onclick=\"javascript: playVideo('{$vid->metaValues[TP_VID_ID]}', '$vidHeight', '$vidWidth','$title', '{$vid->metaValues[TP_VID_LENGTH]}', '$location', '$url'); return true;\">";
+	}
+		
+$content .= <<<EOT
+			<img alt="{$vid->metaValues[TP_VID_TITLE]}"  src="{$vid->metaValues[TP_VID_THUMBURL]}" width="$thumbWidth"  height="$thumbHeight"  />
 			</a>
 		</div>
 
@@ -163,9 +205,10 @@ $content = <<<EOT
 		<div class="$css->title_class">
 EOT;
 	if ($options->get_option(TP_VID_TITLE) == true) {
-		$content .= <<<EOP
-			<a href='#' onclick="javascript: playVideo('{$vid->metaValues[TP_VID_ID]}', '$vidHeight', '$vidWidth', '{$vid->metaValues[TP_VID_TITLE]}', '{$vid->metaValues[TP_VID_LENGTH]}'); return true;">{$vid->metaValues[TP_VID_TITLE]}</a><br/>
-EOP;
+		if ($options->get_option(TP_OPT_PLAYIN) != TP_PLAYIN_LB)
+			$content .= "<a href=\"#\" onclick=\"javascript: playVideo('{$vid->metaValues[TP_VID_ID]}', '$vidHeight', '$vidWidth', '$title', '{$vid->metaValues[TP_VID_LENGTH]}', '$location', '$url'); return true;\">{$vid->metaValues[TP_VID_TITLE]}</a><br/>";
+		else
+			$content .= "<a href='#TB_inline?height=350&width=425&inlineId={$vid->metaValues[TP_VID_ID]}' class='thickbox' title='{$vid->metaValues[TP_VID_TITLE]}'>{$vid->metaValues[TP_VID_TITLE]}</a><br/>";
 	}
 	$content .= <<<EOT
 		</div>
@@ -263,11 +306,20 @@ function get_youtube_xml($options) {
 }
 
 function tubepress_insert_js() {
-	echo '<script type="text/javascript" src="' . get_settings('siteurl') . '/wp-content/plugins/tubepress/tubepress.js"></script>';
+		$url = get_settings('siteurl') . "/wp-content/plugins/tubepress";
+	print <<<EOT
+		<script type="text/javascript" src="$url/tubepress.js"></script>
+		<script type="text/javascript" src="$url/thickbox/jquery.js"></script>
+		<script type="text/javascript" src="$url/thickbox/thickbox.js"></script>
+EOT;
 }
 
 function tubepress_insert_css() {
-	echo '<link rel="stylesheet" href="' . get_settings('siteurl') . '/wp-content/plugins/tubepress/tubepress.css" type="text/css"></link>';
+	$url = get_settings('siteurl') . "/wp-content/plugins/tubepress";
+	print <<<EOT
+		<link rel="stylesheet" href="$url/tubepress.css" type="text/css" />
+		<link rel="stylesheet" href="$url/thickbox/thickbox.css" media="screen" type="text/css" />
+EOT;
 }
 
 /* ACTIONS */

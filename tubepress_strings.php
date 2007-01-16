@@ -68,6 +68,12 @@ define("TP_MSG_VIDCOMMENTS",	"Comments");
 define("TP_MSG_VIDTAGS",	"Tags");
 define("TP_MSG_VIDURL",		"YouTube URL");
 define("TP_MSG_VIDTHUMBURL",	"Thumbnail URL");
+define("TP_MSG_PLAYIN_NW_TITLE", "in a new window by itself");
+define("TP_MSG_PLAYIN_YT_TITLE", "from the original YouTube page");
+define("TP_MSG_PLAYIN_NORMAL_TITLE", "normally (at the top of your gallery)");
+define("TP_MSG_PLAYIN_POPUP_TITLE", "in a popup window");
+define("TP_MSG_PLAYIN_LB_TITLE", "using thickbox (experimental)");
+define("TP_MSG_PLAYIN_TITLE", "Play each video...");
 
 /* General */
 define("TP_MASTERNODE", 	"video_list");
@@ -82,6 +88,13 @@ define("TP_SRCH_YV",		"yourvideos");
 define("TP_SRCH_TAGVAL",	"tagValue");
 define("TP_SRCH_USERVAL",	"userValue");
 
+/* Video player locations */
+define("TP_PLAYIN_NW",		"new_window");
+define("TP_PLAYIN_YT", 		"youtube");
+define("TP_PLAYIN_NORMAL",	"normal");
+define("TP_PLAYIN_POPUP",	"popup");
+define("TP_PLAYIN_LB", 		"thickbox");
+
 /* OPTIONS */
 define("TP_OPT_DEVID",			"devID");
 define("TP_OPT_KEYWORD", 		"tubepress");
@@ -92,12 +105,15 @@ define("TP_OPT_USERNAME",		"username");
 define("TP_OPT_VIDHEIGHT",		"mainVidHeight");
 define("TP_OPT_VIDWIDTH",		"mainVidWidth");
 define("TP_OPT_TIMEOUT",		"timeout");
+define("TP_OPT_PLAYIN", 		"playerLocation");
 define("TP_OPTS_META",			"tubepress_metaOptions");
 define("TP_OPTS_ACCT",			"tubepress_accountInfo");
 define("TP_OPTS_SEARCH",		"tubepress_videoSearchOptions");
 define("TP_OPTS_DISP",			"tubepress_videoDisplayOptions");
 define("TP_OPTS_ADV", 			"tubepress_advancedOptions");
 define("TP_OPTS_SRCHV",			"tubepress_searchVariables");
+define("TP_OPTS_PLAYERLOCATION","tubepress_playerLocations");
+define("TP_OPTS_PLAYERMENU",	"tubepress_playerLocationValue");
 
 /* VIDEO META INFO */
 define("TP_VID_AUTHOR",			"author");
