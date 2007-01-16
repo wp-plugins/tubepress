@@ -21,6 +21,17 @@ and some code samples from WaxJelly (http://www.waxjelly.com/2006/08/29/a-more-c
 
 -----VERSION HISTORY-----
 
+Version 0.9 Released Jan 15, 2007
+
+    * Now with four options on where to play the main video
+          o Normally (at the top of your gallery)
+          o In a popup window
+          o In a new window all by itself
+          o In the original YouTube page
+          o Using Thickbox (experimental, but very cool!)
+    * Bug fix regarding HTML special characters in video titles
+
+
 Version 0.8 Released, Nov 17, 2006
 
     * Major bug fix with PHP4. Thanks to Fabien and Paige for reporting it.
