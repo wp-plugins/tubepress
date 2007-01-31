@@ -4,7 +4,7 @@ Plugin Name: TubePress
 Plugin URI: http://ehough.com/youtube/tubepress
 Description: Displays configurable YouTube galleries in WordPress
 Author: Eric Hough
-Version: 0.9
+Version: 1.0
 Author URI: http://ehough.com
 
 THANKS:
@@ -32,10 +32,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */ 
 
 /* Imports */
-require("tubepress_strings.php");
-require("tubepress_classes.php");
-class_exists('IsterXmlSimpleXMLImpl') ||	require("simpleXML/IsterXmlSimpleXMLImpl.php");
-class_exists('Snoopy') || 					require(ABSPATH . "wp-includes/class-snoopy.php");
+defined('TP_OPT_DEVID') ||							require("tubepress_strings.php");
+class_exists('tubepressVideo') || 					require("tubepress_classes.php");
+function_exists('tubepress_add_options_page') ||	require("tubepress_options.php");
+function_exists('tubepress_get_youtube_xml') || 	require("tubepress_utility.php");
+function_exists('tubepress_printSingleVideo') || 	require("tubepress_html.php");
+class_exists('IsterXmlSimpleXMLImpl') || 			require("simpleXML/IsterXmlSimpleXMLImpl.php");
+class_exists('Snoopy') || 							require(ABSPATH . "wp-includes/class-snoopy.php");
+class_exists('Net_URL') || 							require("PEAR/Net/URL.php");
+
 
 /*
  * Main filter hook. Looks for  keyword
@@ -51,262 +56,63 @@ function tubepress_showgallery ($content = '') {
 	/* Parse the tag  */
 	$options = tubepress_parse_tag($content, $keyword->value);
 
+	/* get css */
+	$css = new tubepressCSS();
+	
+	/* Set up the header no matter what */
+	$newcontent = tubepress_printHTML_videoheader($css);
+	
 	/* Are we printing a single video? */
-	$singleVidMode  = printingSingleVideo($options);
+	if (tubepress_printingSingleVideo($options)) {
+		$newcontent .= tubepress_printSingleVideo($css, $options);
+		return tubepress_finish($newcontent, $content, $options, $css);
+	}
 	
 	/* Grab the XML from YouTube's API */
-	if (!$singleVidMode) $youtube_xml = get_youtube_xml($options); 
+	$youtube_xml = tubepress_get_youtube_xml($options); 
 
-	/* Print the header no matter what */
-	$newcontent = printHTML_videoheader($css);
+	/* count how many we got back */
+	$videosReturnedCount = tubepress_count_videos($youtube_xml);
+	
+	/* Print any pagination */
+	$newcontent .= tubepress_printHTML_pagination($videosReturnedCount, $options);
 	
 	$error = false;
 	/* Check for a YouTube timeout */
-	if (($youtube_xml == TP_XMLERR) && (!$singleVidMode)) {
+	if ($youtube_xml == TP_XMLERR) {
 		$error = true;
 		$newcontent .= TP_MSG_TIMEOUT;
 	}
 	/* Did we get any videos? */
-	if (($youtube_xml == "") && (!$singleVidMode)) {
+	if ($videosReturnedCount == 0) {
 		$error = true;
 		$newcontent .= TP_MSG_YTERR;
 	}
-	/* get css */
-	$css = new tubepressCSS();
 		
 	/* Loop through each video */
-	$videoCount = 0;
+	
 	if ($error == false) {
-		if ($singleVidMode) $newcontent .= printSingleVideo($css, $options);
-		else {
-			foreach ($youtube_xml->children() as $vid) {
-				$video = new tubepressVideo($vid);
-				if ($videoCount++ == 0) $newcontent .= printHTML_bigvid($video, $css, $options);
-				$newcontent .= printHTML_smallvid($video, $css, $options);
-			}
+		$vidLimit = $options->get_option(TP_OPT_VIDSPERPAGE);
+		
+		for ($x = 0; $x < $vidLimit; $x++) {
+			$video = new tubepressVideo($youtube_xml->video[$x]);
+			if ($videoCount++ == 0) $newcontent .= tubepress_printHTML_bigvid($video, $css, $options);
+			$newcontent .= tubepress_printHTML_smallvid($video, $css, $options);
 		}
 	}
-	/* push out the footer */
-	$newcontent .= printHTML_videofooter($css);
+	return tubepress_finish($newcontent, $content, $options, $css);
+}
 
-	/* We're done, so let's insert the gallery where the keyword is */
-	//return str_replace('[' . $keyword->value . ']', $newcontent, $content);
+function tubepress_finish($newcontent, $content, $options, $css) {
+	/* push out the footer */
+	$newcontent .= tubepress_printHTML_videofooter($css);
+
+	/* We're done, so let's insert the gallery (or single video) where the keyword is */
 	return str_replace($options->tagString, $newcontent, $content);
 }
 
-function printingSingleVideo($options) {
-	return (($options->get_option(TP_OPT_PLAYIN) == TP_PLAYIN_NW) && isset($_GET['tubepress_id']));
-}
-
-function printSingleVideo($css, $options) {
-	$width = $options->get_option(TP_OPT_VIDWIDTH) . "px";
-	$height = $options->get_option(TP_OPT_VIDHEIGHT) . "px";
-	return <<<EOT
-		<div id="$css->mainVid_id" class="$css->mainVid_class">
-			<object type="application/x-shockwave-flash" style="width:$width; height:$height;" data="http://www.youtube.com/v/{$_GET['tubepress_id']}" >
-				<param name="movie" value="http://www.youtube.com/v/{$_GET['tubepress_id']}" />
-			</object>
-		</div>
-		<a href="javascript:backToGallery();">Back to gallery</a>
-EOT;
-}
-
-function tubepress_parse_tag($content = '', $keyword) {  
-
-	$optionsArray = array();  
-
-	/* Use a regular expression to match everything in square brackets after the TubePress keyword */
-	$regexp = '\[' . $keyword . ' ?([A-Za-z0-9=_ ]*)\]';  
-	preg_match("/$regexp/", $content, $matches);  
-
-	/* Execute if anything was matched by the parentheses */
-	if(isset($matches[1])) {  
-		/* Break up the options and store them in an ASSOCIATIVE array */
-		$pairs = explode(" ", $matches[1]);  
-		foreach($pairs as $pair) {  
-			$pieces = explode("=", $pair);  
-			$optionsArray[$pieces[0]] = $pieces[1];
-			}
-	}  
-
-	/* Create and return new tubepressTag object */
-	return new tubepressTag($matches[0], $optionsArray);  
-}  
-
-function printHTML_videoheader($css) {
-	return <<<EOT
-		</p><!-- for XHTML validation -->
-		<div class="$css->container">
-EOT;
-}
-
-function printHTML_videofooter($css) {
-	return <<<EOT
-			</div>
-		</div>
-		<p><!-- for XHTML validation -->
-EOT;
-}
-
-function printHTML_bigvid($vid, $css, $options) {
-	if ($options->get_option(TP_OPT_PLAYIN) != TP_PLAYIN_NORMAL) return;
-	
-	$width = $options->get_option(TP_OPT_VIDWIDTH) . "px";
-	$height = $options->get_option(TP_OPT_VIDHEIGHT) . "px";
-	$header = TP_MSG_MAINVID_HEADER;
-	return <<<EOT
-		<div id="$css->mainVid_id" class="$css->mainVid_class">
-        	<span class="$css->meta_class">$header</span> 
-			<span class="$css->title_class">{$vid->metaValues[TP_VID_TITLE]}</span>
-			<span class="$css->runtime_class">({$vid->metaValues[TP_VID_LENGTH]})</span>
-                        
-			<object type="application/x-shockwave-flash" style="width:$width; height:$height;" data="http://www.youtube.com/v/{$vid->metaValues[TP_VID_ID]}" >
-				<param name="movie" value="http://www.youtube.com/v/{$vid->metaValues[TP_VID_ID]}" />
-			</object>
-		</div> <!-- $css->mainVid_class -->
-		<div class="$css->thumb_container_class">
-EOT;
-}
-
-function printHTML_smallvid($vid, $css, $options) {
-	$caption = 	$vid->metaValues[TP_VID_TITLE] . "(" . $vid->metaValues[TP_VID_LENGTH] . ")";
-	$thumbWidth = 	$options->get_option(TP_OPT_THUMBWIDTH);
-	$thumbHeight = 	$options->get_option(TP_OPT_THUMBHEIGHT);
-	$vidWidth = 	$options->get_option(TP_OPT_VIDWIDTH);
-	$vidHeight = 	$options->get_option(TP_OPT_VIDHEIGHT);
-	$location = 	$options->get_option(TP_OPT_PLAYIN);
-	$url = 			get_settings('siteurl');
-	$metaOptions = get_option(TP_OPTS_META);
-	$title = htmlspecialchars($vid->metaValues[TP_VID_TITLE]);
-	
-$content = <<<EOT
-	<div class="$css->thumb_class">
-		<div class="$css->thumbImg_class">
-EOT;
-	if ($options->get_option(TP_OPT_PLAYIN) == TP_PLAYIN_LB) {
-$content .= <<<EOX
-		<div id="{$vid->metaValues[TP_VID_ID]}" style="display:none">
-		<object type="application/x-shockwave-flash" style="width:{$vidWidth}px; height:{$vidHeight}px;" data="http://www.youtube.com/v/{$vid->metaValues[TP_VID_ID]}" >
-				<param name="movie" value="http://www.youtube.com/v/{$vid->metaValues[TP_VID_ID]}" />
-			</object>
-		</div>
-		<a href='#TB_inline?height=350&width=425&inlineId={$vid->metaValues[TP_VID_ID]}' class='thickbox' title='{$vid->metaValues[TP_VID_TITLE]}'>
-EOX;
-	} else {
-		$content .= "<a href=\"#\" onclick=\"javascript: playVideo('{$vid->metaValues[TP_VID_ID]}', '$vidHeight', '$vidWidth','$title', '{$vid->metaValues[TP_VID_LENGTH]}', '$location', '$url'); return true;\">";
-	}
-		
-$content .= <<<EOT
-			<img alt="{$vid->metaValues[TP_VID_TITLE]}"  src="{$vid->metaValues[TP_VID_THUMBURL]}" width="$thumbWidth"  height="$thumbHeight"  />
-			</a>
-		</div>
-
-		<div class="$css->meta_group">
-		<div class="$css->title_class">
-EOT;
-	if ($options->get_option(TP_VID_TITLE) == true) {
-		if ($options->get_option(TP_OPT_PLAYIN) != TP_PLAYIN_LB)
-			$content .= "<a href=\"#\" onclick=\"javascript: playVideo('{$vid->metaValues[TP_VID_ID]}', '$vidHeight', '$vidWidth', '$title', '{$vid->metaValues[TP_VID_LENGTH]}', '$location', '$url'); return true;\">{$vid->metaValues[TP_VID_TITLE]}</a><br/>";
-		else
-			$content .= "<a href='#TB_inline?height=350&width=425&inlineId={$vid->metaValues[TP_VID_ID]}' class='thickbox' title='{$vid->metaValues[TP_VID_TITLE]}'>{$vid->metaValues[TP_VID_TITLE]}</a><br/>";
-	}
-	$content .= <<<EOT
-		</div>
-EOT;
-	if ($options->get_option(TP_VID_LENGTH) == true) {
-		$content .= <<<EOP
-			<span class="$css->runtime_class">{$vid->metaValues[TP_VID_LENGTH]}</span><br/>
-EOP;
-	}
-
-	foreach ($metaOptions as $option) {
-		if (($option->name == TP_VID_LENGTH) || ($option->name == TP_VID_TITLE)) continue;
-		if ($options->get_option($option->name) == "true") {
-			$content .=  '<span class="' . $css->meta_class . '">';		
-			switch($option->name) {
-				case TP_VID_DESC:
-					$content .= '</span>' . $vid->metaValues[$option->name];
-					break;
-				case TP_VID_THUMBURL:
-					$content .= makeMetaLink($option->title, $vid->metaValues[$option->name]);
-					break;
-				case TP_VID_URL:
-					$content .= makeMetaLink($option->title, $vid->metaValues[$option->name]);
-					break;
-				case TP_VID_AUTHOR:
-					$content .= $option->title . ': ';
-					$content .= makeMetaLink($vid->metaValues[$option->name], 'http://www.youtube.com/profile?user=' . $vid->metaValues[$option->name]); 
-					break;
-				case TP_VID_COMMENT_CNT:
-					$content .= $option->title . ': ';
-					$content .= makeMetaLink($vid->metaValues[$option->name], 'http://youtube.com/comment_servlet?all_comments&v=' . $vid->metaValues[$option->name]);
-					break;
-				case TP_VID_TAGS:
-					$content .= $option->title . ': ';
-					$tags = explode(" ", $vid->metaValues[$option->name]);
-					$tags = implode("%20", $tags);
-					$content .= makeMetaLink($vid->metaValues[$option->name], 'http://youtube.com/results?search_query=' . $tags . '&search=Search'); 
-					break;
-				default:
-					$content .=  $option->title . ': </span>' . $vid->metaValues[$option->name];
-			}
-			$content .= '<br/>';
-		}
-	}
-	$content .= '</div><!--' . $css->meta_group . ' -->';
-	$content .= '</div><!--' . $css->thumb_class . '-->';
-	return $content;
-}
-
-function makeMetaLink($linkText, $linkValue) {
-	return '</span><a href="' . $linkValue . '">' . $linkText . '</a>';
-}
-
-function humanTime($length_seconds) {
-	/* convert the time to human-friendly */
-	$seconds = $length_seconds;
-	$length = intval($seconds/60);
-	$leftOverSeconds = $seconds%60;
-	if ($leftOverSeconds < 10) $leftOverSeconds = "0" . $leftOverSeconds;
-	$length .= 	":" . $leftOverSeconds;
-	return $length;
-}
-
-/*
- * Connects to YouTube and grabs gallery info over
- * REST API
-*/
-function get_youtube_xml($options) {
-	$request = TP_YOUTUBE_RESTURL;
-	
-	switch ($options->get_option(TP_OPT_SEARCHBY)) {
-		case TP_SRCH_USER:
-			$request .= "method=youtube.videos.list_by_user&user=" . $options->get_option(TP_SRCH_USERVAL);
-			break;
-		case TP_SRCH_FAV:
-			$request .= "method=youtube.users.list_favorite_videos&user=" . $options->get_option(TP_OPT_USERNAME);
-			break;
-		case TP_SRCH_TAG:
-			$request .= "method=youtube.videos.list_by_tag&tag=" . $options->get_option(TP_SRCH_TAGVAL);
-			break;
-		case TP_SRCH_YV:
-			$request .= "method=youtube.videos.list_by_user&user=" . $options->get_option(TP_OPT_USERNAME);
-			break;
-	}
-
-	$request .= "&dev_id=" . $options->get_option(TP_OPT_DEVID);
-	$snoopy = new snoopy;
-	$snoopy->read_timeout = $options->get_option(TP_OPT_TIMEOUT);
-
-	$snoopy->fetch($request);
-	if ($snoopy->results == "") return TP_XMLERR;
-	$impl = new IsterXmlSimpleXMLImpl;
-	$results = $impl->load_string($snoopy->results);
-	return $results->ut_response->video_list;
-}
-
 function tubepress_insert_js() {
-		$url = get_settings('siteurl') . "/wp-content/plugins/tubepress";
+	$url = get_settings('siteurl') . "/wp-content/plugins/tubepress";
 	print <<<EOT
 		<script type="text/javascript" src="$url/tubepress.js"></script>
 		<script type="text/javascript" src="$url/thickbox/jquery.js"></script>
@@ -329,9 +135,5 @@ add_action('wp_head', 		'tubepress_insert_js');
 
 /* FILTERS */
 add_filter('the_content', 'tubepress_showgallery');
-
-/* FILES */
-require("tubepress_options.php");
-
 
 ?>
