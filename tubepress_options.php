@@ -1,12 +1,5 @@
 <?php
 /*
-Plugin Name: TubePress
-Plugin URI: http://ehough.com/youtube/tubepress
-Description: Displays configurable YouTube galleries in WordPress
-Author: Eric Hough
-Version: 1.0
-Author URI: http://ehough.com
-
 THANKS:
 Matt Doyle (http://notdrunk.net) was responsible for designing and developing the "option overriding"
 capability of this plugin.
@@ -98,7 +91,7 @@ function tubepress_printHTML_genericOptionsArray($theArray, $arrayName, $inputSi
 		}
 		print <<<EOT
 					<tr valign="top">
-						<th scope="row">$option->title:</th>
+						<th style="font-weight: bold; font-size: 1em" scope="row">$option->title:</th>
 						<td>
 							$openBracket<input name="$option->name" type="text" id="$option->name" class="code" value="$option->value" size="$inputSize" />$closeBracket
 							<br />$option->description
@@ -127,19 +120,22 @@ print <<<EOT
 			<td>
 				<input type="checkbox" name="meta[]" value="$metaOption->name" $selected />
 			</td>
-			<td><b>$metaOption->title<b></td>
+			<td><b>$metaOption->title</b></td>
 EOT;
-		if ($colCount == 4) echo "</tr";
+		if ($colCount == 4) echo "</tr>";
 		$logan++;
 	}
-	echo "</td></tr></table>";
+	echo "</tr></table>";
 	tubepress_printHTML_optionFooter();
 }
 
 function tubepress_printHTML_optionHeader($arrayName) {
 	print <<<EOT
 			<fieldset>
-				<h3>$arrayName</h3>
+EOT;
+	if ($arrayName != "")
+		echo '<h3>' . $arrayName . '</h3>';
+print <<<EOT
 				<table class="editform optiontable">
 EOT;
 }
@@ -159,7 +155,7 @@ function tubepress_printHTML_playerLocationMenu($dbOptions) {
 
 print <<<EOT
 			<tr>
-			<th>$theOption->title</th>
+			<th style="font-weight: bold; font-size: 1em">$theOption->title</th>
 			<td><select name="$theOption->name">
 EOT;
 	foreach ($locationVars as $location) {
@@ -168,7 +164,7 @@ EOT;
 			$selected = "selected";
 		$inputBox = "";
 print <<<EOT
-		<option value="$location->name" $selected />$location->title
+		<option value="$location->name" $selected>$location->title</option>
 EOT;
 	}
 print <<<EOT
@@ -225,7 +221,7 @@ EOX;
 		}
 print <<<EOT
 		<tr>
-			<th valign="top">$option->title</th>
+			<th style="font-weight: bold; font-size: 1em" valign="top">$option->title</th>
 			<td>
 				<input type="radio" name="$radioName" id="$option->name" value="$option->name" $selected /> $inputBox
 				<br />$option->description

@@ -1,12 +1,5 @@
 <?php
 /*
-Plugin Name: TubePress
-Plugin URI: http://ehough.com/youtube/tubepress
-Description: Displays configurable YouTube galleries in WordPress
-Author: Eric Hough
-Version: 1.0
-Author URI: http://ehough.com
-
 THANKS:
 Matt Doyle (http://notdrunk.net) was responsible for designing and developing the "option overriding"
 capability of this plugin.

@@ -1,12 +1,5 @@
 <?php
 /*
-Plugin Name: TubePress
-Plugin URI: http://ehough.com/youtube/tubepress
-Description: Displays configurable YouTube galleries in WordPress
-Author: Eric Hough
-Version: 1.0
-Author URI: http://ehough.com
-
 THANKS:
 Matt Doyle (http://notdrunk.net) was responsible for designing and developing the "option overriding"
 capability of this plugin.
@@ -36,7 +29,7 @@ function tubepress_printHTML_bigvid($vid, $css, $options) {
 		return "";
 	$returnVal = <<<EOT
 		<div id="$css->mainVid_id" class="$css->mainVid_class">
-        	<span class="$css->meta_class"></span>
+        	<!-- <span class="$css->meta_class"></span> -->
 			<span class="$css->title_class">{$vid->metaValues[TP_VID_TITLE]}</span>
 			<span class="$css->runtime_class">({$vid->metaValues[TP_VID_LENGTH]})</span>
 EOT;
@@ -187,9 +180,9 @@ function tubepress_printHTML_smallVidLinkAttributes($vid, $options) {
 		case TP_PLAYIN_YT:
 			return 'href="http://youtube.com/watch?v=' . $id . '"';
 		case TP_PLAYIN_NORMAL:
-			return "href=\"javascript:playVideo('" . $id . "', '" . $options->get_option(TP_OPT_VIDHEIGHT) . "', '" . $options->get_option(TP_OPT_VIDWIDTH)  . "', '" . htmlspecialchars($vid->metaValues[TP_VID_TITLE])  . "', '" .$vid->metaValues[TP_VID_LENGTH]. "', 'normal', '" . $options->get_option('site_url') . "')\"";
+			return "href=\"#\" onclick=\"javascript:playVideo('" . $id . "', '" . $options->get_option(TP_OPT_VIDHEIGHT) . "', '" . $options->get_option(TP_OPT_VIDWIDTH)  . "', '" . htmlspecialchars($vid->metaValues[TP_VID_TITLE])  . "', '" .$vid->metaValues[TP_VID_LENGTH]. "', 'normal', '" . $options->get_option('site_url') . "')\"";
 		default:
-			return "href=\"javascript:playVideo('" . $id . "', '" . $options->get_option(TP_OPT_VIDHEIGHT) . "', '" . $options->get_option(TP_OPT_VIDWIDTH)  . "', '" . htmlspecialchars($vid->metaValues[TP_VID_TITLE])  . "', '" .$vid->metaValues[TP_VID_LENGTH]. "', 'popup', '" . $options->get_option('site_url') . "')\"";
+			return "href=\"#\" onclick=\"javascript:playVideo('" . $id . "', '" . $options->get_option(TP_OPT_VIDHEIGHT) . "', '" . $options->get_option(TP_OPT_VIDWIDTH)  . "', '" . htmlspecialchars($vid->metaValues[TP_VID_TITLE])  . "', '" .$vid->metaValues[TP_VID_LENGTH]. "', 'popup', '" . $options->get_option('site_url') . "')\"";
 	}
 }
 
