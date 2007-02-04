@@ -119,7 +119,7 @@ function tubepress_parse_tag($content = '', $keyword) {
 	$optionsArray = array();
 
 	/* Use a regular expression to match everything in square brackets after the TubePress keyword */
-	$regexp = '\[' . $keyword . "\s+(.*)\]";
+	$regexp = '\[' . $keyword . "(.*)\]";
 	preg_match("/$regexp/", $content, $matches);
 
 	/* Execute if anything was matched by the parentheses */

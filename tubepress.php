@@ -56,7 +56,7 @@ function tubepress_showgallery ($content = '') {
  	if (!strpos($content, '[' . $keyword->value)) return $content;
 
 	/* Parse the tag  */
-	$options = tubepress_parse_tag($content, $keyword->value);
+	$options = tubepress_parse_tag($content, $keyword);
 
 	/* get css */
 	$css = new tubepressCSS();
@@ -87,12 +87,12 @@ function tubepress_showgallery ($content = '') {
 	/* Check for a YouTube timeout */
 	if ($youtube_xml == TP_XMLERR) {
 		$error = true;
-		$newcontent .= TP_MSG_TIMEOUT;
+		$newcontent .= "<div>" . TP_MSG_TIMEOUT;
 	}
 	/* Did we get any videos? */
 	if ($videosReturnedCount == 0) {
 		$error = true;
-		$newcontent .= TP_MSG_YTERR;
+		$newcontent .= "<div>" . TP_MSG_YTERR;
 	}
 
 	/* Loop through each video */

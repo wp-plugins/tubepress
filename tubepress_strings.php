@@ -150,7 +150,7 @@ define("TP_VID_AUTHOR",				"author");
 define("TP_VID_ID",					"id");
 define("TP_VID_TITLE",				"title");
 define("TP_VID_LENGTH",				"length");
-define("TP_VID_RATIN	G_CNT",		"ratings");
+define("TP_VID_RATING_CNT",			"ratings");
 define("TP_VID_RATING_AVG",			"rating");
 define("TP_VID_DESC",				"description");
 define("TP_VID_VIEW",				"views");
