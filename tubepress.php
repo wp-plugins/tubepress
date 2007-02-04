@@ -119,15 +119,15 @@ function tubepress_finish($newcontent, $content, $options, $css) {
 
 function tubepress_insert_js() {
 	$url = get_settings('siteurl') . "/wp-content/plugins/tubepress";
-	echo '<script type="text/javascript" src="' . $url . '/tubepress.js"></script>';
-	echo '<script type="text/javascript" src="' . $url . '/thickbox/jquery.js"></script>';
-	echo '<script type="text/javascript" src="' . $url . '/thickbox/thickbox.js"></script>';
+	echo '<script type="text/javascript" src="' . $url . '/tubepress.js"></script>
+		<script type="text/javascript" src="' . $url . '/lib/thickbox/jquery.js"></script>
+		<script type="text/javascript" src="' . $url . '/lib/thickbox/thickbox.js"></script>';
 }
 
 function tubepress_insert_css() {
 	$url = get_settings('siteurl') . "/wp-content/plugins/tubepress";
 	echo '<link rel="stylesheet" href="' . $url . '/tubepress.css" type="text/css" />';
-	echo '<link rel="stylesheet" href="' . $url . '/thickbox/thickbox.css" media="screen" type="text/css" />';
+	echo '<link rel="stylesheet" href="' . $url . '/lib/thickbox/thickbox.css" media="screen" type="text/css" />';
 }
 
 /* ACTIONS */

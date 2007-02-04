@@ -94,13 +94,13 @@ function tubepress_printHTML_metaInfo($vid, $options, $css) {
 					break;
 				case TP_VID_COMMENT_CNT:
 					$content .= $metaName . ': ';
-					$content .= tubepress_printHTML_metaLink($vid->metaValues[$metaName], 'http://youtube.com/comment_servlet?all_comments&v=' . $vid->metaValues[$metaName]);
+					$content .= tubepress_printHTML_metaLink($vid->metaValues[$metaName], 'http://youtube.com/comment_servlet?all_comments&amp;v=' . $vid->metaValues[$metaName]);
 					break;
 				case TP_VID_TAGS:
 					$content .= $metaName . ': ';
 					$tags = explode(" ", $vid->metaValues[$metaName]);
 					$tags = implode("%20", $tags);
-					$content .= tubepress_printHTML_metaLink($vid->metaValues[$metaName], 'http://youtube.com/results?search_query=' . $tags . '&search=Search');
+					$content .= tubepress_printHTML_metaLink($vid->metaValues[$metaName], 'http://youtube.com/results?search_query=' . $tags . '&amp;search=Search');
 					break;
 				default:
 					$content .=  $metaName . ': </span>' . $vid->metaValues[$metaName];
@@ -137,7 +137,7 @@ function tubepress_printHTML_paginationLink($queryString, $pageNum, $text) {
 	$url = new Net_URL($queryString);
 	$url->removeQueryString(TP_PAGE_PARAM);
 	$url->addQueryString(TP_PAGE_PARAM, $pageNum);
-	return '<a href="' . $url->getURL() . '">' . $text . '</a>';
+	return '<a href="' . str_replace("&", "&amp;", $url->getURL()) . '">' . $text . '</a>';
 }
 
 function tubepress_printHTML_singleVideo($css, $options) {
@@ -168,7 +168,7 @@ EOT;
 	$content .= tubepress_printHTML_metaInfo($vid, $options, $css);
 	$content .= '</div><!--' . $css->thumb_class . '-->';
 	if ($options->get_option(TP_OPT_PLAYIN) == TP_PLAYIN_THICKBOX) {
-		$content .= '<div id="' . $vid->metaValues[TP_VID_ID] . '" style="display:none">';
+		$content .= '<div id="tp' . $vid->metaValues[TP_VID_ID] . '" style="display:none">';
 		$content .= tubepress_printHTML_embeddedVid($vid->metaValues[TP_VID_ID], $options) . '</div>';
 	}
 	return $content;
@@ -178,7 +178,7 @@ function tubepress_printHTML_smallVidLinkAttributes($vid, $options) {
 	$id = $vid->metaValues[TP_VID_ID];
 	switch ($options->get_option(TP_OPT_PLAYIN)) {
 		case TP_PLAYIN_THICKBOX:
-			return 'href="#TB_inline?height=350&width=425&inlineId=' . $id . '" class="thickbox" title="' . $vid->metaValues[TP_VID_TITLE] . '"';
+			return 'href="#TB_inline?height=350&amp;width=425&amp;inlineId=tp' . $id . '" class="thickbox" title="' . $vid->metaValues[TP_VID_TITLE] . '"';
 		case TP_PLAYIN_NW:
 			$url = new Net_URL(tubepress_fullURL());
 			$url->addQueryString(TP_VID_PARAM, $id);

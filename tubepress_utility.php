@@ -39,6 +39,14 @@ function tubepress_areWePaging($options) {
 	return false;
 }
 
+function tubepress_cleanupTagValue($nameOrValue) {
+	/*
+	 * WTF: this seems to work, though I have no idea why the quotes are getting
+	 * converted into these stupid entities.
+	 */
+	return trim(str_replace(array("&#8220;", "&#8221;", "&#8217;", "&#8216;", "&#8242;", "&#8243;", "&#34"), "", trim($nameOrValue)));
+}
+
 function tubepress_count_videos($youtube_xml) {
 	if ($youtube_xml == "") return 0;
 	if ($youtube_xml->children() == NULL) return 0;
@@ -118,16 +126,16 @@ function tubepress_parse_tag($content = '', $keyword) {
 	$optionsArray = array();
 
 	/* Use a regular expression to match everything in square brackets after the TubePress keyword */
-	$regexp = '\[' . $keyword . ' ?([A-Za-z0-9=_ ]*)\]';
+	$regexp = '\[' . $keyword . "\s+(.*)\]";
 	preg_match("/$regexp/", $content, $matches);
 
 	/* Execute if anything was matched by the parentheses */
 	if(isset($matches[1])) {
-		/* Break up the options and store them in an associative array */
-		$pairs = explode(" ", $matches[1]);
+		/* Break up the options by comma and store them in an associative array */
+		$pairs = explode(",", $matches[1]);
 		foreach($pairs as $pair) {
 			$pieces = explode("=", $pair);
-			$optionsArray[$pieces[0]] = $pieces[1];
+			$optionsArray[tubepress_cleanupTagValue($pieces[0])] = tubepress_cleanupTagValue($pieces[1]);
 		}
 	}
 
