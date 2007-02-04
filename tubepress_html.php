@@ -35,7 +35,6 @@ function tubepress_printHTML_bigvid($vid, $css, $options) {
 EOT;
 	$returnVal .= tubepress_printHTML_embeddedVid($vid->metaValues[TP_VID_ID], $options);
 	$returnVal .= '</div> <!--' . $css->mainVid_class . '-->';
-	$returnVal .= '<div class="' . $css->thumb_container_class . '">';
 	return $returnVal;
 }
 
@@ -187,11 +186,11 @@ function tubepress_printHTML_smallVidLinkAttributes($vid, $options) {
 }
 
 function tubepress_printHTML_videofooter($css) {
-	return '</div></div><p><!-- for XHTML validation -->';
+	return '</div><p>';
 }
 
 function tubepress_printHTML_videoheader($css) {
-	return '</p><!-- for XHTML validation --><div class="' . $css->container . '">';
+	return '</p><div class="' . $css->container . '">';
 }
 
 ?>

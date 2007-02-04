@@ -100,12 +100,14 @@ function tubepress_showgallery ($content = '') {
 		$vidLimit = ($paging? $options->get_option(TP_OPT_VIDSPERPAGE) : $videosReturnedCount);
 		if ($videosReturnedCount < $vidLimit) $vidLimit = $videosReturnedCount;
 		
+		$newContent .= '<div class="' . $css->thumb_container_class . '">';
 		for ($x = 0; $x < $vidLimit; $x++) {
 			$video = new tubepressVideo($youtube_xml->video[$x]);
 			if ($videoCount++ == 0)
 				$newcontent .= tubepress_printHTML_bigvid($video, $css, $options);
 			$newcontent .= tubepress_printHTML_smallvid($video, $css, $options);
 		}
+		$newContent .= '</div>';
 	}
 	return tubepress_finish($newcontent, $content, $options, $css);
 }
