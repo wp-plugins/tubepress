@@ -26,10 +26,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 /* This function will be called if the user has no or invalid TubePress options */
 function tubepress_addOptions() {
-
-	add_option(TP_OPTION_NAME, tubepress_getNewOptionsArray());
-	
 	tubepress_deleteLegacyOptions();
+	
+	add_option(TP_OPTION_NAME, tubepress_getNewOptionsArray());
 	
 	return get_option(TP_OPTION_NAME);
 }
@@ -88,6 +87,7 @@ function tubepress_deleteLegacyOptions() {
 	delete_option("devID");
 	delete_option("devIDlink");
 	delete_option("searchByValue");
+	delete_option("tubepress");
 }
 
 function tubepress_getNewOptionsArray() {

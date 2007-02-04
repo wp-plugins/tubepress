@@ -51,7 +51,8 @@ function tubepress_showgallery ($content = '') {
 	$quickOpts = get_option(TP_OPTION_NAME);
 	if ($quickOpts == NULL) return $content;
 	
-	$keyword = $quickOpts[TP_OPTS_ADV][TP_OPT_KEYWORD]->value;
+	$adv = $quickOpts[TP_OPTS_ADV];
+	$keyword = $adv[TP_OPT_KEYWORD]->value;
  	if (!strpos($content, '[' . $keyword->value)) return $content;
 
 	/* Parse the tag  */
