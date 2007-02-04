@@ -29,7 +29,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-*/ 
+*/
 
 /* Imports */
 defined('TP_OPT_DEVID') ||							require("tubepress_strings.php");
@@ -37,20 +37,21 @@ class_exists('tubepressVideo') || 					require("tubepress_classes.php");
 function_exists('tubepress_add_options_page') ||	require("tubepress_options.php");
 function_exists('tubepress_get_youtube_xml') || 	require("tubepress_utility.php");
 function_exists('tubepress_printSingleVideo') || 	require("tubepress_html.php");
-class_exists('IsterXmlSimpleXMLImpl') || 			require("simpleXML/IsterXmlSimpleXMLImpl.php");
+class_exists('IsterXmlSimpleXMLImpl') || 			require("lib/simpleXML/IsterXmlSimpleXMLImpl.php");
 class_exists('Snoopy') || 							require(ABSPATH . "wp-includes/class-snoopy.php");
-class_exists('Net_URL') || 							require("PEAR/Net/URL.php");
-
+class_exists('Net_URL') || 							require("lib/PEAR/Net_URL/URL.php");
 
 /*
  * Main filter hook. Looks for  keyword
  * and replaces it with YouTube gallery if it's found
 */
 function tubepress_showgallery ($content = '') {
-	$quickOpts = get_option(TP_OPTS_ADV);
-	$keyword = $quickOpts[TP_OPT_KEYWORD];
-
-	/* Bail out fast if not found */
+	
+	/* Get out fast if we're not needed */
+	$quickOpts = get_option(TP_OPTION_NAME);
+	if ($quickOpts == NULL) return $content;
+	
+	$keyword = $quickOpts[TP_OPTS_ADV][TP_OPT_KEYWORD];
  	if (!strpos($content, '[' . $keyword->value)) return $content;
 
 	/* Parse the tag  */
@@ -58,25 +59,29 @@ function tubepress_showgallery ($content = '') {
 
 	/* get css */
 	$css = new tubepressCSS();
-	
+
 	/* Set up the header no matter what */
 	$newcontent = tubepress_printHTML_videoheader($css);
 	
 	/* Are we printing a single video? */
 	if (tubepress_printingSingleVideo($options)) {
-		$newcontent .= tubepress_printSingleVideo($css, $options);
+		$newcontent .= tubepress_printHTML_singleVideo($css, $options);
 		return tubepress_finish($newcontent, $content, $options, $css);
 	}
 	
+	/* are we paging? */
+	$paging = tubepress_areWePaging($options);
+
 	/* Grab the XML from YouTube's API */
-	$youtube_xml = tubepress_get_youtube_xml($options); 
+	$youtube_xml = tubepress_get_youtube_xml($options);
 
 	/* count how many we got back */
 	$videosReturnedCount = tubepress_count_videos($youtube_xml);
-	
+
 	/* Print any pagination */
-	$newcontent .= tubepress_printHTML_pagination($videosReturnedCount, $options);
-	
+	if ($paging)
+		$newcontent .= tubepress_printHTML_pagination($videosReturnedCount, $options);
+
 	$error = false;
 	/* Check for a YouTube timeout */
 	if ($youtube_xml == TP_XMLERR) {
@@ -88,15 +93,16 @@ function tubepress_showgallery ($content = '') {
 		$error = true;
 		$newcontent .= TP_MSG_YTERR;
 	}
-		
+
 	/* Loop through each video */
-	
 	if ($error == false) {
-		$vidLimit = $options->get_option(TP_OPT_VIDSPERPAGE);
+		$vidLimit = ($paging? $options->get_option(TP_OPT_VIDSPERPAGE) : $videosReturnedCount);
+		if ($videosReturnedCount < $vidLimit) $vidLimit = $videosReturnedCount;
 		
 		for ($x = 0; $x < $vidLimit; $x++) {
 			$video = new tubepressVideo($youtube_xml->video[$x]);
-			if ($videoCount++ == 0) $newcontent .= tubepress_printHTML_bigvid($video, $css, $options);
+			if ($videoCount++ == 0)
+				$newcontent .= tubepress_printHTML_bigvid($video, $css, $options);
 			$newcontent .= tubepress_printHTML_smallvid($video, $css, $options);
 		}
 	}
@@ -113,19 +119,15 @@ function tubepress_finish($newcontent, $content, $options, $css) {
 
 function tubepress_insert_js() {
 	$url = get_settings('siteurl') . "/wp-content/plugins/tubepress";
-	print <<<EOT
-		<script type="text/javascript" src="$url/tubepress.js"></script>
-		<script type="text/javascript" src="$url/thickbox/jquery.js"></script>
-		<script type="text/javascript" src="$url/thickbox/thickbox.js"></script>
-EOT;
+	echo '<script type="text/javascript" src="' . $url . '/tubepress.js"></script>';
+	echo '<script type="text/javascript" src="' . $url . '/thickbox/jquery.js"></script>';
+	echo '<script type="text/javascript" src="' . $url . '/thickbox/thickbox.js"></script>';
 }
 
 function tubepress_insert_css() {
 	$url = get_settings('siteurl') . "/wp-content/plugins/tubepress";
-	print <<<EOT
-		<link rel="stylesheet" href="$url/tubepress.css" type="text/css" />
-		<link rel="stylesheet" href="$url/thickbox/thickbox.css" media="screen" type="text/css" />
-EOT;
+	echo '<link rel="stylesheet" href="' . $url . '/tubepress.css" type="text/css" />';
+	echo '<link rel="stylesheet" href="' . $url . '/thickbox/thickbox.css" media="screen" type="text/css" />';
 }
 
 /* ACTIONS */
