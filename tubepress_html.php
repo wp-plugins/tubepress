@@ -48,7 +48,7 @@ function tubepress_printHTML_embeddedVid($id, $options) {
 EOT;
 }
 
-function tubepress_printHTML_metaInfo($vid, $options, $css) {
+function tubepress_printHTML_metaInfo($vid, $options, $css, $link) {
 
 	/* first do the title */
 	$content = '<div class="' . $css->title_class . '">';
@@ -157,7 +157,7 @@ function tubepress_printHTML_smallvid($vid, $css, $options) {
 		</div><!-- $css->thumbImg_class -->
 		<div class="$css->meta_group">
 EOT;
-	$content .= tubepress_printHTML_metaInfo($vid, $options, $css);
+	$content .= tubepress_printHTML_metaInfo($vid, $options, $css, $link);
 	$content .= '</div><!--' . $css->thumb_class . '-->';
 	if ($options->get_option(TP_OPT_PLAYIN) == TP_PLAYIN_THICKBOX) {
 		$content .= '<div id="tp' . $vid->metaValues[TP_VID_ID] . '" style="display:none">';

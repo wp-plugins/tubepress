@@ -116,7 +116,7 @@ function tubepress_getNewOptionsArray() {
 	//  TODO: YouTube's "category" api call doesn't seem to work for now...
 	//	TP_SRCH_CATEGORY => 	new tubepressOption(TP_SRCH_CATEGORY, 	TP_MSG_SRCH_CATEGORY_TITLE, 'See <a href="http://youtube.com/categories">http://youtube.com/categories</a>', ''));
 	$searchVariables = array(
-		TP_OPT_SEARCHBY => 		new tubepressOption(TP_OPT_SEARCHBY,	' ', '', TP_SRCH_FAV),
+		TP_OPT_SEARCHBY => 		new tubepressOption(TP_OPT_SEARCHBY,	' ', '', TP_SRCH_FEATURED),
 		TP_SRCH_TAGVAL => 		new tubepressOption(TP_SRCH_TAGVAL, 	' ', '', "stewart daily show"),
 		TP_SRCH_RELVAL => 		new tubepressOption(TP_SRCH_RELVAL, 	' ', '', "mooninite aqua teen hunger force"),
 		TP_SRCH_USERVAL => 		new tubepressOption(TP_SRCH_USERVAL, 	' ', '', "3hough"),
