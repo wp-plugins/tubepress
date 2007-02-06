@@ -14,16 +14,16 @@
   </style>
 </head>
 <body>
-<p class="p1">Here's what to put in your posts/pages to make your gallery show up. Note that you can specify different options on different pages. Get creative!</p>
+<p class="p1">Put the following in your posts/pages to make your gallery show up. Note that you can specify different options on different pages. Get creative!</p>
 <p class="p2"><br /></p>
 <p class="p1">[<b><i>triggerword</i></b> {<b>options</b>}]</p>
 <p class="p2"><br /></p>
 <p class="p1"><span class="Apple-tab-span">	</span><b><i>triggerword</i></b><i> </i>is defined in the main TubePress options page. Default is 'tubepress'</p>
 <p class="p2"><br /></p>
-<p class="p1"><span class="Apple-tab-span">	</span>{<b>options</b>} is any combination of the following <b>comma-separated</b> name-value pairs.</p>
+<p class="p1"><span class="Apple-tab-span">	</span>{<b>options</b>} is an optional combination of the following <b>comma-separated</b> name-value pairs.</p>
 <p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Options that occur on the same line must be specified together. The default values are given as examples.</p>
 <p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>You can optionally put single or double quotes around option values, but if the value consists of</p>
-<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>more than one word, you *must* put quotes around it; mode=tag, tagValue="spongebob squarepants"</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>more than one word, you *<b>must</b>* put quotes around it; mode=tag, tagValue="spongebob squarepants"</p>
 <p class="p2"><br /></p>
 <p class="p1"><span class="Apple-tab-span">	</span><b>mode</b>=favorites</p>
 <p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Selects which videos to display for this gallery.</p>
@@ -84,5 +84,12 @@
 <p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>How many videos to display per page. Only valid for the following</p>
 <p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>modes: '<b>user</b>', '<b>tag</b>', '<b>youtube</b>'</p>
 <p class="p2"><br /></p>
+<p class="p1">As of version 1.05, ThickBox (http://jquery.com/demo/thickbox) is disabled by default. It's interfering with themes, Lightbox, and other jquery-enabled features for Wordpress. Until I come up with a fix, you'll have to manually enable it. Edit /wp-content/plugins/tubepress/tubepress.php and change line 39 from:</p>
+<p class="p2"><br /></p>
+<p class="p1">$tubepress_enable_thickbox = false;</p>
+<p class="p2"><br /></p>
+<p class="p1">to</p>
+<p class="p2"><br /></p>
+<p class="p1">$tubepress_enable_thickbox = true;</p>
 </body>
 </html>

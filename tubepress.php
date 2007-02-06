@@ -31,6 +31,14 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+/*
+ * ENABLE THICKBOX HERE!
+ * Change the following line to: $tubepress_enable_thickbox = true;
+ * to enable ThickBox
+* */
+$tubepress_enable_thickbox = false;
+
+
 /* Imports */
 defined('TP_OPT_DEVID') ||							require("tubepress_strings.php");
 class_exists('tubepressVideo') || 					require("tubepress_classes.php");
@@ -120,23 +128,23 @@ function tubepress_finish($newcontent, $content, $options, $css) {
 	return str_replace($options->tagString, $newcontent, $content);
 }
 
-function tubepress_insert_js() {
+function tubepress_insert_cssjs() {
 	$url = get_settings('siteurl') . "/wp-content/plugins/tubepress";
-	echo '<script type="text/javascript" src="' . $url . '/tubepress.js"></script>
-		<script type="text/javascript" src="' . $url . '/lib/thickbox/jquery.js"></script>
-		<script type="text/javascript" src="' . $url . '/lib/thickbox/thickbox.js"></script>';
+	echo '<script type="text/javascript" src="' . $url . '/tubepress.js"></script>';
+	echo '<link rel="stylesheet" href="' . $url . '/tubepress.css" type="text/css" />';
 }
 
-function tubepress_insert_css() {
+function tubepress_insert_thickbox() {
 	$url = get_settings('siteurl') . "/wp-content/plugins/tubepress";
-	echo '<link rel="stylesheet" href="' . $url . '/tubepress.css" type="text/css" />';
+	echo '<script type="text/javascript" src="' . $url . '/lib/thickbox/jquery.js"></script>';
+	echo '<script type="text/javascript" src="' . $url . '/lib/thickbox/thickbox.js"></script>';
 	echo '<link rel="stylesheet" href="' . $url . '/lib/thickbox/thickbox.css" media="screen" type="text/css" />';
 }
 
 /* ACTIONS */
 add_action('admin_menu', 	'tubepress_add_options_page');
-add_action('wp_head', 		'tubepress_insert_css');
-add_action('wp_head', 		'tubepress_insert_js');
+add_action('wp_head', 		'tubepress_insert_cssjs');
+if ($tubepress_enable_thickbox) add_action('wp_head', 'tubepress_insert_thickbox');
 
 /* FILTERS */
 add_filter('the_content', 'tubepress_showgallery');

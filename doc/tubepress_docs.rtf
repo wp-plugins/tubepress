@@ -161,4 +161,12 @@
 \f0\b0 '\
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
 \cf0 \
+As of version 1.05, ThickBox (http://jquery.com/demo/thickbox) is disabled by default. It's interfering with themes, Lightbox, and other jquery-enabled features for Wordpress. Until I come up with a fix, you'll have to manually enable it. Edit /wp-content/plugins/tubepress/tubepress.php and change line 39 from:\
+\
+\pard\pardeftab720
+\cf0 $tubepress_enable_thickbox = false;\
+\
+to\
+\
+$tubepress_enable_thickbox = true;\
 }
