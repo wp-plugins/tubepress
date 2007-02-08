@@ -28,9 +28,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  * Serves as a constant object to hold CSS info
 */
 class tubepressCSS {
-	var $mainVid_id, $mainVid_class, $meta_class,
-		$thumb_container_class, $runtime_class, $title_class, $meta_group;
-
+	
 	function tubepressCSS() {
 		$this->container = 				"tubepress_container";
 		$this->mainVid_id = 			"tubepress_mainvideo";
@@ -43,6 +41,9 @@ class tubepressCSS {
 		$this->title_class = 			"tubepress_title";
 		$this->success_class = 			"updated fade";
 		$this->meta_group = 			"tubepress_meta_group";
+		$this->pagination = 			"tubepress_pagination";
+		$this->nextlink = 				"tubepress_next";
+		$this->prevlink = 				"tubepress_prev";
 	}
 }
 

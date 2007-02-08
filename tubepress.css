@@ -11,6 +11,19 @@
 	padding: 0 17px 0 17px;
 }
 
+#tubepress_pagination {
+	clear: both;
+	float: left;	
+}
+
+#tubepress_pagination #tubepress_prev {
+	float: left;	
+}
+
+#tubepress_pagination #tubepress_next {
+	float: right;	
+}
+
 .tubepress_runtime {
 	font-size: 11px;
 	color: #000;
@@ -35,8 +48,10 @@
 }
 
 .tubepress_video_thumbs {
+	clear:both;
 	padding: 0 0 0 5px;
 	height: 500px;
 	overflow:scroll;
 	border: 1px solid gray;
+	padding-top: 1em;
 }

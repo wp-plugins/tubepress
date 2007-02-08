@@ -29,9 +29,8 @@ function tubepress_printHTML_bigvid($vid, $css, $options) {
 		return "";
 	$returnVal = <<<EOT
 		<div id="$css->mainVid_id" class="$css->mainVid_class">
-        	<!-- <span class="$css->meta_class"></span> -->
 			<span class="$css->title_class">{$vid->metaValues[TP_VID_TITLE]}</span>
-			<span class="$css->runtime_class">({$vid->metaValues[TP_VID_LENGTH]})</span>
+			<span class="$css->runtime_class">({$vid->metaValues[TP_VID_LENGTH]})</span><br />
 EOT;
 	$returnVal .= tubepress_printHTML_embeddedVid($vid->metaValues[TP_VID_ID], $options);
 	$returnVal .= '</div> <!--' . $css->mainVid_class . '-->';
@@ -108,7 +107,7 @@ function tubepress_printHTML_metaLink($linkText, $linkValue) {
 	return '</span><a href="' . $linkValue . '">' . $linkText . '</a>';
 }
 
-function tubepress_printHTML_pagination($vidCount, $options) {
+function tubepress_printHTML_pagination($vidCount, $options, $css) {
 
 	/* if we're already on a page, save that value, otherwise assume we're on the first page */
 	$currentPage = (isset($_GET[TP_PAGE_PARAM])? $_GET[TP_PAGE_PARAM] : 1);
@@ -122,7 +121,7 @@ function tubepress_printHTML_pagination($vidCount, $options) {
 	/* vidcount will always be one more than what the user wanted, unless we're on the last page */
 	$nextText = (($vidCount < $options->get_option(TP_OPT_VIDSPERPAGE))? "&nbsp;" : tubepress_printHTML_paginationLink($url, $currentPage + 1, "next >"));
 
-	return '<div style="float: left"><div style="float: left">' . $prevText . '</div><div style="float: right">' . $nextText . '</div></div>';
+	return '<div id="' . $css->pagination . '"><div id="' . $css->prevlink . '">' . $prevText . '</div><div id="' . $css->nextlink . '">' . $nextText . '</div></div>';
 }
 
 function tubepress_printHTML_paginationLink($queryString, $pageNum, $text) {

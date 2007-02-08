@@ -87,10 +87,6 @@ function tubepress_showgallery ($content = '') {
 	/* count how many we got back */
 	$videosReturnedCount = tubepress_count_videos($youtube_xml);
 
-	/* Print any pagination */
-	if ($paging)
-		$newcontent .= tubepress_printHTML_pagination($videosReturnedCount, $options);
-
 	$error = false;
 	/* Check for a YouTube timeout */
 	if ($youtube_xml == TP_XMLERR) {
@@ -108,14 +104,17 @@ function tubepress_showgallery ($content = '') {
 		$vidLimit = ($paging? $options->get_option(TP_OPT_VIDSPERPAGE) : $videosReturnedCount);
 		if ($videosReturnedCount < $vidLimit) $vidLimit = $videosReturnedCount;
 		
-		$newContent .= '<div class="' . $css->thumb_container_class . '">';
 		for ($x = 0; $x < $vidLimit; $x++) {
 			$video = new tubepressVideo($youtube_xml->video[$x]);
-			if ($videoCount++ == 0)
+			if ($videoCount++ == 0) {
 				$newcontent .= tubepress_printHTML_bigvid($video, $css, $options);
+				if ($paging) $newcontent .= tubepress_printHTML_pagination($videosReturnedCount, $options, $css);
+				$newcontent .= '<div class="' . $css->thumb_container_class . '">';
+			}
 			$newcontent .= tubepress_printHTML_smallvid($video, $css, $options);
 		}
-		$newContent .= '</div>';
+		$newcontent .= '</div>';
+		if ($paging) $newcontent .= tubepress_printHTML_pagination($videosReturnedCount, $options, $css);
 	}
 	return tubepress_finish($newcontent, $content, $options, $css);
 }
