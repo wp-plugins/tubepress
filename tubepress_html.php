@@ -121,7 +121,7 @@ function tubepress_printHTML_pagination($vidCount, $options, $css) {
 	/* vidcount will always be one more than what the user wanted, unless we're on the last page */
 	$nextText = (($vidCount < $options->get_option(TP_OPT_VIDSPERPAGE))? "&nbsp;" : tubepress_printHTML_paginationLink($url, $currentPage + 1, "next >"));
 
-	return '<div id="' . $css->pagination . '"><div id="' . $css->prevlink . '">' . $prevText . '</div><div id="' . $css->nextlink . '">' . $nextText . '</div></div>';
+	return '<div class="' . $css->pagination . '"><div class="' . $css->prevlink . '">' . $prevText . '</div><div class="' . $css->nextlink . '">' . $nextText . '</div></div>';
 }
 
 function tubepress_printHTML_paginationLink($queryString, $pageNum, $text) {

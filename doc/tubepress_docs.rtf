@@ -27,7 +27,7 @@
 		You can optionally put single or double quotes around option values, but if the value consists of\
 		more than one word, you *
 \f2\b must
-\f0\b0 * put quotes around it; mode=tag, tagValue="spongebob squarepants"\
+\f0\b0 * put quotes around it; mode=tag, tagValue='spongebob squarepants'\
 \
 	
 \f2\b mode
@@ -44,13 +44,13 @@
 \f2\b tag,
 \f0\b0  
 \f2\b tagValue
-\f0\b0 =(space separated tags)\
+\f0\b0 =(space-separated tags with single quotes around them)\
 			Videos matching all of the specified tags. Use quotes for more than one tag.\
 		mode=
 \f2\b related,
 \f0\b0  
 \f2\b relatedValue
-\f0\b0 =(space separated tags)\
+\f0\b0 =(space-separated tags with single quotes around them)\
 			Videos matching any of the specified tags. Use quotes for more than one tag.\
 		mode=
 \f2\b user,
@@ -140,8 +140,10 @@
 \
 	(meta value)=(true/false)\
 		Toggles display of video meta information in the gallery.\
-		Where valid meta values are: title, length, author, views, id,\
-		rating, ratings, uploaded, comments, url, thumburl, tags, description\
+		Where valid meta values are: 
+\f2\b title, length, author, views, id,\
+		rating, ratings, uploaded, comments, url, thumburl, tags, description
+\f0\b0 \
 \
 	
 \f2\b timeout
@@ -163,7 +165,7 @@
 \cf0 \
 As of version 1.05, ThickBox (http://jquery.com/demo/thickbox) is disabled by default. It's interfering with themes, Lightbox, and other jquery-enabled features for Wordpress. Until I come up with a fix, you'll have to manually enable it. Edit /wp-content/plugins/tubepress/tubepress.php and change line 39 from:\
 \
-\pard\pardeftab720
+\pard\pardeftab720\ql\qnatural
 \cf0 $tubepress_enable_thickbox = false;\
 \
 to\

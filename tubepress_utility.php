@@ -43,8 +43,8 @@ function tubepress_cleanupTagValue($nameOrValue) {
 function tubepress_count_videos($youtube_xml) {
 	if ($youtube_xml == NULL) return 0;
 	if ($youtube_xml == "") return 0;
-	if ($youtube_xml->children() == NULL) return 0;
-	return count($youtube_xml->children());
+	if (!is_a($youtube_xml, "IsterXmlNode")) return 0;
+	return $youtube_xml->hasChildren();
 }
 
 function tubepress_fetchXML($request, $options) {

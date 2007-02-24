@@ -23,16 +23,16 @@
 <p class="p1"><span class="Apple-tab-span">	</span>{<b>options</b>} is an optional combination of the following <b>comma-separated</b> name-value pairs.</p>
 <p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Options that occur on the same line must be specified together. The default values are given as examples.</p>
 <p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>You can optionally put single or double quotes around option values, but if the value consists of</p>
-<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>more than one word, you *<b>must</b>* put quotes around it; mode=tag, tagValue="spongebob squarepants"</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>more than one word, you *<b>must</b>* put quotes around it; mode=tag, tagValue='spongebob squarepants'</p>
 <p class="p2"><br /></p>
 <p class="p1"><span class="Apple-tab-span">	</span><b>mode</b>=favorites</p>
 <p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Selects which videos to display for this gallery.</p>
 <p class="p2"><span class="Apple-tab-span">	</span></p>
 <p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>mode=<b>favorites,</b><span class="Apple-tab-span">	</span><b>favoritesValue</b>=3hough</p>
 <p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Videos from the specified user's "favorites" list</p>
-<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>mode=<b>tag,</b> <b>tagValue</b>=(space separated tags)</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>mode=<b>tag,</b> <b>tagValue</b>=(space-separated tags with single quotes around them)</p>
 <p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Videos matching all of the specified tags. Use quotes for more than one tag.</p>
-<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>mode=<b>related,</b> <b>relatedValue</b>=(space separated tags)</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>mode=<b>related,</b> <b>relatedValue</b>=(space-separated tags with single quotes around them)</p>
 <p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Videos matching any of the specified tags. Use quotes for more than one tag.</p>
 <p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>mode=<b>user,</b> <b>userValue</b>=someuser</p>
 <p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Videos from the specified user</p>
@@ -74,8 +74,8 @@
 <p class="p2"><br /></p>
 <p class="p1"><span class="Apple-tab-span">	</span>(meta value)=(true/false)</p>
 <p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Toggles display of video meta information in the gallery.</p>
-<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Where valid meta values are: title, length, author, views, id,</p>
-<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>rating, ratings, uploaded, comments, url, thumburl, tags, description</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Where valid meta values are: <b>title, length, author, views, id,</b></p>
+<p class="p1"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>rating, ratings, uploaded, comments, url, thumburl, tags, description</b></p>
 <p class="p2"><br /></p>
 <p class="p1"><span class="Apple-tab-span">	</span><b>timeout</b>=6</p>
 <p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>How long to wait (in seconds) for YouTube to respond before timing out</p>

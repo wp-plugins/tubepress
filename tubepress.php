@@ -4,7 +4,7 @@ Plugin Name: TubePress
 Plugin URI: http://ehough.com/youtube/tubepress
 Description: Displays configurable YouTube galleries in WordPress
 Author: Eric Hough
-Version: 1.0
+Version: 1.1.5
 Author URI: http://ehough.com
 
 THANKS:
@@ -101,11 +101,16 @@ function tubepress_showgallery ($content = '') {
 
 	/* Loop through each video */
 	if ($error == false) {
+		/* Next two lines figure out how many videos we're going to show */
 		$vidLimit = ($paging? $options->get_option(TP_OPT_VIDSPERPAGE) : $videosReturnedCount);
 		if ($videosReturnedCount < $vidLimit) $vidLimit = $videosReturnedCount;
 		
 		for ($x = 0; $x < $vidLimit; $x++) {
+			/* Create a tubepressVideo object from the XML (if we can) */
 			$video = new tubepressVideo($youtube_xml->video[$x]);
+			if ($video->metaValues[TP_VID_ID] == '') continue;
+			
+			/* If we're on the first video, see if we need to print a big one */
 			if ($videoCount++ == 0) {
 				$newcontent .= tubepress_printHTML_bigvid($video, $css, $options);
 				if ($paging) $newcontent .= tubepress_printHTML_pagination($videosReturnedCount, $options, $css);

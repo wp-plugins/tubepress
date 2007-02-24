@@ -11,16 +11,16 @@
 	padding: 0 17px 0 17px;
 }
 
-#tubepress_pagination {
+.tubepress_pagination {
 	clear: both;
 	float: left;	
 }
 
-#tubepress_pagination #tubepress_prev {
+.tubepress_pagination .tubepress_prev {
 	float: left;	
 }
 
-#tubepress_pagination #tubepress_next {
+.tubepress_pagination .tubepress_next {
 	float: right;	
 }
 

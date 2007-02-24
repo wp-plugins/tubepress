@@ -76,21 +76,29 @@ class tubepressVideo {
 	var $metaValues;
 
 	function tubepressVideo($videoXML) {
-		$this->metaValues = array(
-			TP_VID_AUTHOR =>		$videoXML->author->CDATA(),
-		 	TP_VID_ID =>			$videoXML->id->CDATA(),
-		 	TP_VID_TITLE =>			htmlentities($videoXML->title->CDATA(), ENT_QUOTES),
-			TP_VID_LENGTH =>		tubepress_humanTime($videoXML->length_seconds->CDATA()),
- 			TP_VID_RATING_AVG =>	$videoXML->rating_avg->CDATA(),
-	 		TP_VID_RATING_CNT =>	number_format($videoXML->rating_count->CDATA()),
-	 		TP_VID_DESC =>			$videoXML->description->CDATA(),
-		 	TP_VID_VIEW =>			number_format($videoXML->view_count->CDATA()),
-	 		TP_VID_UPLOAD_TIME =>	date("M j, Y", $videoXML->upload_time->CDATA()),
-			TP_VID_COMMENT_CNT =>	number_format($videoXML->comment_count->CDATA()),
-			TP_VID_TAGS =>			$videoXML->tags->CDATA(),
-		 	TP_VID_URL =>			$videoXML->url->CDATA(),
-		 	TP_VID_THUMBURL =>		$videoXML->thumbnail_url->CDATA()
-		);
+		/*
+		 * You wouldn't think I'd need to check to make sure that XML
+		 * is coming in as a parameter, but for some reason every
+		 * now and then some non-XML shit sneaks in from YouTube. This is
+		 * kinda a temp fix until I investigate further.
+		 */
+		if (is_a($videoXML, 'IsterSimpleXMLElement')) {
+			$this->metaValues = array(
+				TP_VID_AUTHOR =>		$videoXML->author->CDATA(),
+			 	TP_VID_ID =>			$videoXML->id->CDATA(),
+			 	TP_VID_TITLE =>			htmlentities($videoXML->title->CDATA(), ENT_QUOTES),
+				TP_VID_LENGTH =>		tubepress_humanTime($videoXML->length_seconds->CDATA()),
+	 			TP_VID_RATING_AVG =>	$videoXML->rating_avg->CDATA(),
+		 		TP_VID_RATING_CNT =>	number_format($videoXML->rating_count->CDATA()),
+		 		TP_VID_DESC =>			$videoXML->description->CDATA(),
+			 	TP_VID_VIEW =>			number_format($videoXML->view_count->CDATA()),
+		 		TP_VID_UPLOAD_TIME =>	date("M j, Y", $videoXML->upload_time->CDATA()),
+				TP_VID_COMMENT_CNT =>	number_format($videoXML->comment_count->CDATA()),
+				TP_VID_TAGS =>			$videoXML->tags->CDATA(),
+			 	TP_VID_URL =>			$videoXML->url->CDATA(),
+			 	TP_VID_THUMBURL =>		$videoXML->thumbnail_url->CDATA()
+			);
+		}
 	}
 }
 

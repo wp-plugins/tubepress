@@ -211,13 +211,14 @@ function tubepress_printHTML_searchArray($theArray, $arrayName, $searchVars, $in
 				$inputBox = tubepress_printHTML_quickSrchVal($option->name, $searchVars, $inputSize);
 		if ($option->name == TP_SRCH_POPULAR) {
 			$name = TP_SRCH_POPVAL;
-			$inputBox = <<<EOX
-				<select name="$name">
-					<option value="day">day</option>
-					<option value="week">week</option>
-					<option value="month">month</option>
-				</select>
-EOX;
+			$inputBox = '<select name="' . $name . '">';
+			$period = array("day", "week", "month");
+			foreach ($period as $thisPeriod) {
+				$inputBox .= '<option value="' . $thisPeriod . '"';
+				if ($thisPeriod == $searchVars[TP_SRCH_POPVAL]->value) $inputBox .= ' SELECTED';
+				$inputBox .= '>' . $thisPeriod . '</option>';
+			}
+			$inputBox .= '</select>';
 		}
 print <<<EOT
 		<tr>
