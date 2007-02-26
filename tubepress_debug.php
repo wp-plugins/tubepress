@@ -1,0 +1,101 @@
+<?php
+/*
+tubepress_debug.php
+Spits out gobs of debugging info
+
+THANKS:
+Matt Doyle (http://notdrunk.net) was responsible for designing and developing the "option overriding"
+capability of this plugin.
+
+This plugin was based on the "mytube" plugin by Vaam Yob (http://rane.hasitsown.com/blog/plink/technical/27/wordpress-youtube-video-gallery-plugin/) and
+some code samples from WaxJelly (http://www.waxjelly.com/2006/08/29/a-more-complex-php-script-using-the-youtube-api-with-video-details-part-2/). Thanks!
+
+Copyright (C) 2007 Eric D. Hough (k2eric@gmail.com)
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+*/
+
+/* This function will be called if the user has no or invalid TubePress options */
+function tubepress_debug($options) {
+	require_once("tubepress_init.php");
+	$tagString = $options->tagString;
+	$dbCheck = (tubepress_validOptions(get_option(TP_OPTION_NAME))? 'good' : 'bad');
+	print <<<EOH
+		YOU ARE NOW IN TUBEPRESS DEBUG MODE<BR/><ol>
+		<li>Your database looks $dbCheck</li>
+		<li>Here's the tag string you're using in this page: <pre>$tagString</pre></li>
+		<li>Here are the custom options that were parsed from that tag string (if any) along with the site URL:<br/>
+		<pre>
+EOH;
+	print_r($options->customOptions);
+	print <<<EOH
+		</pre></li>
+		<li>Here are the options that were pulled from the db:<br/>
+		<pre>
+EOH;
+	print_r($options->dbOptions);
+	echo '</pre></li>';
+
+	echo '<li>We ARE';
+	if (!tubepress_areWePaging($options))
+		echo ' NOT ';
+	echo 'paging</li>';
+		
+	echo '<li>We ARE';
+	if (!tubepress_printingSingleVideo($options))
+		echo ' NOT ';
+	echo 'printing just a single video</li>';		
+		
+	echo '<li>Here is the full URL to this page: <pre>' . tubepress_fullURL() . '</pre></li>';
+	
+	/* Stop here if we're not making any requests to YouTube */
+	if (tubepress_printingSingleVideo($options)) return;
+	
+	echo '<li>Here is the request that will be generated and sent to YouTube. Click it to see the raw results:<br/>';
+	$request = tubepress_generateRequest($options);
+	echo '<a href="' . $request . '">' . $request . '</a></li>';
+
+	/* Grab the XML from YouTube's API */
+	$youtube_xml = tubepress_get_youtube_xml($options);
+
+	echo '<li>The result CAN';
+	if (!is_a($youtube_xml, 'IsterXmlNode')) echo 'NOT';
+	echo ' be interpreted as an IsterXmlNode</li>';
+	
+	/* count how many we got back */
+	$videosReturnedCount = tubepress_count_videos($youtube_xml);
+	echo '<li>Found ' . $videosReturnedCount . ' videos in the result</li>';
+	
+	$vidLimit = (tubepress_areWePaging($options)? $options->get_option(TP_OPT_VIDSPERPAGE) : $videosReturnedCount);
+	if ($videosReturnedCount < $vidLimit) $vidLimit = $videosReturnedCount;
+	echo '<li>We will print ' . $vidLimit . ' videos on this page</li>';
+	
+	echo '<li>Now we will loop through each video and see if we can interpret it...<ol>';
+	for ($x = 0; $x < $vidLimit; $x++) {
+		echo '<li>';
+		$video = new tubepressVideo($youtube_xml->video[$x]);
+		if ($video->metaValues[TP_VID_ID] == '') {
+			echo 'PROBLEM!';
+		} else {
+			echo 'OK - ' . $video->metaValues[TP_VID_TITLE];
+		}
+		echo '</li>';
+	}
+	echo '</li></ol>';
+	
+	echo '</ol>END OF TUBEPRESS DEBUG MODE';
+}
+
+?>

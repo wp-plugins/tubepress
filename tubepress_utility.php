@@ -1,5 +1,8 @@
 <?php
 /*
+tubepress_utility.php
+Various miscellaneous functions that come in handy
+
 THANKS:
 Matt Doyle (http://notdrunk.net) was responsible for designing and developing the "option overriding"
 capability of this plugin.
@@ -24,6 +27,10 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+function tubepress_areWeDebugging() {
+	return isset($_GET[TP_DEBUG_PARAM]) && ($_GET[TP_DEBUG_PARAM] == true);
+}
+
 function tubepress_areWePaging($options) {
 	$searchBy = $options->get_option(TP_OPT_SEARCHBY);
 	//TODO: playlists currently aren't paging for some reason
@@ -44,28 +51,14 @@ function tubepress_count_videos($youtube_xml) {
 	if ($youtube_xml == NULL) return 0;
 	if ($youtube_xml == "") return 0;
 	if (!is_a($youtube_xml, "IsterXmlNode")) return 0;
-	return $youtube_xml->hasChildren();
-}
-
-function tubepress_fetchXML($request, $options) {
-	$snoopy = new snoopy;
-	$snoopy->read_timeout = $options->get_option(TP_OPT_TIMEOUT);
-	$snoopy->fetch($request);
-	if ($snoopy->results == "") return TP_XMLERR;
-	$impl = new IsterXmlSimpleXMLImpl;
-	$results = $impl->load_string($snoopy->results);
-	return $results->ut_response->video_list;
+	return count($youtube_xml->video);
 }
 
 function tubepress_fullURL() {
 	return "http://" . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
 }
 
-/*
- * Connects to YouTube and grabs gallery info over
- * REST API
-*/
-function tubepress_get_youtube_xml($options) {
+function tubepress_generateRequest($options) {
 	$request = TP_YOUTUBE_RESTURL . "method=youtube.";
 
 	switch ($options->get_option(TP_OPT_SEARCHBY)) {
@@ -102,7 +95,22 @@ function tubepress_get_youtube_xml($options) {
 	}
 
 	$request .= "&dev_id=" . $options->get_option(TP_OPT_DEVID);
-	return tubepress_fetchXML($request, $options);
+	return $request;
+}
+
+/*
+ * Connects to YouTube and grabs gallery info over
+ * REST API
+*/
+function tubepress_get_youtube_xml($options) {
+	$request = tubepress_generateRequest($options);
+	$snoopy = new snoopy;
+	$snoopy->read_timeout = $options->get_option(TP_OPT_TIMEOUT);
+	$snoopy->fetch($request);
+	if ($snoopy->results == "") return TP_XMLERR;
+	$impl = new IsterXmlSimpleXMLImpl;
+	$results = $impl->load_string($snoopy->results);
+	return $results->ut_response->video_list;
 }
 
 function tubepress_humanTime($length_seconds) {

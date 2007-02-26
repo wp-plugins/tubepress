@@ -1,168 +1,198 @@
 {\rtf1\mac\ansicpg10000\cocoartf824\cocoasubrtf410
-{\fonttbl\f0\fmodern\fcharset77 CourierNewPSMT;\f1\fmodern\fcharset77 CourierNewPS-BoldItalicMT;\f2\fmodern\fcharset77 CourierNewPS-BoldMT;
+{\fonttbl\f0\fmodern\fcharset77 CourierNewPS-BoldMT;\f1\fmodern\fcharset77 CourierNewPSMT;\f2\fmodern\fcharset77 CourierNewPS-BoldItalicMT;
 \f3\fmodern\fcharset77 CourierNewPS-ItalicMT;}
 {\colortbl;\red255\green255\blue255;}
 \margl1440\margr1440\vieww24140\viewh16200\viewkind0
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\ql\qnatural\pardirnatural
 
-\f0\fs24 \cf0 Put the following in your posts/pages to make your gallery show up. Note that you can specify different options on different pages. Get creative!\
+\f0\b\fs28 \cf0 TubePress Documentation
+\fs24 \
+\
+Basic Use:
+\f1\b0 \
+\
+Put the following in your posts/pages to make your gallery show up. Note that you can specify different options on different pages. Get creative!\
 \
 [
-\f1\i\b triggerword
-\f0\i0\b0  \{
-\f2\b options
-\f0\b0 \}]\
+\f2\i\b triggerword
+\f1\i0\b0  \{
+\f0\b options
+\f1\b0 \}]\
 \
 	
-\f1\i\b triggerword
+\f2\i\b triggerword
 \f3\b0  
-\f0\i0 is defined in the main TubePress options page. Default is 'tubepress'\
+\f1\i0 is defined in the main TubePress options page. Default is 'tubepress'\
 \
 	\{
-\f2\b options
-\f0\b0 \} is an optional combination of the following 
-\f2\b comma-separated
-\f0\b0  name-value pairs.\
+\f0\b options
+\f1\b0 \} is an optional combination of the following 
+\f0\b comma-separated
+\f1\b0  name-value pairs.\
 		Options that occur on the same line must be specified together. The default values are given as examples.\
 		You can optionally put single or double quotes around option values, but if the value consists of\
 		more than one word, you *
-\f2\b must
-\f0\b0 * put quotes around it; mode=tag, tagValue='spongebob squarepants'\
+\f0\b must
+\f1\b0 * put quotes around it; mode=tag, tagValue='spongebob squarepants'\
 \
 	
-\f2\b mode
-\f0\b0 =favorites\
+\f0\b mode
+\f1\b0 =favorites\
 		Selects which videos to display for this gallery.\
 	\
 		mode=
-\f2\b favorites,
-\f0\b0 	
-\f2\b favoritesValue
-\f0\b0 =3hough\
+\f0\b favorites,
+\f1\b0 	
+\f0\b favoritesValue
+\f1\b0 =3hough\
 			Videos from the specified user's "favorites" list\
 		mode=
-\f2\b tag,
-\f0\b0  
-\f2\b tagValue
-\f0\b0 =(space-separated tags with single quotes around them)\
+\f0\b tag,
+\f1\b0  
+\f0\b tagValue
+\f1\b0 =(space-separated tags with single quotes around them)\
 			Videos matching all of the specified tags. Use quotes for more than one tag.\
 		mode=
-\f2\b related,
-\f0\b0  
-\f2\b relatedValue
-\f0\b0 =(space-separated tags with single quotes around them)\
+\f0\b related,
+\f1\b0  
+\f0\b relatedValue
+\f1\b0 =(space-separated tags with single quotes around them)\
 			Videos matching any of the specified tags. Use quotes for more than one tag.\
 		mode=
-\f2\b user,
-\f0\b0  
-\f2\b userValue
-\f0\b0 =someuser\
+\f0\b user,
+\f1\b0  
+\f0\b userValue
+\f1\b0 =someuser\
 			Videos from the specified user\
 		mode=
-\f2\b playlist,
-\f0\b0  
-\f2\b playlistValue
-\f0\b0 =someplaylistid\
+\f0\b playlist,
+\f1\b0  
+\f0\b playlistValue
+\f1\b0 =someplaylistid\
 			Videos from the specified playlist\
 		mode=
-\f2\b popular,
-\f0\b0  
-\f2\b popularValue
-\f0\b0 =(valid time frame)\
+\f0\b popular,
+\f1\b0  
+\f0\b popularValue
+\f1\b0 =(valid time frame)\
 			Most-viewed videos on YouTube during specified time frame.\
 			Valid time frames are: '
-\f2\b day
-\f0\b0 ', '
-\f2\b week
-\f0\b0 ', '
-\f2\b month
-\f0\b0 '\
+\f0\b day
+\f1\b0 ', '
+\f0\b week
+\f1\b0 ', '
+\f0\b month
+\f1\b0 '\
 		mode=
-\f2\b featured
-\f0\b0 \
+\f0\b featured
+\f1\b0 \
 			The latest 25 videos featured on YouTube\
 		\
 	
-\f2\b playerLocation
-\f0\b0 =normal\
+\f0\b playerLocation
+\f1\b0 =normal\
 		Selects where the videos will play\
 	\
 		playerLocation=
-\f2\b normal
-\f0\b0 \
+\f0\b normal
+\f1\b0 \
 			Plays videos at the top of the gallery\
 		playerLocation=
-\f2\b new_window
-\f0\b0 \
+\f0\b new_window
+\f1\b0 \
 			Plays by themselves in a new page (non-popup)\
 		playerLocation=
-\f2\b popup
-\f0\b0 \
+\f0\b popup
+\f1\b0 \
 			Plays videos in a popup window\
 		playerLocation=
-\f2\b thickbox
-\f0\b0 \
+\f0\b thickbox
+\f1\b0 \
 			Plays videos using ThickBox (experimental)\
 		playerLocation=
-\f2\b youtube
-\f0\b0 \
+\f0\b youtube
+\f1\b0 \
 			Plays videos from the original YouTube page\
 \
 	
-\f2\b mainVidHeight
-\f0\b0 =325\
+\f0\b mainVidHeight
+\f1\b0 =325\
 		Max height (in px) of "main" video. Valid for all \
 		'
-\f2\b playerLocation
-\f0\b0 ' options except for '
-\f2\b youtube
-\f0\b0 '\
+\f0\b playerLocation
+\f1\b0 ' options except for '
+\f0\b youtube
+\f1\b0 '\
 \
 	
-\f2\b mainVidWidth
-\f0\b0 =450\
+\f0\b mainVidWidth
+\f1\b0 =450\
 		Max width (in px) of "main" video. Valid for all\
  		'
-\f2\b playerLocation
-\f0\b0 ' options except for '
-\f2\b youtube
-\f0\b0 '\
+\f0\b playerLocation
+\f1\b0 ' options except for '
+\f0\b youtube
+\f1\b0 '\
 	\
 	
-\f2\b thumbHeight
-\f0\b0 =90\
+\f0\b thumbHeight
+\f1\b0 =90\
 		Max height (in px) of thumbnails\
 \
 	
-\f2\b thumbWidth
-\f0\b0 =120\
+\f0\b thumbWidth
+\f1\b0 =120\
 		Max width (in px) of thumbnails\
 \
 	(meta value)=(true/false)\
 		Toggles display of video meta information in the gallery.\
 		Where valid meta values are: 
-\f2\b title, length, author, views, id,\
+\f0\b title, length, author, views, id,\
 		rating, ratings, uploaded, comments, url, thumburl, tags, description
-\f0\b0 \
+\f1\b0 \
 \
 	
-\f2\b timeout
-\f0\b0 =6\
+\f0\b timeout
+\f1\b0 =6\
 		How long to wait (in seconds) for YouTube to respond before timing out\
 \
 	
-\f2\b resultsPerPage
-\f0\b0 =15\
+\f0\b resultsPerPage
+\f1\b0 =15\
 		How many videos to display per page. Only valid for the following\
 		modes: '
-\f2\b user
-\f0\b0 ', '
-\f2\b tag
-\f0\b0 ', '
-\f2\b youtube
-\f0\b0 '\
+\f0\b user
+\f1\b0 ', '
+\f0\b tag
+\f1\b0 ', '
+\f0\b youtube
+\f1\b0 '\
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
 \cf0 \
+
+\f0\b Upgrading:
+\f1\b0 \
+\
+You can always upgrade TubePress by unzipping the latest version over your existing version.\
+\
+\pard\pardeftab720\ql\qnatural
+
+\f0\b \cf0 Debugging Mode:
+\f1\b0 \
+\
+This mode will print out tons of debugging information. To use it, you just need to add 'tubepress_debug=true' to the URL string. For instance, if the TubePress page I'm trying to debug has an address of:\
+\
+http://ehough.com/?page_id=19\
+\
+I would add 'tubepress_debug=true' to the URL to enable debugging:\
+\
+http://ehough.com/?page_id=19&tubepress_debug=true\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+\cf0 \
+
+\f0\b ThickBox Notes:
+\f1\b0 \
+\
 As of version 1.05, ThickBox (http://jquery.com/demo/thickbox) is disabled by default. It's interfering with themes, Lightbox, and other jquery-enabled features for Wordpress. Until I come up with a fix, you'll have to manually enable it. Edit /wp-content/plugins/tubepress/tubepress.php and change line 39 from:\
 \
 \pard\pardeftab720\ql\qnatural
@@ -170,5 +200,4 @@ As of version 1.05, ThickBox (http://jquery.com/demo/thickbox) is disabled by de
 \
 to\
 \
-$tubepress_enable_thickbox = true;\
-}
+$tubepress_enable_thickbox = true;}

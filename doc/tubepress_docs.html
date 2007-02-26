@@ -8,88 +8,109 @@
   <meta name="Generator" content="Cocoa HTML Writer" />
   <meta name="CocoaVersion" content="824.41" />
   <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Courier New}
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Courier New}
     p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Courier New; min-height: 14.0px}
+    p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Courier New}
     span.Apple-tab-span {white-space:pre}
   </style>
 </head>
 <body>
-<p class="p1">Put the following in your posts/pages to make your gallery show up. Note that you can specify different options on different pages. Get creative!</p>
+<p class="p1"><b>TubePress Documentation</b></p>
+<p class="p2"><b></b><br /></p>
+<p class="p3"><b>Basic Use:</b></p>
 <p class="p2"><br /></p>
-<p class="p1">[<b><i>triggerword</i></b> {<b>options</b>}]</p>
+<p class="p3">Put the following in your posts/pages to make your gallery show up. Note that you can specify different options on different pages. Get creative!</p>
 <p class="p2"><br /></p>
-<p class="p1"><span class="Apple-tab-span">	</span><b><i>triggerword</i></b><i> </i>is defined in the main TubePress options page. Default is 'tubepress'</p>
+<p class="p3">[<b><i>triggerword</i></b> {<b>options</b>}]</p>
 <p class="p2"><br /></p>
-<p class="p1"><span class="Apple-tab-span">	</span>{<b>options</b>} is an optional combination of the following <b>comma-separated</b> name-value pairs.</p>
-<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Options that occur on the same line must be specified together. The default values are given as examples.</p>
-<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>You can optionally put single or double quotes around option values, but if the value consists of</p>
-<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>more than one word, you *<b>must</b>* put quotes around it; mode=tag, tagValue='spongebob squarepants'</p>
+<p class="p3"><span class="Apple-tab-span">	</span><b><i>triggerword</i></b><i> </i>is defined in the main TubePress options page. Default is 'tubepress'</p>
 <p class="p2"><br /></p>
-<p class="p1"><span class="Apple-tab-span">	</span><b>mode</b>=favorites</p>
-<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Selects which videos to display for this gallery.</p>
+<p class="p3"><span class="Apple-tab-span">	</span>{<b>options</b>} is an optional combination of the following <b>comma-separated</b> name-value pairs.</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Options that occur on the same line must be specified together. The default values are given as examples.</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>You can optionally put single or double quotes around option values, but if the value consists of</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>more than one word, you *<b>must</b>* put quotes around it; mode=tag, tagValue='spongebob squarepants'</p>
+<p class="p2"><br /></p>
+<p class="p3"><span class="Apple-tab-span">	</span><b>mode</b>=favorites</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Selects which videos to display for this gallery.</p>
 <p class="p2"><span class="Apple-tab-span">	</span></p>
-<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>mode=<b>favorites,</b><span class="Apple-tab-span">	</span><b>favoritesValue</b>=3hough</p>
-<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Videos from the specified user's "favorites" list</p>
-<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>mode=<b>tag,</b> <b>tagValue</b>=(space-separated tags with single quotes around them)</p>
-<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Videos matching all of the specified tags. Use quotes for more than one tag.</p>
-<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>mode=<b>related,</b> <b>relatedValue</b>=(space-separated tags with single quotes around them)</p>
-<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Videos matching any of the specified tags. Use quotes for more than one tag.</p>
-<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>mode=<b>user,</b> <b>userValue</b>=someuser</p>
-<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Videos from the specified user</p>
-<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>mode=<b>playlist,</b> <b>playlistValue</b>=someplaylistid</p>
-<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Videos from the specified playlist</p>
-<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>mode=<b>popular,</b> <b>popularValue</b>=(valid time frame)</p>
-<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Most-viewed videos on YouTube during specified time frame.</p>
-<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Valid time frames are: '<b>day</b>', '<b>week</b>', '<b>month</b>'</p>
-<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>mode=<b>featured</b></p>
-<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>The latest 25 videos featured on YouTube</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>mode=<b>favorites,</b><span class="Apple-tab-span">	</span><b>favoritesValue</b>=3hough</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Videos from the specified user's "favorites" list</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>mode=<b>tag,</b> <b>tagValue</b>=(space-separated tags with single quotes around them)</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Videos matching all of the specified tags. Use quotes for more than one tag.</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>mode=<b>related,</b> <b>relatedValue</b>=(space-separated tags with single quotes around them)</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Videos matching any of the specified tags. Use quotes for more than one tag.</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>mode=<b>user,</b> <b>userValue</b>=someuser</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Videos from the specified user</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>mode=<b>playlist,</b> <b>playlistValue</b>=someplaylistid</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Videos from the specified playlist</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>mode=<b>popular,</b> <b>popularValue</b>=(valid time frame)</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Most-viewed videos on YouTube during specified time frame.</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Valid time frames are: '<b>day</b>', '<b>week</b>', '<b>month</b>'</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>mode=<b>featured</b></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>The latest 25 videos featured on YouTube</p>
 <p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
-<p class="p1"><span class="Apple-tab-span">	</span><b>playerLocation</b>=normal</p>
-<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Selects where the videos will play</p>
+<p class="p3"><span class="Apple-tab-span">	</span><b>playerLocation</b>=normal</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Selects where the videos will play</p>
 <p class="p2"><span class="Apple-tab-span">	</span></p>
-<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>playerLocation=<b>normal</b></p>
-<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Plays videos at the top of the gallery</p>
-<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>playerLocation=<b>new_window</b></p>
-<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Plays by themselves in a new page (non-popup)</p>
-<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>playerLocation=<b>popup</b></p>
-<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Plays videos in a popup window</p>
-<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>playerLocation=<b>thickbox</b></p>
-<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Plays videos using ThickBox (experimental)</p>
-<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>playerLocation=<b>youtube</b></p>
-<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Plays videos from the original YouTube page</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>playerLocation=<b>normal</b></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Plays videos at the top of the gallery</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>playerLocation=<b>new_window</b></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Plays by themselves in a new page (non-popup)</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>playerLocation=<b>popup</b></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Plays videos in a popup window</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>playerLocation=<b>thickbox</b></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Plays videos using ThickBox (experimental)</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>playerLocation=<b>youtube</b></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Plays videos from the original YouTube page</p>
 <p class="p2"><br /></p>
-<p class="p1"><span class="Apple-tab-span">	</span><b>mainVidHeight</b>=325</p>
-<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Max height (in px) of "main" video. Valid for all<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>'<b>playerLocation</b>' options except for '<b>youtube</b>'</p>
+<p class="p3"><span class="Apple-tab-span">	</span><b>mainVidHeight</b>=325</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Max height (in px) of "main" video. Valid for all<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>'<b>playerLocation</b>' options except for '<b>youtube</b>'</p>
 <p class="p2"><br /></p>
-<p class="p1"><span class="Apple-tab-span">	</span><b>mainVidWidth</b>=450</p>
-<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Max width (in px) of "main" video. Valid for all</p>
-<p class="p1"><span class="Apple-converted-space"> <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>'<b>playerLocation</b>' options except for '<b>youtube</b>'</p>
+<p class="p3"><span class="Apple-tab-span">	</span><b>mainVidWidth</b>=450</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Max width (in px) of "main" video. Valid for all</p>
+<p class="p3"><span class="Apple-converted-space"> <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>'<b>playerLocation</b>' options except for '<b>youtube</b>'</p>
 <p class="p2"><span class="Apple-tab-span">	</span></p>
-<p class="p1"><span class="Apple-tab-span">	</span><b>thumbHeight</b>=90</p>
-<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Max height (in px) of thumbnails</p>
+<p class="p3"><span class="Apple-tab-span">	</span><b>thumbHeight</b>=90</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Max height (in px) of thumbnails</p>
 <p class="p2"><br /></p>
-<p class="p1"><span class="Apple-tab-span">	</span><b>thumbWidth</b>=120</p>
-<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Max width (in px) of thumbnails</p>
+<p class="p3"><span class="Apple-tab-span">	</span><b>thumbWidth</b>=120</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Max width (in px) of thumbnails</p>
 <p class="p2"><br /></p>
-<p class="p1"><span class="Apple-tab-span">	</span>(meta value)=(true/false)</p>
-<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Toggles display of video meta information in the gallery.</p>
-<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Where valid meta values are: <b>title, length, author, views, id,</b></p>
-<p class="p1"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>rating, ratings, uploaded, comments, url, thumburl, tags, description</b></p>
+<p class="p3"><span class="Apple-tab-span">	</span>(meta value)=(true/false)</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Toggles display of video meta information in the gallery.</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Where valid meta values are: <b>title, length, author, views, id,</b></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>rating, ratings, uploaded, comments, url, thumburl, tags, description</b></p>
 <p class="p2"><br /></p>
-<p class="p1"><span class="Apple-tab-span">	</span><b>timeout</b>=6</p>
-<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>How long to wait (in seconds) for YouTube to respond before timing out</p>
+<p class="p3"><span class="Apple-tab-span">	</span><b>timeout</b>=6</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>How long to wait (in seconds) for YouTube to respond before timing out</p>
 <p class="p2"><br /></p>
-<p class="p1"><span class="Apple-tab-span">	</span><b>resultsPerPage</b>=15</p>
-<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>How many videos to display per page. Only valid for the following</p>
-<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>modes: '<b>user</b>', '<b>tag</b>', '<b>youtube</b>'</p>
+<p class="p3"><span class="Apple-tab-span">	</span><b>resultsPerPage</b>=15</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>How many videos to display per page. Only valid for the following</p>
+<p class="p3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>modes: '<b>user</b>', '<b>tag</b>', '<b>youtube</b>'</p>
 <p class="p2"><br /></p>
-<p class="p1">As of version 1.05, ThickBox (http://jquery.com/demo/thickbox) is disabled by default. It's interfering with themes, Lightbox, and other jquery-enabled features for Wordpress. Until I come up with a fix, you'll have to manually enable it. Edit /wp-content/plugins/tubepress/tubepress.php and change line 39 from:</p>
+<p class="p3"><b>Upgrading:</b></p>
 <p class="p2"><br /></p>
-<p class="p1">$tubepress_enable_thickbox = false;</p>
+<p class="p3">You can always upgrade TubePress by unzipping the latest version over your existing version.</p>
 <p class="p2"><br /></p>
-<p class="p1">to</p>
+<p class="p3"><b>Debugging Mode:</b></p>
 <p class="p2"><br /></p>
-<p class="p1">$tubepress_enable_thickbox = true;</p>
+<p class="p3">This mode will print out tons of debugging information. To use it, you just need to add 'tubepress_debug=true' to the URL string. For instance, if the TubePress page I'm trying to debug has an address of:</p>
+<p class="p2"><br /></p>
+<p class="p3">http://ehough.com/?page_id=19</p>
+<p class="p2"><br /></p>
+<p class="p3">I would add 'tubepress_debug=true' to the URL to enable debugging:</p>
+<p class="p2"><br /></p>
+<p class="p3">http://ehough.com/?page_id=19&amp;tubepress_debug=true</p>
+<p class="p2"><br /></p>
+<p class="p3"><b>ThickBox Notes:</b></p>
+<p class="p2"><br /></p>
+<p class="p3">As of version 1.05, ThickBox (http://jquery.com/demo/thickbox) is disabled by default. It's interfering with themes, Lightbox, and other jquery-enabled features for Wordpress. Until I come up with a fix, you'll have to manually enable it. Edit /wp-content/plugins/tubepress/tubepress.php and change line 39 from:</p>
+<p class="p2"><br /></p>
+<p class="p3">$tubepress_enable_thickbox = false;</p>
+<p class="p2"><br /></p>
+<p class="p3">to</p>
+<p class="p2"><br /></p>
+<p class="p3">$tubepress_enable_thickbox = true;</p>
 </body>
 </html>

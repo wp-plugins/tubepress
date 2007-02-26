@@ -1,5 +1,8 @@
 <?php
 /*
+tubepress_html.php
+Handles the majority of spitting out HTML
+
 THANKS:
 Matt Doyle (http://notdrunk.net) was responsible for designing and developing the "option overriding"
 capability of this plugin.

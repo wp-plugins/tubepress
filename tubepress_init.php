@@ -1,5 +1,8 @@
 <?php
 /*
+tubepress_init.php
+Handles databases initilization mostly
+
 THANKS:
 Matt Doyle (http://notdrunk.net) was responsible for designing and developing the "option overriding"
 capability of this plugin.
@@ -160,7 +163,6 @@ function tubepress_getNewOptionsArray() {
 function tubepress_validOptions($options) {
 	if ($options == NULL) return false;
 	if (!is_array($options)) return false;
-	
 	return tubepress_deepArrayCheck(tubepress_getNewOptionsArray(), $options);
 }
 

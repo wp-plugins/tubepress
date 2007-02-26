@@ -45,6 +45,7 @@ class_exists('tubepressVideo') || 					require("tubepress_classes.php");
 function_exists('tubepress_add_options_page') ||	require("tubepress_options.php");
 function_exists('tubepress_get_youtube_xml') || 	require("tubepress_utility.php");
 function_exists('tubepress_printSingleVideo') || 	require("tubepress_html.php");
+function_exists('tubepress_debug') ||				require("tubepress_debug.php");
 class_exists('IsterXmlSimpleXMLImpl') || 			require("lib/simpleXML/IsterXmlSimpleXMLImpl.php");
 class_exists('Snoopy') || 							require(ABSPATH . "wp-includes/class-snoopy.php");
 class_exists('Net_URL') || 							require("lib/PEAR/Net_URL/URL.php");
@@ -65,12 +66,17 @@ function tubepress_showgallery ($content = '') {
 
 	/* Parse the tag  */
 	$options = tubepress_parse_tag($content, $keyword);
-
+	
 	/* get css */
 	$css = new tubepressCSS();
 
 	/* Set up the header no matter what */
 	$newcontent = tubepress_printHTML_videoheader($css);
+
+	/* Are we debugging? */
+	if (tubepress_areWeDebugging()) {
+		tubepress_debug($options);
+	}
 	
 	/* Are we printing a single video? */
 	if (tubepress_printingSingleVideo($options)) {

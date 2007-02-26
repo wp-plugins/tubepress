@@ -66,7 +66,7 @@ define("TP_MSG_WHICHVIDS",			"Which videos?");
 /* ERROR MESSAGES */
 define("TP_MSG_TIMEOUT",			"Timed out while contacting YouTube. Please try again later.");
 define("TP_MSG_XMLERR",				"No videos from YouTube! (SOAP error)");
-define("TP_MSG_YTERR",				"YouTube contacted successfully, but no videos were returned. If you think this is a mistake, please check your configuration.");
+define("TP_MSG_YTERR",				"YouTube contacted successfully, but no videos were returned. If you think this is a mistake, please check your configuration or enable debugging mode. See the documentation for more information.");
 
 /* META INFO MESSAGES */
 define("TP_MSG_VIDAUTHOR",			"Author");
@@ -95,6 +95,7 @@ define("TP_YOUTUBEDEVLINK", 		"http://www.youtube.com/my_profile_dev"	);
 define("TP_YOUTUBE_RESTURL",		"http://www.youtube.com/api2_rest?");
 define("TP_PAGE_PARAM",				"tubepress_page");
 define("TP_VID_PARAM",				"tubepress_id");
+define("TP_DEBUG_PARAM",			"tubepress_debug");
 define("TP_OPTION_NAME",			"tubepress");
 
 /* SEARCHING MODES */
