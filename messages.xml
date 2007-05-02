@@ -1,0 +1,20 @@
+<pre>
+<?xml version="1.0" encoding="iso-8859-1"?>
+<translation2>
+    <languages>
+        <lang id='en_US'>
+            <name> English </name>
+            <meta></meta>
+            <error_text></error_text>
+            <encoding>iso-8859-1</encoding>
+        </lang>
+    </languages>
+    <pages>
+        <page key='options'>
+            <string key='panel_title'>
+                <tr lang='en_US'>TubePress Options</tr>
+            </string>
+        </page>
+    </pages>
+</translation2>
+</pre>
