@@ -1,14 +1,8 @@
 <?php
 /*
 tubepress_debug.php
+
 Spits out gobs of debugging info
-
-THANKS:
-Matt Doyle (http://notdrunk.net) was responsible for designing and developing the "option overriding"
-capability of this plugin.
-
-This plugin was based on the "mytube" plugin by Vaam Yob (http://rane.hasitsown.com/blog/plink/technical/27/wordpress-youtube-video-gallery-plugin/) and
-some code samples from WaxJelly (http://www.waxjelly.com/2006/08/29/a-more-complex-php-script-using-the-youtube-api-with-video-details-part-2/). Thanks!
 
 Copyright (C) 2007 Eric D. Hough (k2eric@gmail.com)
 
@@ -27,11 +21,13 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-/* This function will be called if the user has no or invalid TubePress options */
-function tubepress_debug($options) {
+/**
+ *  Spits out tons and tons of debug info
+ */
+function tp_debug($options) {
 	require_once("tubepress_init.php");
 	$tagString = $options->tagString;
-	$dbCheck = (tubepress_validOptions(get_option(TP_OPTION_NAME))? 'good' : 'bad');
+	$dbCheck = (tp_validOptions(get_option(TP_OPTION_NAME))? 'good' : 'bad');
 	print <<<EOH
 		YOU ARE NOW IN TUBEPRESS DEBUG MODE<BR/><ol>
 		<li>Your database looks $dbCheck</li>
@@ -49,36 +45,36 @@ EOH;
 	echo '</pre></li>';
 
 	echo '<li>We ARE';
-	if (!tubepress_areWePaging($options))
+	if (!tp_areWePaging($options))
 		echo ' NOT ';
 	echo 'paging</li>';
 		
 	echo '<li>We ARE';
-	if (!tubepress_printingSingleVideo($options))
+	if (!tp_printingSingleVideo($options))
 		echo ' NOT ';
 	echo 'printing just a single video</li>';		
 		
-	echo '<li>Here is the full URL to this page: <pre>' . tubepress_fullURL() . '</pre></li>';
+	echo '<li>Here is the full URL to this page: <pre>' . tp_fullURL() . '</pre></li>';
 	
 	/* Stop here if we're not making any requests to YouTube */
-	if (tubepress_printingSingleVideo($options)) return;
+	if (tp_printingSingleVideo($options)) return;
 	
 	echo '<li>Here is the request that will be generated and sent to YouTube. Click it to see the raw results:<br/>';
-	$request = tubepress_generateRequest($options);
+	$request = tp_generateRequest($options);
 	echo '<a href="' . $request . '">' . $request . '</a></li>';
 
 	/* Grab the XML from YouTube's API */
-	$youtube_xml = tubepress_get_youtube_xml($options);
+	$youtube_xml = tp_get_youtube_xml($options);
 
 	echo '<li>The result CAN';
 	if (!is_a($youtube_xml, 'IsterXmlNode')) echo 'NOT';
 	echo ' be interpreted as an IsterXmlNode</li>';
 	
 	/* count how many we got back */
-	$videosReturnedCount = tubepress_count_videos($youtube_xml);
+	$videosReturnedCount = tp_count_videos($youtube_xml);
 	echo '<li>Found ' . $videosReturnedCount . ' videos in the result</li>';
 	
-	$vidLimit = (tubepress_areWePaging($options)? $options->get_option(TP_OPT_VIDSPERPAGE) : $videosReturnedCount);
+	$vidLimit = (tp_areWePaging($options)? $options->get_option(TP_OPT_VIDSPERPAGE) : $videosReturnedCount);
 	if ($videosReturnedCount < $vidLimit) $vidLimit = $videosReturnedCount;
 	echo '<li>We will print ' . $vidLimit . ' videos on this page</li>';
 	

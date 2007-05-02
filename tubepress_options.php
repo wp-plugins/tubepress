@@ -1,14 +1,8 @@
 <?php
 /*
 tubepress_options.php
+
 Handles everything related to the options page
-
-THANKS:
-Matt Doyle (http://notdrunk.net) was responsible for designing and developing the "option overriding"
-capability of this plugin.
-
-This plugin was based on the "mytube" plugin by Vaam Yob (http://rane.hasitsown.com/blog/plink/technical/27/wordpress-youtube-video-gallery-plugin/) and
-some code samples from WaxJelly (http://www.waxjelly.com/2006/08/29/a-more-complex-php-script-using-the-youtube-api-with-video-details-part-2/). Thanks!
 
 Copyright (C) 2007 Eric D. Hough (k2eric@gmail.com)
 
@@ -28,32 +22,32 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
 /* Adds our options page to the main WP options panel */
-function tubepress_add_options_page() {
+function tp_add_options_page() {
 	if (function_exists('add_options_page'))
-		add_options_page(TP_MSG_OPTPANELTITLE, TP_MSG_OPTPANELMENU, 9, 'tubepress.php', 'tubepress_options_subpanel');
+		add_options_page(TP_MSG_OPTPANELTITLE, TP_MSG_OPTPANELMENU, 9, 'tubepress.php', 'tp_options_subpanel');
 }
 
-function tubepress_initOptions() {
+function tp_initOptions() {
 	/* OPTIONS */
 
 	require_once("tubepress_init.php");
 	
 	$options = get_option(TP_OPTION_NAME);
-	if (tubepress_validOptions($options)) return $options;
-	return tubepress_addOptions();
+	if (tp_validOptions($options)) return $options;
+	return tp_addOptions();
 }
 
 /* Main function for our options page */
-function tubepress_options_subpanel() {
+function tp_options_subpanel() {
 
-	$dbOptions = tubepress_initOptions();
+	$dbOptions = tp_initOptions();
 
 	$pageTitle = TP_MSG_OPTPANELTITLE;
 
 	/* are we updating options? */
 	if (isset($_POST['tubepress_save'])) {
-		tubepress_update_options($dbOptions);
-		$dbOptions = tubepress_initOptions();
+		tp_update_options($dbOptions);
+		$dbOptions = tp_initOptions();
 	}
 
 	print <<<EOT
@@ -63,11 +57,11 @@ function tubepress_options_subpanel() {
 		<br /><br />
 EOT;
 
-	tubepress_printHTML_searchArray(			$dbOptions[TP_OPTS_SEARCH], TP_MSG_WHICHVIDS, $dbOptions[TP_OPTS_SRCHV]);
-	tubepress_printHTML_genericOptionsArray(	$dbOptions[TP_OPTS_DISP], 	TP_MSG_VIDDISP, 5);
-	tubepress_printHTML_playerLocationMenu($dbOptions);
-	tubepress_printHTML_metaArray(				$dbOptions[TP_OPTS_META], 	TP_MSG_META, 	$metas);
-	tubepress_printHTML_genericOptionsArray(	$dbOptions[TP_OPTS_ADV], 	TP_MSG_ADV, 	20);
+	tp_printHTML_searchArray(			$dbOptions[TP_OPTS_SEARCH], TP_MSG_WHICHVIDS, $dbOptions[TP_OPTS_SRCHV]);
+	tp_printHTML_genericOptionsArray(	$dbOptions[TP_OPTS_DISP], 	TP_MSG_VIDDISP, 5);
+	tp_printHTML_playerLocationMenu($dbOptions);
+	tp_printHTML_metaArray(				$dbOptions[TP_OPTS_META], 	TP_MSG_META, 	$metas);
+	tp_printHTML_genericOptionsArray(	$dbOptions[TP_OPTS_ADV], 	TP_MSG_ADV, 	20);
 
 	$saveValue = TP_MSG_SAVE;
 	print <<<EOT
@@ -78,8 +72,8 @@ EOT;
 
 }
 
-function tubepress_printHTML_genericOptionsArray($theArray, $arrayName, $inputSize=20, $radioName='') {
-	tubepress_printHTML_optionHeader($arrayName);
+function tp_printHTML_genericOptionsArray($theArray, $arrayName, $inputSize=20, $radioName='') {
+	tp_printHTML_optionHeader($arrayName);
 
 	$openBracket = "";
 	$closeBracket = "";
@@ -103,11 +97,11 @@ function tubepress_printHTML_genericOptionsArray($theArray, $arrayName, $inputSi
 					</tr>
 EOT;
 	}
-	tubepress_printHTML_optionFooter();
+	tp_printHTML_optionFooter();
 }
 
-function tubepress_printHTML_metaArray($theArray, $arrayName) {
-	tubepress_printHTML_optionHeader($arrayName);
+function tp_printHTML_metaArray($theArray, $arrayName) {
+	tp_printHTML_optionHeader($arrayName);
 	echo "<tr><td width='10%'></td><td><table cellspacing='0' cellpadding='0' width='100%'>";
 
 	$logan = 0;
@@ -129,10 +123,10 @@ EOT;
 		$logan++;
 	}
 	echo "</tr></table>";
-	tubepress_printHTML_optionFooter();
+	tp_printHTML_optionFooter();
 }
 
-function tubepress_printHTML_optionHeader($arrayName) {
+function tp_printHTML_optionHeader($arrayName) {
 	print <<<EOT
 			<fieldset>
 EOT;
@@ -143,18 +137,18 @@ print <<<EOT
 EOT;
 }
 
-function tubepress_printHTML_optionFooter() {
+function tp_printHTML_optionFooter() {
 print <<<EOT
 	</table>
      			</fieldset>
 EOT;
 }
 
-function tubepress_printHTML_playerLocationMenu($dbOptions) {
+function tp_printHTML_playerLocationMenu($dbOptions) {
 	$locationVars = 	$dbOptions[TP_OPTS_PLAYERLOCATION];
 	$theArray = 		$dbOptions[TP_OPTS_PLAYERMENU];
 	$theOption = 		$theArray[TP_OPT_PLAYIN];
-	tubepress_printHTML_optionHeader("");
+	tp_printHTML_optionHeader("");
 
 print <<<EOT
 			<tr>
@@ -175,10 +169,10 @@ print <<<EOT
 	</td>
 		</tr>
 EOT;
-	tubepress_printHTML_optionFooter();
+	tp_printHTML_optionFooter();
 }
 
-function tubepress_printHTML_quickSrchVal($value, $searchVars, $inputSize) {
+function tp_printHTML_quickSrchVal($value, $searchVars, $inputSize) {
 	$whichValue = "";
 	switch ($value) {
 		case TP_SRCH_TAG:
@@ -198,8 +192,8 @@ function tubepress_printHTML_quickSrchVal($value, $searchVars, $inputSize) {
 	return '<input type="text" name="' . $searchVars[$whichValue]->name . '" size="' . $inputSize . '" value="' . $searchVars[$whichValue]->value . '" />';
 }
 
-function tubepress_printHTML_searchArray($theArray, $arrayName, $searchVars, $inputSize=20) {
-	tubepress_printHTML_optionHeader($arrayName);
+function tp_printHTML_searchArray($theArray, $arrayName, $searchVars, $inputSize=20) {
+	tp_printHTML_optionHeader($arrayName);
 
 	$radioName = TP_OPT_SEARCHBY;
 
@@ -211,7 +205,7 @@ function tubepress_printHTML_searchArray($theArray, $arrayName, $searchVars, $in
 		
 		/* The idea here is only one mode that doesn't need any kind of input */
 		if ($option->name != TP_SRCH_FEATURED)
-				$inputBox = tubepress_printHTML_quickSrchVal($option->name, $searchVars, $inputSize);
+				$inputBox = tp_printHTML_quickSrchVal($option->name, $searchVars, $inputSize);
 		if ($option->name == TP_SRCH_POPULAR) {
 			$name = TP_SRCH_POPVAL;
 			$inputBox = '<select name="' . $name . '">';
@@ -233,13 +227,13 @@ print <<<EOT
 		</tr>
 EOT;
 	}
-	tubepress_printHTML_optionFooter();
+	tp_printHTML_optionFooter();
 }
 
 /* Go through all the post variables and update the corresponding
  * database entries.
 */
-function tubepress_update_options($dbOptions) {
+function tp_update_options($dbOptions) {
 	$css = new tubepressCSS();
 
 	$mostOptions = array(TP_OPTS_SEARCH,

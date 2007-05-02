@@ -90,7 +90,7 @@ class tubepressVideo {
 				TP_VID_AUTHOR =>		$videoXML->author->CDATA(),
 			 	TP_VID_ID =>			$videoXML->id->CDATA(),
 			 	TP_VID_TITLE =>			htmlentities($videoXML->title->CDATA(), ENT_QUOTES),
-				TP_VID_LENGTH =>		tubepress_humanTime($videoXML->length_seconds->CDATA()),
+				TP_VID_LENGTH =>		tp_humanTime($videoXML->length_seconds->CDATA()),
 	 			TP_VID_RATING_AVG =>	$videoXML->rating_avg->CDATA(),
 		 		TP_VID_RATING_CNT =>	number_format($videoXML->rating_count->CDATA()),
 		 		TP_VID_DESC =>			$videoXML->description->CDATA(),

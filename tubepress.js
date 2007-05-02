@@ -6,12 +6,10 @@ function playVideo(id, height, width, title, time, location, url) {
 			break;
 		default:
 			document.getElementById('tubepress_mainvideo').innerHTML = ' \
-				<a name="tubepress_video"></a> \
 					<span class="tubepress_title">' + title + '</span> \
-					<span class="runtime">(' + time + ') \
-					<object width="' + width +'" height="' + height + '"> \
+					<span class="runtime">(' + time + ')</span><br /> \
+					<object type="application/x-shockwave-flash" style="width:' + width +'px; height:' + height + 'px;" data="http://www.youtube.com/' + id + '/"> \
 						<param name="movie" value="http://www.youtube.com/v/' + id + '" /> \
-						<embed src="http://www.youtube.com/v/' + id + '" type="application/x-shockwave-flash" width="' + width + 'px" height="' + height + 'px" /> \
 					</object> \
 			';
 			document.location.hash = '#tubepress_video';

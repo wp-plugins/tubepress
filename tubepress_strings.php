@@ -1,11 +1,9 @@
 <?php
 /*
-THANKS:
-Matt Doyle (http://notdrunk.net) was responsible for designing and developing the "option overriding"
-capability of this plugin.
 
-This plugin was based on the "mytube" plugin by Vaam Yob (http://rane.hasitsown.com/blog/plink/technical/27/wordpress-youtube-video-gallery-plugin/) and
-some code samples from WaxJelly (http://www.waxjelly.com/2006/08/29/a-more-complex-php-script-using-the-youtube-api-with-video-details-part-2/). Thanks!
+tubepress_strings.php
+
+Defines lots of constants that we use in the plugin
 
 Copyright (C) 2007 Eric D. Hough (k2eric@gmail.com)
 
@@ -25,42 +23,81 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
 /* OPTIONS MESSAGES */
-define("TP_MSG_ADV",				"Advanced");
-define("TP_MSG_BACK2GALLERY",		"Back to gallery");
-define("TP_MSG_DEVID_DESC",			"Default is \"qh7CQ9xJIIc\". I can't think of a reason why you'd want/need to change the default developer id to you own, but the option is here for completeness. Available from");
+define("TP_MSG_ADV",
+    "Advanced");
+    
+define("TP_MSG_BACK2GALLERY",
+    "Back to gallery");
+    
+define("TP_MSG_DEVID_DESC",
+    "Default is \"qh7CQ9xJIIc\". I can't think of a reason why you'd want/need to change the default developer id to you own, but the option is here for completeness. Available from");
+
 define("TP_MSG_DEVID_TITLE",		"Alternate YouTube developer ID");
+
 define("TP_MSG_KEYWORD_DESC",		"The word you insert (in plaintext, between square brackets) into your posts to display your YouTube gallery.");
+
 define("TP_MSG_KEYWORD_TITLE",		"Trigger keyword");
+
 define("TP_MSG_META",				"Video meta display");
+
 define("TP_MSG_OPTPANELTITLE",		"TubePress Options");
+
 define("TP_MSG_OPTPANELMENU",		"TubePress");
+
 define("TP_MSG_OPTSUCCESS",			"Options updated");
+
 define("TP_MSG_SAVE",				"Save");
+
 //define("TP_MSG_SRCH_CATEGORY_TITLE","this category");
+
 define("TP_MSG_SRCH_FAV_TITLE",		"this user's \"favorites\"");
+
 define("TP_MSG_SRCH_FEATURED_TITLE","The latest 25 \"featured\" videos on YouTube's homepage.");
+
 define("TP_MSG_SRCH_PLST_TITLE",	"this playlist");
+
 define("TP_MSG_SRCH_PLST_DESC",		"Will usually look something like this: D2B04665B213AE35. Copy the playlist id from the end of the URL in your browser's address bar (while looking at a YouTube playlist). It comes right after the 'p='. For instance: http://youtube.com/my_playlists?p=D2B04665B213AE35.");
+
 define("TP_MSG_SRCH_POPULAR_TITLE",	"Top 25 most-viewed videos from the past...");
+
 define("TP_MSG_SRCH_REL_TITLE",		"<i>any</i> of these tags");
+
 define("TP_MSG_SRCH_TAG_TITLE",		"<i>all</i> of these tags");
+
 define("TP_MSG_SRCH_USER_TITLE",	"this user's videos");
+
 define("TP_MSG_SRCH_TAGREL_DESC",	"Space-separated tags with no special characters or punctuation.");
+
 define("TP_MSG_THUMBHEIGHT_DESC",  	"Default is 90");
+
 define("TP_MSG_THUMBHEIGHT_TITLE",	"Height (px) of thumbs");
+
 define("TP_MSG_THUMBWIDTH_DESC",	"Default is 120");
+
 define("TP_MSG_THUMBWIDTH_TITLE",	"Width (px) of thumbs");
+
 define("TP_MSG_TIMEOUT_DESC",		"Default is 6 seconds");
+
 define("TP_MSG_TIMEOUT_TITLE",		"How long to wait (in seconds) for YouTube to respond");
+
 define("TP_MSG_USERNAME_TITLE",		"Alternate YouTube username");
+
 define("TP_MSG_USERNAME_DESC",		"Default is \"3hough\". Again, no reason to change this value unless you know something I don't :p");
+
 define("TP_MSG_VIDDISP",			"Video display");
+
 define("TP_MSG_VIDHEIGHT_DESC", 	"Default is 350");
+
 define("TP_MSG_VIDHEIGHT_TITLE",	"Max height (px) of main video");
+
 define("TP_MSG_VIDSPERPAGE_TITLE",	"Videos per page");
+
 define("TP_MSG_VIDSPERPAGE_DESC",	"Default is 20, maximum is 100. The only modes that support pagination are the tag modes, and videos from some user. Playlists are supposed to page but it appears to be broken on YouTube's side :(");
+
 define("TP_MSG_VIDWIDTH_DESC",  	"Default is 425");
+
 define("TP_MSG_VIDWIDTH_TITLE",		"Max width (px) of main video");
+
 define("TP_MSG_WHICHVIDS",			"Which videos?");
 
 /* ERROR MESSAGES */
