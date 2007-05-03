@@ -40,11 +40,11 @@
 /**
  * require Translation2_Container class
  */
-require_once '../Container.php';
+require_once ABSPATH . 'wp-content/plugins/tubepress/lib/PEAR/Internationalization/Translation2/Container.php';
 /**
  * require XML_Unserializer class
  */
-require_once '../../../XML/XML_Serializer/Unserializer.php';
+require_once ABSPATH . 'wp-content/plugins/tubepress/lib/PEAR/XML/XML_Serializer/Unserializer.php';
 /**
  * Document Type Definition
  */
@@ -77,7 +77,7 @@ define ('TRANSLATION2_DTD',
  *         <lang id='fr_FR'>
  *             <name> English </name>
  *             <meta> Custom meta data</meta>
- *             <error_text> Non disponible en français </error_text>
+ *             <error_text> Non disponible en franï¿½ais </error_text>
  *             <encoding> iso-8859-1 </encoding>
  *         </lang>
  *         <!-- some more <lang>...</lang> -->

@@ -39,7 +39,7 @@
 /**
  * require PEAR base class
  */
-require_once '../../PEAR.php';
+require_once ABSPATH . 'wp-content/plugins/tubepress/lib/PEAR/PEAR.php';
 
 /**
  * Allows redefinition of the default pageID.
@@ -174,7 +174,7 @@ class Translation2
      */
     function & _storageFactory($driver, $options='')
     {
-        $storage_path = 'Translation2/Container/'.strtolower($driver).'.php';
+        $storage_path = ABSPATH . 'wp-content/plugins/tubepress/lib/PEAR/Internationalization/Translation2/Container/'.strtolower($driver).'.php';
         $storage_class = 'Translation2_Container_'.strtolower($driver);
         require_once $storage_path;
         $storage =& new $storage_class;

@@ -125,6 +125,8 @@ define("TP_MSG_PLAYIN_NORMAL_TITLE","normally (at the top of your gallery)");
 define("TP_MSG_PLAYIN_POPUP_TITLE", "in a popup window");
 define("TP_MSG_PLAYIN_LB_TITLE", 	"using Thickbox (experimental)");
 define("TP_MSG_PLAYIN_TITLE", 		"Play each video...");
+define("TP_MSG_PLAYIN_LB_TITLE", 	"with ThickBox (experimental)");
+define("TP_MSG_PLAYIN_LW_TITLE",	"with LightWindow (experimental)");
 
 /* MISC */
 define("TP_MASTERNODE", 			"video_list");
@@ -160,6 +162,7 @@ define("TP_PLAYIN_YT", 				"youtube");
 define("TP_PLAYIN_NORMAL",			"normal");
 define("TP_PLAYIN_POPUP",			"popup");
 define("TP_PLAYIN_THICKBOX", 		"thickbox");
+define("TP_PLAYIN_LWINDOW",			"lightwindow");
 
 /* SINGLE OPTIONS */
 define("TP_OPT_DEVID",				"devID");

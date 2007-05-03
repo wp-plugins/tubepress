@@ -81,7 +81,11 @@ EOH;
 	echo '<li>Now we will loop through each video and see if we can interpret it...<ol>';
 	for ($x = 0; $x < $vidLimit; $x++) {
 		echo '<li>';
-		$video = new tubepressVideo($youtube_xml->video[$x]);
+		
+		/* create a video from each */
+		if ($vidLimit == 1) $video = new tubepressVideo($youtube_xml->video);
+		else $video = new tubepressVideo($youtube_xml->video[$x]);
+		
 		if ($video->metaValues[TP_VID_ID] == '') {
 			echo 'PROBLEM!';
 		} else {

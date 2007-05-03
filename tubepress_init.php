@@ -276,6 +276,9 @@ function tp_getNewOptionsArray()
               TP_PLAYIN_POPUP =>    new tubepressOption(TP_PLAYIN_POPUP,
                                         TP_MSG_PLAYIN_POPUP_TITLE, '', ''),
                                         
+              TP_PLAYIN_LWINDOW =>  new tubePressOption(TP_PLAYIN_LWINDOW,
+                                        TP_MSG_PLAYIN_LW_TITLE, '', '')),
+                                        
               TP_PLAYIN_THICKBOX => new tubePressOption(TP_PLAYIN_THICKBOX,
                                         TP_MSG_PLAYIN_LB_TITLE, '', ''));
                                         

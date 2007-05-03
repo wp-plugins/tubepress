@@ -267,6 +267,11 @@ function tp_printHTML_smallVidLinkAttributes($vid, $options) {
 		case TP_PLAYIN_YT:
 			return 'href="http://youtube.com/watch?v=' . $id . '"';
 		
+		case TP_PLAYIN_LWINDOW:
+			return "href=\"" . $options->get_option('site_url') . "/wp-content/plugins/tubepress/tubepress_popup.php?name=" . htmlspecialchars($vid->metaValues[TP_VID_TITLE]) . "&id=" . $id . "&w=" . $options->get_option(TP_OPT_VIDWIDTH) . "&h=" . $options->get_option(TP_OPT_VIDHEIGHT) . "\" class=\"lWOn\" title=\"" . htmlspecialchars($vid->metaValues[TP_VID_TITLE]) . "\" params=\"lWWidth=425,lWHeight=355\"";
+			//return "href=\"http://www.youtube.com/v/" . $id . ".swf\" class=\"lWOn page-options\" params=\"lWWidth=" . $options->get_option(TP_OPT_VIDWIDTH) . ",lWHeight=" . $options->get_option(TP_OPT_VIDHEIGHT) . "\" title=\"" . htmlspecialchars($vid->metaValues[TP_VID_TITLE]) . "\"";
+			//return "href=\"#\" onclick=\"javascript:playVideo('" . $id . "', '" . $options->get_option(TP_OPT_VIDHEIGHT) . "', '" . $options->get_option(TP_OPT_VIDWIDTH)  . "', '" . htmlspecialchars($vid->metaValues[TP_VID_TITLE])  . "', '" .$vid->metaValues[TP_VID_LENGTH]. "', 'lightwindow', '" . $options->get_option('site_url') . "')\"";
+			
 		case TP_PLAYIN_NORMAL:
 			return "href=\"#\" onclick=\"javascript:playVideo('" . $id . "', '" . $height . "', '" . $width  . "', '" . htmlspecialchars($vid->metaValues[TP_VID_TITLE])  . "', '" .$vid->metaValues[TP_VID_LENGTH]. "', 'normal', '" . $options->get_option('site_url') . "')\"";
 		

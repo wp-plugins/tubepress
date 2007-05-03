@@ -27,12 +27,12 @@
 /**
  * uses PEAR error managemt
  */
-require_once '../../PEAR.php';
+require_once ABSPATH . 'wp-content/plugins/tubepress/lib/PEAR/PEAR.php';
 
 /**
  * uses XML_Parser to unserialize document
  */
-require_once '../XML_Parser/Parser.php';
+require_once ABSPATH . 'wp-content/plugins/tubepress/lib/PEAR/XML/XML_Parser/Parser.php';
 
 /**
  * option: Convert nested tags to array or object

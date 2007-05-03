@@ -34,22 +34,30 @@ $tubepress_disable_debug = false;
 /* Imports */
 defined('TP_OPT_DEVID') ||
     require("tubepress_strings.php");
+    
 class_exists('tubepressVideo') ||
     require("tubepress_classes.php");
+    
 function_exists('tp_add_options_page') ||
     require("tubepress_options.php");
+    
 function_exists('tp_get_youtube_xml') ||
     require("tubepress_utility.php");
+    
 function_exists('tp_printSingleVideo') ||
     require("tubepress_html.php");
+    
 function_exists('tp_debug') ||
     require("tubepress_debug.php");
-class_exists('IsterXmlSimpleXMLImpl') ||
-    require("lib/simpleXML/IsterXmlSimpleXMLImpl.php");
+
+if (!class_exists('Translation2')) {
+    require("lib/PEAR/Internationalization/Translation2/Translation2.php");
+}
 class_exists('Snoopy') ||
     require(ABSPATH . "wp-includes/class-snoopy.php");
+    
 class_exists('Net_URL') ||
-    require("lib/PEAR/Net_URL/URL.php");
+    require("lib/PEAR/Networking/Net_URL/URL.php");
 
 /**
  * Main filter hook. Looks for a tubepress tag
@@ -68,6 +76,21 @@ function tp_showgallery ($content = '')
         return $content;
     }
  
+    $driver = 'XML';
+$options = array(
+    'filename'         => ABSPATH . 'wp-content/plugins/tubepress/messages.xml',
+    'save_on_shutdown' => true, //set to FALSE to save in real time
+);
+
+$tr =& Translation2::factory($driver, $options);
+    
+if (PEAR::isError($tr)) {
+    echo $tr->getMessage();
+}
+
+$tr->setLang('en_US');
+$tr->setPageID('options');
+echo $tr->get('panel_title');
     /* Parse the tag  */
     $options = tp_parse_tag($content, $keyword);
 
@@ -126,10 +149,12 @@ function tp_showgallery ($content = '')
             $vidLimit = $videosReturnedCount;
         }
         
-        for ($x = 0; $x < $vidLimit; $x++) {
-   
-            /* Create a tubepressVideo object from the XML (if we can) */
-            $video = new tubepressVideo($youtube_xml->video[$x]);
+		for ($x = 0; $x < $vidLimit; $x++) {
+			
+			/* Create a tubepressVideo object from the XML (if we can) */
+			if ($vidLimit == 1) $video = new tubepressVideo($youtube_xml->video);
+			else $video = new tubepressVideo($youtube_xml->video[$x]);
+
             if ($video->metaValues[TP_VID_ID] == '') {
                 continue;
             }
@@ -181,28 +206,46 @@ function tp_finish($newcontent, $content, $options, $css)
  */
 function tp_insert_cssjs()
 {
-    $url = get_settings('siteurl') . "/wp-content/plugins/tubepress";
-    echo '<script type="text/javascript" src="' . $url . 
-        '/tubepress.js"></script>';
-    echo '<link rel="stylesheet" href="' . $url . 
-        '/tubepress.css" type="text/css" />';
+	$url = get_settings('siteurl') . "/wp-content/plugins/tubepress";
+	echo "<script type=\"text/javascript\" src=\"" . $url . "/tubepress.js\"></script>\n";
+	echo "<link rel=\"stylesheet\" href=\"" . $url . "/tubepress.css\" type=\"text/css\" />\n";
+}
+
+function tubepress_insert_lightwindow() {
+	$url = get_settings('siteurl') . "/wp-content/plugins/tubepress/lib/lightWindow";
+	echo "<script type=\"text/javascript\" src=\"" . $url . "/javascript/prototype.js\"></script>\n";
+	echo "<script type=\"text/javascript\" src=\"" . $url . "/javascript/effects.js\"></script>\n";
+	echo "<script type=\"text/javascript\" src=\"" . $url . "/javascript/lightWindow.js\"></script>\n";
+	echo "<link rel=\"stylesheet\" href=\"" . $url . "/css/lightWindow.css\" media=\"screen\" type=\"text/css\" />\n";
 }
 
 function tp_insert_thickbox()
 {
-    $url = get_settings('siteurl') . "/wp-content/plugins/tubepress";
-    echo '<script type="text/javascript" src="' . $url . 
-        '/lib/thickbox/jquery.js"></script>';
-    echo '<script type="text/javascript" src="' . $url . 
-        '/lib/thickbox/thickbox.js"></script>';
-    echo '<link rel="stylesheet" href="' . $url . 
-        '/lib/thickbox/thickbox.css" media="screen" type="text/css" />';
+	$url = get_settings('siteurl') . "/wp-content/plugins/tubepress/lib/thickbox";
+	echo "<script type=\"text/javascript\" src=\"" . $url . "/jquery.js\"></script>\n";
+	echo "<script type=\"text/javascript\" src=\"" . $url . "/thickbox.js\"></script>\n";
+	echo "<link rel=\"stylesheet\" href=\"" . $url . "/thickbox.css\" media=\"screen\" type=\"text/css\" />\n";
 }
 
 /* ACTIONS */
 add_action('admin_menu',  'tp_add_options_page');
 add_action('wp_head',     'tp_insert_cssjs');
-add_action('wp_head', 'tp_insert_thickbox');
+
+/* add thickbox or lightwindow, if we need them */
+$quickOpts = get_option(TP_OPTION_NAME);
+if ($quickOpts != NULL) {
+	$disp = $quickOpts[TP_OPTS_PLAYERMENU];
+	$playWith = $disp[TP_OPT_PLAYIN]->value;
+	
+	switch ($playWith) {
+		case TP_PLAYIN_THICKBOX:
+			add_action('wp_head', 'tubepress_insert_thickbox');
+			break;
+		case TP_PLAYIN_LWINDOW:
+			add_action('wp_head', 'tubepress_insert_lightwindow');
+			break;
+	}
+}
 
 /* FILTERS */
 add_filter('the_content', 'tp_showgallery');
