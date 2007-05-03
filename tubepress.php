@@ -1,5 +1,5 @@
 <?php
-/*
+/**
 Plugin Name: TubePress
 Plugin URI: http://ehough.com/youtube/tubepress
 Description: Display configurable YouTube galleries in your posts and/or pages
@@ -33,22 +33,22 @@ $tubepress_disable_debug = false;
 
 /* Imports */
 defined('TP_OPT_DEVID') ||
-    require("tubepress_strings.php");
+    require("tp_strings.php");
     
-class_exists('tubepressVideo') ||
-    require("tubepress_classes.php");
+class_exists('TubePressVideo') ||
+    require("tp_classes.php");
     
 function_exists('tp_add_options_page') ||
-    require("tubepress_options.php");
+    require("tp_options_page.php");
     
 function_exists('tp_get_youtube_xml') ||
-    require("tubepress_utility.php");
+    require("tp_utility.php");
     
 function_exists('tp_printSingleVideo') ||
-    require("tubepress_html.php");
+    require("tp_html.php");
     
 function_exists('tp_debug') ||
-    require("tubepress_debug.php");
+    require("tp_debug.php");
 
 if (!class_exists('Translation2')) {
     require("lib/PEAR/Internationalization/Translation2/Translation2.php");
@@ -63,7 +63,7 @@ class_exists('Net_URL') ||
  * Main filter hook. Looks for a tubepress tag
  * and replaces it with a gallery (or single video) if it's found
 */
-function tp_showgallery ($content = '')
+function tp_main ($content = '')
 {
     /* Get out fast if we're not needed */
     $quickOpts = get_option(TP_OPTION_NAME);
@@ -76,129 +76,47 @@ function tp_showgallery ($content = '')
         return $content;
     }
  
-    $driver = 'XML';
-$options = array(
-    'filename'         => ABSPATH . 'wp-content/plugins/tubepress/messages.xml',
-    'save_on_shutdown' => true, //set to FALSE to save in real time
-);
-
-$tr =& Translation2::factory($driver, $options);
-    
-if (PEAR::isError($tr)) {
-    echo $tr->getMessage();
-}
-
-$tr->setLang('en_US');
-$tr->setPageID('options');
-echo $tr->get('panel_title');
+ 	/* We'll store everything we generate in the following string */
+ 	$newcontent = "";
+ 
+ 	//$m = loadTranslations();
+ 
     /* Parse the tag  */
     $options = tp_parse_tag($content, $keyword);
+	if (PEAR::isError($options)) {
+	    return tp_bail($content, "There was a problem parsing the TubePress tag in this page", $options);
+	}
 
-    /* get css */
-    $css = new tubepressCSS();
+    /* Get CSS constants */
+    $css = new TubePressCSS();
 
-    /* Set up the header no matter what */
-    $newcontent = tp_printHTML_videoheader($css);
-
+	/* Are we debugging? */
     global $tubepress_disable_debug;
-
-    /* Are we debugging? */
     if (!$tubepress_disable_debug && tp_areWeDebugging()) {
-        tp_debug($options);
+        $newcontent .= tp_debug($options);
     }
 
-    /* Are we printing a single video? */
-    if (tp_printingSingleVideo($options)) {
-        $newcontent .= tp_printHTML_singleVideo($css, $options);
-        return tp_finish($newcontent, $content, $options, $css);
-    }
-    
-    /* are we paging? */
-    $paging = tp_areWePaging($options);
-
-    /* Grab the XML from YouTube's API */
-    $youtube_xml = tp_get_youtube_xml($options);
-
-    /* count how many we got back */
-    $videosReturnedCount = tp_count_videos($youtube_xml);
-
-    $error = false;
-    /* Check for a YouTube timeout */
-    if ($youtube_xml == TP_XMLERR) {
-        $error = true;
-        $newcontent .= "<div>" . TP_MSG_TIMEOUT;
-    }
-    /* Did we get any videos? */
-    if ($videosReturnedCount == 0) {
-        $error = true;
-        $newcontent .= "<div>" . TP_MSG_YTERR;
-    }
-
-    /* Loop through each video */
-    if ($error == false) {
-        
-        /* keeps track of how many videos we've actually printed */
-        $videoCount = 0;
-        
-        /* Next two lines figure out how many videos we're going to show */
-        $vidLimit = ($paging?
-            $options->get_option(TP_OPT_VIDSPERPAGE) : 
-            $videosReturnedCount);
-            
-        if ($videosReturnedCount < $vidLimit) {
-            $vidLimit = $videosReturnedCount;
-        }
-        
-		for ($x = 0; $x < $vidLimit; $x++) {
-			
-			/* Create a tubepressVideo object from the XML (if we can) */
-			if ($vidLimit == 1) $video = new tubepressVideo($youtube_xml->video);
-			else $video = new tubepressVideo($youtube_xml->video[$x]);
-
-            if ($video->metaValues[TP_VID_ID] == '') {
-                continue;
+	switch (tp_determineNextAction($options)) {
+	    case "SINGLEVIDEO":
+	        $newcontent .= tp_printHTML_singleVideo($css, $options);
+	        break;
+        default:
+            $newcontent .= tp_generateGallery($options, $css);
+            if (PEAR::isError($newcontent)) {
+                return tp_bail("There was a problem generating the TubePress gallery", $newcontent);
             }
-            
-            /* If we're on the first video, see if we need to print a big one */
-            if ($videoCount++ == 0) {
-                $newcontent .= tp_printHTML_bigvid($video, $css, $options);
-                if ($paging) {
-                    $newcontent .= 
-                        tp_printHTML_pagination($videosReturnedCount, 
-                            $options, $css);
-                }
-                $newcontent .= '<div class="' . 
-                    $css->thumb_container_class . '">';
-            }
-            $newcontent .= tp_printHTML_smallvid($video, $css, $options);
-        }
-        $newcontent .= '</div>';
-        if ($paging) {
-            $newcontent .= tp_printHTML_pagination($videosReturnedCount, 
-                $options, $css);
-        }
-    }
-    
-    return tp_finish($newcontent, $content, $options, $css);
+            break;
+	}
+
+    /* We're done! Replace the tag with our new content */
+    return str_replace($options->tagString, $newcontent, $content);
 }
 
-/**
- * Prints out HTML tail and does the work of replacing the tag string with
- * the TubePress result.
- * 
- * @param newcontent The new TubePress-generated HTML
- * @param content The old WordPress-generated HTML
- * @param options A tubepressTag object holding all of our options
- * @param css A CSS holder object
- */
-function tp_finish($newcontent, $content, $options, $css)
+function tp_determineNextAction($options)
 {
-    /* push out the footer */
-    $newcontent .= tp_printHTML_videofooter($css);
-
-    /* We're done, so let's insert the gallery (or single video) 
-     * where the keyword is */
-    return str_replace($options->tagString, $newcontent, $content);
+    if ($options->get_option(TP_OPT_PLAYIN) == TP_PLAYIN_NW
+        && isset($_GET[TP_VID_PARAM]))
+            return "SINGLEVIDEO";
 }
 
 /**
@@ -211,7 +129,10 @@ function tp_insert_cssjs()
 	echo "<link rel=\"stylesheet\" href=\"" . $url . "/tubepress.css\" type=\"text/css\" />\n";
 }
 
-function tubepress_insert_lightwindow() {
+/**
+ * Spits out the CSS and JS files that we need for LightWindow
+ */
+function tp_insert_lightwindow() {
 	$url = get_settings('siteurl') . "/wp-content/plugins/tubepress/lib/lightWindow";
 	echo "<script type=\"text/javascript\" src=\"" . $url . "/javascript/prototype.js\"></script>\n";
 	echo "<script type=\"text/javascript\" src=\"" . $url . "/javascript/effects.js\"></script>\n";
@@ -219,6 +140,9 @@ function tubepress_insert_lightwindow() {
 	echo "<link rel=\"stylesheet\" href=\"" . $url . "/css/lightWindow.css\" media=\"screen\" type=\"text/css\" />\n";
 }
 
+/**
+ * Spits out the CSS and JS files that we need for ThickBox
+ */
 function tp_insert_thickbox()
 {
 	$url = get_settings('siteurl') . "/wp-content/plugins/tubepress/lib/thickbox";
@@ -239,15 +163,15 @@ if ($quickOpts != NULL) {
 	
 	switch ($playWith) {
 		case TP_PLAYIN_THICKBOX:
-			add_action('wp_head', 'tubepress_insert_thickbox');
+			add_action('wp_head', 'tp_insert_thickbox');
 			break;
 		case TP_PLAYIN_LWINDOW:
-			add_action('wp_head', 'tubepress_insert_lightwindow');
+			add_action('wp_head', 'tp_insert_lightwindow');
 			break;
 	}
 }
 
 /* FILTERS */
-add_filter('the_content', 'tp_showgallery');
+add_filter('the_content', 'tp_main');
 
 ?>
