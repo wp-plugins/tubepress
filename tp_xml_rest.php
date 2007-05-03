@@ -69,7 +69,20 @@ function tp_fetchRawXML($options)
 
 function tp_parseRawXML($youtube_xml)
 {
-    
+    $unserializer_options = array ('parseAttributes' => TRUE);
+
+    $Unserializer = &new XML_Unserializer($unserializer_options);
+
+    $status = $Unserializer->unserialize($youtube_xml);
+
+    if (PEAR::isError($status)) {
+        return $status;
+    }
+
+echo '<pre>';
+print_r($Unserializer->getUnserializedData());
+echo '</pre>';
+?>
 }
 
 function tp_generateRequest($options)

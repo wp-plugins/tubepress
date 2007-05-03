@@ -32,32 +32,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 $tubepress_disable_debug = false;
 
 /* Imports */
-defined('TP_OPT_DEVID') ||
-    require("tp_strings.php");
-    
-class_exists('TubePressVideo') ||
-    require("tp_classes.php");
-    
-function_exists('tp_add_options_page') ||
-    require("tp_options_page.php");
-    
-function_exists('tp_get_youtube_xml') ||
-    require("tp_utility.php");
-    
-function_exists('tp_printSingleVideo') ||
-    require("tp_html.php");
-    
-function_exists('tp_debug') ||
-    require("tp_debug.php");
-
-if (!class_exists('Translation2')) {
-    require("lib/PEAR/Internationalization/Translation2/Translation2.php");
-}
-class_exists('Snoopy') ||
-    require(ABSPATH . "wp-includes/class-snoopy.php");
-    
-class_exists('Net_URL') ||
-    require("lib/PEAR/Networking/Net_URL/URL.php");
+defined('TP_OPT_DEVID') || require("tp_strings.php");
+class_exists('TubePressVideo') || require("tp_classes.php");
+function_exists('tp_add_options_page') || require("tp_options_page.php");    
+function_exists('tp_get_youtube_xml') || require("tp_utility.php");
+function_exists('tp_printSingleVideo') || require("tp_html.php");
+function_exists('tp_debug') || require("tp_debug.php");
+class_exists('Translation2') || require("lib/PEAR/Internationalization/Translation2/Translation2.php");
+class_exists('Snoopy') || require(ABSPATH . "wp-includes/class-snoopy.php");
+class_exists('Net_URL') || require("lib/PEAR/Networking/Net_URL/URL.php");
 
 /**
  * Main filter hook. Looks for a tubepress tag
