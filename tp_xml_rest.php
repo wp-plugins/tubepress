@@ -46,29 +46,18 @@ function tp_fetchRawXML($options)
         return PEAR::raiseError("Timed out while trying to contact YouTube"); 
     }
     
-    if ($snoopy->headers['Content-Type'] != "text/xml") {
-        return PEAR::raiseError("Got back non-XML data from YouTube (" .
-            $snoopy->headers['Content-Type'] . ")");
-    }
-    
-    if ($snoopy->response_code != 200) {
+    if (strpos($snoopy->response_code, "200 OK") === false) {
         return PEAR::raiseError("YouTube did not respond with an HTTP OK (" .
             $snoopy->response_code . ")");
     }
-    
-    if ($snoopy->headers['Content-Length'] == 0) {
-        return PEAR::raiseError("Got zero data from YouTube");
-    }
-    
-    while(list($key,$val) = each($snoopy->headers))
-			echo $key.": ".$val."<br>\n";
-		echo "<p>\n";
     
     return $snoopy->results;
 }
 
 function tp_parseRawXML($youtube_xml)
 {
+	class_exists('XML_Unserializer') || require("lib/PEAR/XML/XML_Serializer/Unserializer.php");
+	
     $unserializer_options = array ('parseAttributes' => TRUE);
 
     $Unserializer = &new XML_Unserializer($unserializer_options);
@@ -79,10 +68,23 @@ function tp_parseRawXML($youtube_xml)
         return $status;
     }
 
-echo '<pre>';
-print_r($Unserializer->getUnserializedData());
-echo '</pre>';
-?>
+    $result = $Unserializer->getUnserializedData();
+    
+    /* see if YouTube liked us */
+    if ($result['status'] != "ok") {
+    	$msg = "Unknown error";
+    	if (is_array($result['error'])) {
+    		$msg = $result['error']['description'] . " Code " . $result['error']['code'];
+    	}
+    	return PEAR::raiseError("YouTube responded with an error message: " . $msg);
+    }
+    
+    /* if we have a video_list, just return it */
+    if (is_array($result['video_list'])) {
+    	return $result['video_list'];
+    }
+    
+    return PEAR::raiseError("YouTube responded with OK, but no video_list returned");
 }
 
 function tp_generateRequest($options)

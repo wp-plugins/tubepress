@@ -101,53 +101,46 @@ class TubePressVideo
      */
     function TubePressVideo($videoXML)
     {
-        /*
-         * You wouldn't think I'd need to check to make sure that XML
-         * is coming in as a parameter, but for some reason every
-         * now and then some non-XML shit sneaks in from YouTube. This is
-         * kinda a temp fix until I investigate further.
-         */
-        if (is_a($videoXML, 'IsterSimpleXMLElement')) {
             $this->metaValues =
                 array(TP_VID_AUTHOR =>
-                          $videoXML->author->CDATA(),
+                          $videoXML['author'],
                         
                       TP_VID_ID =>          
-                          $videoXML->id->CDATA(),
+                          $videoXML['id'],
                           
                       TP_VID_TITLE =>       
-                          str_replace("'","&#145;", $videoXML->title->CDATA()),
+                          str_replace("'","&#145;", $videoXML['title']),
                           
                       TP_VID_LENGTH =>      
-                          tp_humanTime($videoXML->length_seconds->CDATA()),
+                          tp_humanTime($videoXML['length_seconds']),
                           
                       TP_VID_RATING_AVG =>  
-                          $videoXML->rating_avg->CDATA(),
+                          $videoXML['rating_avg'],
                           
                       TP_VID_RATING_CNT =>  
-                          number_format($videoXML->rating_count->CDATA()),
+                          number_format($videoXML['rating_count']),
                           
                       TP_VID_DESC =>        
-                          $videoXML->description->CDATA(),
+                          $videoXML['description'],
                           
                       TP_VID_VIEW =>        
-                          number_format($videoXML->view_count->CDATA()),
+                          number_format($videoXML['view_count']),
                           
                       TP_VID_UPLOAD_TIME => 
-                          date("M j, Y", $videoXML->upload_time->CDATA()),
+                          date("M j, Y", $videoXML['upload_time']),
                           
                       TP_VID_COMMENT_CNT => 
-                          number_format($videoXML->comment_count->CDATA()),
+                          number_format($videoXML['comment_count']),
                           
                       TP_VID_TAGS =>        
-                          $videoXML->tags->CDATA(),
+                          $videoXML['tags'],
                           
                       TP_VID_URL =>         
-                          $videoXML->url->CDATA(),
+                          $videoXML['url'],
                           
                       TP_VID_THUMBURL =>    
-                          $videoXML->thumbnail_url->CDATA());
-        }
+                          $videoXML['thumbnail_url']);
+        
     }
 }
 

@@ -41,6 +41,7 @@ function_exists('tp_debug') || require("tp_debug.php");
 class_exists('Translation2') || require("lib/PEAR/Internationalization/Translation2/Translation2.php");
 class_exists('Snoopy') || require(ABSPATH . "wp-includes/class-snoopy.php");
 class_exists('Net_URL') || require("lib/PEAR/Networking/Net_URL/URL.php");
+function_exists('tp_generateGallery') || require("tp_gallery.php");
 
 /**
  * Main filter hook. Looks for a tubepress tag
@@ -84,9 +85,11 @@ function tp_main ($content = '')
 	        $newcontent .= tp_printHTML_singleVideo($css, $options);
 	        break;
         default:
-            $newcontent .= tp_generateGallery($options, $css);
-            if (PEAR::isError($newcontent)) {
-                return tp_bail("There was a problem generating the TubePress gallery", $newcontent);
+            $result = tp_generateGallery($options, $css);
+            if (PEAR::isError($result)) {           
+				tp_bail("There was a problem generating the gallery", $result);
+            } else {
+            	$newcontent .= $result;
             }
             break;
 	}

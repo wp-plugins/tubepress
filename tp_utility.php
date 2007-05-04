@@ -21,6 +21,11 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+function tp_bail($msg, $error)
+{
+	echo $msg . " (" . $error->message . ")";
+}
+
 function tp_areWeDebugging()
 {
     return isset($_GET[TP_DEBUG_PARAM]) && ($_GET[TP_DEBUG_PARAM] == true);
