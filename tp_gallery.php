@@ -69,7 +69,7 @@ function tp_generateGallery($options, $css)
             $newcontent .= tp_printHTML_bigvid($video, $css, $options);
             if ($paging) {
                 $newcontent .= 
-                    tp_printHTML_pagination($videosReturnedCount, 
+                    tp_printHTML_pagination($videoArray['total'], 
                         $options, $css);
             }
             $newcontent .= '<div class="' . 
@@ -80,7 +80,7 @@ function tp_generateGallery($options, $css)
     
     $newcontent .= '</div>';
     if ($paging) {
-        $newcontent .= tp_printHTML_pagination($videosReturnedCount, 
+        $newcontent .= tp_printHTML_pagination($videoArray['total'], 
             $options, $css);
     }
     

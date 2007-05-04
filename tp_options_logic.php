@@ -324,7 +324,16 @@ function tp_getNewOptionsArray()
               TP_OPT_USERNAME => new TubePressOption(TP_OPT_USERNAME,
                                      TP_MSG_USERNAME_TITLE,
                                      TP_MSG_USERNAME_DESC,
-                                     "3hough"));
+                                     "3hough"),
+                                     
+              "debugging_enabled" => new TubePressOption("debugging_enabled",
+                                     "Enable debugging", "If set to 'true', " .
+                                     		"anyone will be able to view your debugging" .
+                                     		"information. This is a very small privacy" .
+                                     		"risk. If you're not having problems with" .
+                                     		"TubePress, or you're worried about revealing" .
+                                     		"any details of your TubePress pages, feel free to disable debugging here.",
+                                     		true));
         
     $videoPlayerLocationOptions =
         array(TP_PLAYIN_NORMAL =>   new TubePressOption(TP_PLAYIN_NORMAL,

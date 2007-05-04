@@ -194,7 +194,7 @@ function tp_printHTML_pagination($vidCount, $options, $css)
     $currentPage = (isset($_GET[TP_PAGE_PARAM])? $_GET[TP_PAGE_PARAM] : 1);
 
     /* save our current full address */
-    $url = tp_fullURL();
+    $url = TubePressTag::fullURL();
 
     /* print a previous button if we're not on the first page */
     $prevText = (($currentPage > 1)? 
@@ -239,7 +239,7 @@ function tp_printHTML_paginationLink($queryString, $pageNum, $text)
  */
 function tp_printHTML_singleVideo($css, $options)
 {
-    $url = new Net_URL(tp_fullURL());
+    $url = new Net_URL(TubePressTag::fullURL());
     $url->removeQueryString(TP_VID_PARAM);
     
     $returnVal = '<div id="' . $css->mainVid_id . '" class="' 
@@ -313,7 +313,7 @@ function tp_printHTML_smallVidLinkAttributes($vid, $options)
                 . $vid->metaValues[TP_VID_TITLE] . '"';
         
         case TP_PLAYIN_NW:
-            $url = new Net_URL(tp_fullURL());
+            $url = new Net_URL(TubePressTag::fullURL());
             $url->addQueryString(TP_VID_PARAM, $id);
             $newURL = $url->getURL();
             return 'href="' . $newURL . '"';

@@ -60,9 +60,27 @@ class TubePressTag
     /**
      * Constructor
      */
-    function TubePressTag($tagString, $optionsArray)
+    function TubePressTag($content = '', $keyword)
     {
-        $this->tagString = $tagString;
+    	$optionsArray = array();
+
+        /* Use a regular expression to match everything in square brackets after the TubePress keyword */
+        $regexp = '\[' . $keyword . "(.*)\]";
+        preg_match("/$regexp/", $content, $matches);
+
+        /* Execute if anything was matched by the parentheses */
+        if (isset($matches[1])) {
+            /* Break up the options by comma and store them in an associative array */
+            $pairs = explode(",", $matches[1]);
+        
+            foreach($pairs as $pair) {
+                $pieces = explode("=", $pair);
+                $optionsArray[TubePressTag::cleanupTagValue($pieces[0])] = 
+                    TubePressTag::cleanupTagValue($pieces[1]);
+            }
+        }
+
+        $this->tagString = $matches[0];
         $this->customOptions = $optionsArray;
         foreach (get_option(TP_OPTION_NAME) as $dbOptionArray) {
             foreach ($dbOptionArray as $dbOption) {
@@ -87,10 +105,24 @@ class TubePressTag
                 return $this->dbOptions[$option];
         }
     }
+    
+    private static function cleanupTagValue($nameOrValue)
+    {
+        /*
+         * WTF: this seems to work, though I have no idea why the quotes are getting
+         * converted into these stupid entities.
+         */
+        return trim(
+            str_replace(
+                array("&#8220;", "&#8221;", "&#8217;", "&#8216;",
+                      "&#8242;", "&#8243;", "&#34"),"", 
+                      trim($nameOrValue)));
+    }
 }
 
 /**
- * This class represents a video pulled from YouTube
+ * This class represents a video pulled from YouTube. It's really
+ * just a glorified wrapper for an associated array.
  */
 class TubePressVideo
 {
@@ -112,7 +144,7 @@ class TubePressVideo
                           str_replace("'","&#145;", $videoXML['title']),
                           
                       TP_VID_LENGTH =>      
-                          tp_humanTime($videoXML['length_seconds']),
+                          TubePressVideo::humanTime($videoXML['length_seconds']),
                           
                       TP_VID_RATING_AVG =>  
                           $videoXML['rating_avg'],
@@ -140,7 +172,21 @@ class TubePressVideo
                           
                       TP_VID_THUMBURL =>    
                           $videoXML['thumbnail_url']);
-        
+    }
+    
+    /**
+     * Converts seconds to minutes and seconds
+     * 
+     * @param length_seconds The runtime of a video, in seconds
+     */
+    private static function humanTime($length_seconds)
+    {
+        $seconds = $length_seconds;
+        $length = intval($seconds / 60);
+        $leftOverSeconds = $seconds % 60;
+        if ($leftOverSeconds < 10) $leftOverSeconds = "0" . $leftOverSeconds;
+        $length .=     ":" . $leftOverSeconds;
+        return $length;
     }
 }
 
@@ -160,6 +206,38 @@ class TubePressOption
         $this->description = $theDesc;
         $this->value = $theValue;
         $this->title = $theTitle;
+    }
+}
+
+class TubePress
+{
+    public static function bail($msg, $error)
+    {
+	    return $msg . " (" . $error->message . ")";
+    }
+
+    public static function areWePaging($options)
+    {
+        $searchBy = $options->get_option(TP_OPT_SEARCHBY);
+        //TODO: playlists currently aren't paging for some reason
+        if (($searchBy == TP_SRCH_USER)
+            || ($searchBy == TP_SRCH_TAG)
+            || ($searchBy == TP_SRCH_REL)) {
+                return true;
+        }
+        return false;
+    }
+    
+    public static function fullURL()
+    {
+        return "http://" . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
+    }
+    
+    public static function determineNextAction($options)
+    {
+        if ($options->get_option(TP_OPT_PLAYIN) == TP_PLAYIN_NW
+            && isset($_GET[TP_VID_PARAM]))
+                return "SINGLEVIDEO";
     }
 }
 ?>

@@ -33,6 +33,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 	<body style="margin: 0pt 0pt">
 		<object type="application/x-shockwave-flash" style="width:<?php echo $_GET['w']; ?>px; height:<?php echo $_GET['h'];?>px;" data="http://www.youtube.com/v/<?php echo $_GET['id']; ?>" >
 				<param name="movie" value="http://www.youtube.com/v/<?php echo $_GET['id']; ?>" />
-			</object>
+		</object>
 	</body>
 </html>

@@ -26,7 +26,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 function tp_options_subpanel()
 {
-	require_once("tp_options_logic.php");
+	function_exists('tp_validOptions') || require("tp_options_logic.php");
 
     $dbOptions = tp_initOptions();
 
@@ -41,14 +41,8 @@ function tp_options_subpanel()
     print <<<EOT
     <div class="wrap">
           <form method="post">
-        <h2>$pageTitle</h2>This page sets your global (though a better 
-        term might be "default") options. Each option here can be overridden 
-        on any page that has your TubePress trigger tag. Also note that Thickbox 
-        is <strong>disabled</strong> by default and must be enabled manually. 
-        See the 
-        <a href="http://ehough.com/wp-content/plugins/" .
-        		"tubepress/doc/tubepress_docs.html">documentation</a> 
-        		for more information.
+        <h2>$pageTitle</h2>Set default options for the plugin. Each option here can be overridden 
+        on any page that has your TubePress trigger tag.
         <br /><br />
 EOT;
 

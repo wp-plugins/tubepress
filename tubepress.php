@@ -66,9 +66,9 @@ function tp_main ($content = '')
  	//$m = loadTranslations();
  
     /* Parse the tag  */
-    $options = tp_parse_tag($content, $keyword);
+    $options = new TubePressTag($content, $keyword);
 	if (PEAR::isError($options)) {
-	    return tp_bail($content, "There was a problem parsing the TubePress tag in this page", $options);
+	    return TubePress::bail($content, "There was a problem parsing the TubePress tag in this page", $options);
 	}
 
     /* Get CSS constants */
@@ -76,33 +76,26 @@ function tp_main ($content = '')
 
 	/* Are we debugging? */
     global $tubepress_disable_debug;
-    if (!$tubepress_disable_debug && tp_areWeDebugging()) {
-        $newcontent .= tp_debug($options);
+    if (!$tubepress_disable_debug
+        && isset($_GET[TP_DEBUG_PARAM]) 
+        && ($_GET[TP_DEBUG_PARAM] == true)) {
+            $newcontent .= tp_debug($options);
     }
 
-	switch (tp_determineNextAction($options)) {
+	switch (TubePress::determineNextAction($options)) {
 	    case "SINGLEVIDEO":
 	        $newcontent .= tp_printHTML_singleVideo($css, $options);
 	        break;
         default:
             $result = tp_generateGallery($options, $css);
-            if (PEAR::isError($result)) {           
-				tp_bail("There was a problem generating the gallery", $result);
-            } else {
-            	$newcontent .= $result;
-            }
+            $newcontent .= PEAR::isError($result)?
+                TubePress::bail("There was a problem generating the gallery", $result) :
+                $result;
             break;
 	}
 
     /* We're done! Replace the tag with our new content */
     return str_replace($options->tagString, $newcontent, $content);
-}
-
-function tp_determineNextAction($options)
-{
-    if ($options->get_option(TP_OPT_PLAYIN) == TP_PLAYIN_NW
-        && isset($_GET[TP_VID_PARAM]))
-            return "SINGLEVIDEO";
 }
 
 /**
@@ -111,8 +104,10 @@ function tp_determineNextAction($options)
 function tp_insert_cssjs()
 {
 	$url = get_settings('siteurl') . "/wp-content/plugins/tubepress";
-	echo "<script type=\"text/javascript\" src=\"" . $url . "/tubepress.js\"></script>\n";
-	echo "<link rel=\"stylesheet\" href=\"" . $url . "/tubepress.css\" type=\"text/css\" />\n";
+	print<<<GBS
+	    <script type="text/javascript" src="{$url}/tubepress.js"></script>
+	    <link rel="stylesheet" href="{$url}/tubepress.css" type="text/css" />
+GBS;
 }
 
 /**
@@ -120,10 +115,12 @@ function tp_insert_cssjs()
  */
 function tp_insert_lightwindow() {
 	$url = get_settings('siteurl') . "/wp-content/plugins/tubepress/lib/lightWindow";
-	echo "<script type=\"text/javascript\" src=\"" . $url . "/javascript/prototype.js\"></script>\n";
-	echo "<script type=\"text/javascript\" src=\"" . $url . "/javascript/effects.js\"></script>\n";
-	echo "<script type=\"text/javascript\" src=\"" . $url . "/javascript/lightWindow.js\"></script>\n";
-	echo "<link rel=\"stylesheet\" href=\"" . $url . "/css/lightWindow.css\" media=\"screen\" type=\"text/css\" />\n";
+    print<<<GBS
+        <script type="text/javascript" src="{$url}/javascript/prototype.js"></script>
+	    <script type="text/javascript" src="{$url}/javascript/effects.js"></script>
+	    <script type="text/javascript" src="{$url}/javascript/lightWindow.js"></script>
+	    <link rel="stylesheet" href="{$url}/css/lightWindow.css" media="screen" type="text/css" />
+GBS;
 }
 
 /**
@@ -132,9 +129,11 @@ function tp_insert_lightwindow() {
 function tp_insert_thickbox()
 {
 	$url = get_settings('siteurl') . "/wp-content/plugins/tubepress/lib/thickbox";
-	echo "<script type=\"text/javascript\" src=\"" . $url . "/jquery.js\"></script>\n";
-	echo "<script type=\"text/javascript\" src=\"" . $url . "/thickbox.js\"></script>\n";
-	echo "<link rel=\"stylesheet\" href=\"" . $url . "/thickbox.css\" media=\"screen\" type=\"text/css\" />\n";
+	print<<<GBS
+	    <script type="text/javascript" src="{$url}/jquery.js"></script>
+	    <script type="text/javascript" src="{$url}/thickbox.js"></script>
+	    <link rel="stylesheet" href="{$url}/thickbox.css" media="screen" type="text/css" />
+GBS;
 }
 
 /* ACTIONS */
@@ -154,6 +153,7 @@ if ($quickOpts != NULL) {
 		case TP_PLAYIN_LWINDOW:
 			add_action('wp_head', 'tp_insert_lightwindow');
 			break;
+		default:
 	}
 }
 

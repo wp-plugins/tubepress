@@ -23,8 +23,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
 /**
- * Connects to YouTube and grabs gallery info over
- * REST API
+ * Connects to YouTube and returns raw XML
 */
 function tp_fetchRawXML($options)
 {
@@ -54,6 +53,9 @@ function tp_fetchRawXML($options)
     return $snoopy->results;
 }
 
+/**
+ * Takes YouTube's raw xml and tries to return an array of the videos
+ */
 function tp_parseRawXML($youtube_xml)
 {
 	class_exists('XML_Unserializer') || require("lib/PEAR/XML/XML_Serializer/Unserializer.php");
@@ -70,13 +72,28 @@ function tp_parseRawXML($youtube_xml)
 
     $result = $Unserializer->getUnserializedData();
     
+    /* make sure we could read the xml */
+    if (!is_array($result) || PEAR::isError($result)) {
+        return PEAR::raiseError("XML unserialization error");
+    }
+    
+    /* make sure we have a status from YouTube */
+    if (!array_key_exists('status', $result)) {
+        return PEAR::raiseError("Valid XML from YouTube, but status is missing");
+    }
+    
     /* see if YouTube liked us */
     if ($result['status'] != "ok") {
     	$msg = "Unknown error";
-    	if (is_array($result['error'])) {
-    		$msg = $result['error']['description'] . " Code " . $result['error']['code'];
+    	if (is_array($result['error']) && array_key_exists('description', $result['error']) 
+    	    && array_key_exists('code', $result['error'])) {
+    		    $msg = $result['error']['description'] . " Code " . $result['error']['code'];
     	}
     	return PEAR::raiseError("YouTube responded with an error message: " . $msg);
+    }
+    
+    if (!array_key_exists('total', $result)) {
+        return PEAR::raiseError("YouTube didn't return a total video count");
     }
     
     /* if we have a video_list, just return it */
