@@ -36,7 +36,6 @@
 /**
  * uses PEAR's error handling
  */
-require_once ABSPATH . 'wp-content/plugins/tubepress/lib/PEAR/PEAR.php';
 
 /**
  * resource could not be created
