@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Changing the name of this class to avoid class conflicts
+*/
+
 /*************************************************
 
 Snoopy - the PHP net client
@@ -35,7 +39,7 @@ http://snoopy.sourceforge.net/
 
 *************************************************/
 
-class Snoopy
+class Snoopy_TubePress
 {
 	/**** Public variables ****/
 	

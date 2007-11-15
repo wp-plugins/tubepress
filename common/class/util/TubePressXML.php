@@ -21,7 +21,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-
+class_exists("Snoopy_TubePress") || require(dirname(__FILE__) .
+            "/../../../lib/snoopy/Snoopy_TubePress.class.php");
 class_exists("PEAR")
     || require(dirname(__FILE__) . "/../../../lib/PEAR/PEAR.php");
 class_exists("XML_Unserializer")
@@ -44,15 +45,12 @@ class TubePressXML
     function fetch($request, $options = "")
     {   
         
-		class_exists("snoopy") || require(dirname(__FILE__) .
-            "/../../../lib/snoopy/Snoopy.class.php");
-		
         /* We turn off error reporting here because Snoopy is very noisy if we
          * can't connect
          */
         error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING);
 
-        $snoopy = new snoopy();
+        $snoopy = new Snoopy_TubePress();
         $snoopy->read_timeout = 6;
         if (is_a($options, "TubePressOptionsPackage")) {
             $timeout = $options->get(TP_OPT_TIMEOUT);

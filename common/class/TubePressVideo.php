@@ -82,7 +82,7 @@ class TubePressVideo
      */
     function getTitle()
     {
-        return htmlspecialchars($this->_videoXML['title']['_content'], ENT_QUOTES);
+    	return htmlspecialchars($this->_videoXML['title'] , ENT_QUOTES);
     }
     
     /**
