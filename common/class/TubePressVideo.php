@@ -82,7 +82,13 @@ class TubePressVideo
      */
     function getTitle()
     {
-    	return htmlspecialchars($this->_videoXML['title'] , ENT_QUOTES);
+		/* first let's try to get it as the array */
+		$title = $this->_videoXML['title'];
+		if (is_array($title) && isset($title['_content'])) {
+			$title = $title['_content'];
+		}
+		
+    	return htmlspecialchars($title , ENT_QUOTES);
     }
     
     /**
