@@ -53,5 +53,4 @@ if (version_compare(PHP_VERSION, '5.0.2', '>=') && !class_exists('org_tubepress_
 
     add_action('widgets_init', array('org_tubepress_env_wordpress_Widget', 'initAction'));
 }
-
 ?>
