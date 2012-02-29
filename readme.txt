@@ -7,6 +7,8 @@ Stable tag: trunk
 
 Displays gorgeous YouTube and Vimeo videos and galleries in your blog. Please visit http://tubepress.org for more info!
 
+== Description ==
+
 **Demos**
 
 * [Simple gallery](http://tubepress.org/demo/)
