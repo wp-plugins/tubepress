@@ -9,7 +9,7 @@ Displays gorgeous YouTube and Vimeo videos and galleries in your site. Please vi
 
 == Special Offer for April 2013! ==
 
-For the month of April 2013, use coupon code `april2013` and get 20% off TubePress Pro!
+Use coupon code `april2013` to get 20% off TubePress Pro! Offer ends April 30th, 2013.
 
 == Description ==
 
