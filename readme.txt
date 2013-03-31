@@ -7,6 +7,10 @@ Stable tag: trunk
 
 Displays gorgeous YouTube and Vimeo videos and galleries in your site. Please visit tubepress.org for more info!
 
+== Special Offer for April 2013! ==
+
+For the month of April 2013, use coupon code `april2013` and get 20% off TubePress Pro!
+
 == Description ==
 
 **Demos**
