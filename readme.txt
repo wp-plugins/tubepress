@@ -2,7 +2,7 @@
 Contributors: k2eric
 Donate link: http://tubepress.org
 Tags: video, youtube, gallery, videos, vimeo
-Requires at least: 3.0
+Requires at least: 2.2
 Stable tag: trunk
 
 Displays gorgeous YouTube and Vimeo videos and galleries in your site. Please visit tubepress.org for more info!
@@ -30,9 +30,12 @@ Displays gorgeous YouTube and Vimeo videos and galleries in your site. Please vi
 1. Type `[tubepress]` in a post or a page where you'd like to insert your first gallery
 
 == Changelog ==
-= 3.1.0 =
+= 3.1.1 =
 **PHP 5.2 or higher is required for this version of TubePress!**
 
+* Bug Fixes
+    * Fixed bug with PHP 5.2.x: unexpected T_PAAMAYIM_NEKUDOTAYIM
+= 3.1.0 =
 * New Features
     * Major speed boost (up to 4x faster) via optional boot cache
     * New Norwegian translation thanks to Andreas Lorentsen

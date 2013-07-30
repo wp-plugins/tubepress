@@ -139,7 +139,10 @@ class ehough_tickertape_ContainerAwareEventDispatcher extends ehough_tickertape_
      */
     public function addSubscriberService($serviceId, $class)
     {
-        foreach ($class::getSubscribedEvents() as $eventName => $params) {
+        $ref      = new ReflectionClass($class);
+        $instance = $ref->newInstance();
+
+        foreach ($instance->getSubscribedEvents() as $eventName => $params) {
             if (is_string($params)) {
                 $this->listenerIds[$eventName][] = array($serviceId, $params, 0);
             } elseif (is_string($params[0])) {
