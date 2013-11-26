@@ -3,7 +3,7 @@ Contributors: k2eric
 Donate link: http://tubepress.com
 Tags: video, youtube, gallery, videos, vimeo
 Requires at least: 2.2
-Stable tag: trunk
+Stable tag: 3.1.2
 
 Displays gorgeous YouTube and Vimeo videos and galleries in your site. Please visit tubepress.com for more info!
 
