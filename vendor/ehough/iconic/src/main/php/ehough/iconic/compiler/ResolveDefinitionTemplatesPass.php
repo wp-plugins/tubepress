@@ -105,7 +105,7 @@ class ehough_iconic_compiler_ResolveDefinitionTemplatesPass implements ehough_ic
         if (isset($changes['public'])) {
             $def->setPublic($definition->isPublic());
         }
-        if (isset($changes['lazy'])){
+        if (isset($changes['lazy'])) {
             $def->setLazy($definition->isLazy());
         }
 

@@ -36,6 +36,7 @@ class ehough_iconic_dumper_PhpDumper extends ehough_iconic_dumper_Dumper
     private $referenceVariables;
     private $variableCount;
     private $reservedVariables = array('instance', 'class');
+    private $expressionLanguage;
 
     /**
      * @var ehough_iconic_lazyproxy_phpdumper_DumperInterface
@@ -175,7 +176,7 @@ class ehough_iconic_dumper_PhpDumper extends ehough_iconic_dumper_Dumper
      */
     private function addProxyClasses()
     {
-        /* @var $proxyDefinitions ehough_iconic_Definition[] */
+        /* @var $definitions ehough_iconic_Definition[] */
         $definitions = array_filter(
             $this->container->getDefinitions(),
             array($this->getProxyDumper(), 'isProxyCandidate')
@@ -425,6 +426,12 @@ class ehough_iconic_dumper_PhpDumper extends ehough_iconic_dumper_Dumper
 
             if (!$this->hasReference($id, $iDefinition->getMethodCalls(), true) && !$this->hasReference($id, $iDefinition->getProperties(), true)) {
                 continue;
+            }
+
+            // if the instance is simple, the return statement has already been generated
+            // so, the only possible way to get there is because of a circular reference
+            if ($this->isSimpleInstance($id, $definition)) {
+                throw new ehough_iconic_exception_ServiceCircularReferenceException($id, array($id));
             }
 
             $name = (string) $this->_splGetData($this->definitionVariables, $iDefinition, $iDefinition->getClass());
@@ -1175,6 +1182,8 @@ EOF;
             }
 
             return $this->getServiceCall((string) $value, $value);
+        } elseif (is_a($value, 'Symfony\Component\ExpressionLanguage\Expression') === true) {
+            return $this->getExpressionLanguage()->compile((string) $value, array('container'));
         } elseif ($value instanceof ehough_iconic_Parameter) {
             return $this->dumpParameter($value);
         } elseif (true === $interpolate && is_string($value)) {
@@ -1301,8 +1310,7 @@ EOF;
         }
     }
 
-
-    private function _splGetData($array, $object, $default)
+   private function _splGetData($array, $object, $default)
     {
         $hash = spl_object_hash($object);
 
@@ -1339,5 +1347,17 @@ EOF;
         $hash = spl_object_hash($object);
 
         return array_key_exists($hash, $array);
+    }
+
+    private function getExpressionLanguage()
+    {
+        if (null === $this->expressionLanguage) {
+            if (!class_exists('Symfony\Component\ExpressionLanguage\ExpressionLanguage')) {
+                throw new ehough_iconic_exception_RuntimeException('Unable to use expressions as the Symfony ExpressionLanguage component is not installed.');
+            }
+            $this->expressionLanguage = new ehough_iconic_ExpressionLanguage();
+        }
+
+        return $this->expressionLanguage;
     }
 }

@@ -19,7 +19,7 @@
 class ehough_iconic_DefinitionDecorator extends ehough_iconic_Definition
 {
     private $parent;
-    private $changes;
+    private $changes = array();
 
     /**
      * Constructor.
@@ -33,7 +33,6 @@ class ehough_iconic_DefinitionDecorator extends ehough_iconic_Definition
         parent::__construct();
 
         $this->parent = $parent;
-        $this->changes = array();
     }
 
     /**

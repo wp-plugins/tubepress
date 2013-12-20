@@ -10,7 +10,7 @@
  */
 
 /**
- * Stash ehough_stash_Drivers are the engines behind the Stash library. These classes handle the low level operations- retrieving,
+ * Stash Drivers are the engines behind the Stash library. These classes handle the low level operations- retrieving,
  * storing and deleting items in the persistant cache pool. By creating new drivers developers can add new caching
  * methods to their applications with extremely minimal changes to their existing code base. This interface defines the
  * standard for those drivers and all of them are required to implement it. When writing new cache storage engines this
@@ -38,7 +38,7 @@
  * @author  Robert Hafner <tedivm@tedivm.com>
  */
 
-interface ehough_stash_driver_DriverInterface
+interface ehough_stash_interfaces_DriverInterface
 {
     /**
      * Takes an array which is used to pass option values to the driver. As this is the only required function that is
@@ -54,7 +54,7 @@ interface ehough_stash_driver_DriverInterface
      * two keys- a 'data' key and an 'expiration' key. The 'data' key should be exactly the same as the value passed to
      * storeData.
      *
-     * @param array $key
+     * @param  array $key
      * @return array
      */
     public function getData($key);
@@ -73,9 +73,9 @@ interface ehough_stash_driver_DriverInterface
      * *The third parameter is the expiration date of the item as a timestamp. This should also be stored, as it is
      * needed by the getData function.
      *
-     * @param array $key
-     * @param array $data
-     * @param int $expiration
+     * @param  array $key
+     * @param  array $data
+     * @param  int   $expiration
      * @return bool
      */
     public function storeData($key, $data, $expiration);
@@ -84,7 +84,7 @@ interface ehough_stash_driver_DriverInterface
      * Clears the cache tree using the key array provided as the key. If called with no arguments the entire cache gets
      * cleared.
      *
-     * @param null|array $key
+     * @param  null|array $key
      * @return bool
      */
     public function clear($key = null);
@@ -107,5 +107,5 @@ interface ehough_stash_driver_DriverInterface
      *
      * @return bool
      */
-    static public function isAvailable();
+    public static function isAvailable();
 }
