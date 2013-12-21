@@ -39,7 +39,7 @@ For a limited time, use coupon code `WELCOME2EXPRESS` to lock in **50% off any T
 == Changelog ==
 = 3.1.4 =
 * Bug Fixes
-    * Fixed JavaScript bug that could lead to unresponsive thumbails in certain situations.
+    * Fixed JavaScript bug that could lead to unresponsive thumbnails in certain situations.
 
 = 3.1.3 =
 * Bug Fixes
