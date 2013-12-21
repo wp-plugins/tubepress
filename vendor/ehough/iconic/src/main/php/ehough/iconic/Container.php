@@ -56,13 +56,13 @@ class ehough_iconic_Container implements ehough_iconic_IntrospectableContainerIn
      */
     protected $parameterBag;
 
-    protected $services;
-    protected $methodMap;
-    protected $aliases;
-    protected $scopes;
-    protected $scopeChildren;
-    protected $scopedServices;
-    protected $scopeStacks;
+    protected $services = array();
+    protected $methodMap = array();
+    protected $aliases = array();
+    protected $scopes = array();
+    protected $scopeChildren = array();
+    protected $scopedServices = array();
+    protected $scopeStacks = array();
     protected $loading = array();
 
     /**
@@ -75,13 +75,6 @@ class ehough_iconic_Container implements ehough_iconic_IntrospectableContainerIn
     public function __construct(ehough_iconic_parameterbag_ParameterBagInterface $parameterBag = null)
     {
         $this->parameterBag = null === $parameterBag ? new ehough_iconic_parameterbag_ParameterBag() : $parameterBag;
-
-        $this->services       = array();
-        $this->aliases        = array();
-        $this->scopes         = array();
-        $this->scopeChildren  = array();
-        $this->scopedServices = array();
-        $this->scopeStacks    = array();
 
         $this->set('service_container', $this);
     }
@@ -229,8 +222,9 @@ class ehough_iconic_Container implements ehough_iconic_IntrospectableContainerIn
     {
         $id = strtolower($id);
 
-        return array_key_exists($id, $this->services)
-            || array_key_exists($id, $this->aliases)
+        return isset($this->services[$id])
+            || array_key_exists($id, $this->services)
+            || isset($this->aliases[$id])
             || method_exists($this, 'get'.strtr($id, array('_' => '', '.' => '_')).'Service')
         ;
     }
@@ -256,16 +250,21 @@ class ehough_iconic_Container implements ehough_iconic_IntrospectableContainerIn
      */
     public function get($id, $invalidBehavior = self::EXCEPTION_ON_INVALID_REFERENCE)
     {
-        $id = strtolower($id);
-
-        // resolve aliases
-        if (isset($this->aliases[$id])) {
-            $id = $this->aliases[$id];
-        }
-
-        // re-use shared service instance if it exists
-        if (array_key_exists($id, $this->services)) {
-            return $this->services[$id];
+        // Attempt to retrieve the service by checking first aliases then
+        // available services. Service IDs are case insensitive, however since
+        // this method can be called thousands of times during a request, avoid
+        // calling strotolower() unless necessary.
+        foreach (array(false, true) as $strtolower) {
+            if ($strtolower) {
+                $id = strtolower($id);
+            }
+            if (isset($this->aliases[$id])) {
+                $id = $this->aliases[$id];
+            }
+            // Re-use shared service instance if it exists.
+            if (isset($this->services[$id]) || array_key_exists($id, $this->services)) {
+                return $this->services[$id];
+            }
         }
 
         if (isset($this->loading[$id])) {
@@ -328,7 +327,9 @@ class ehough_iconic_Container implements ehough_iconic_IntrospectableContainerIn
      */
     public function initialized($id)
     {
-        return array_key_exists(strtolower($id), $this->services);
+        $id = strtolower($id);
+
+        return isset($this->services[$id]) || array_key_exists($id, $this->services);
     }
 
     /**
@@ -513,7 +514,7 @@ class ehough_iconic_Container implements ehough_iconic_IntrospectableContainerIn
      */
     public static function camelize($id)
     {
-        return strtr(ucwords(strtr($id, array('_' => ' ', '.' => '_ '))), array(' ' => ''));
+        return strtr(ucwords(strtr($id, array('_' => ' ', '.' => '_ ', '\\' => '_ '))), array(' ' => ''));
     }
 
     /**
