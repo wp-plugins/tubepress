@@ -24,8 +24,7 @@ class ehough_stash_driver_Memcache implements ehough_stash_interfaces_DriverInte
      * @var ehough_stash_driver_sub_Memcache|ehough_stash_driver_sub_Memcached
      */
     protected $memcache;
-
-    protected $disabled = false;
+    protected $keyCache = array();
 
     /**
      *

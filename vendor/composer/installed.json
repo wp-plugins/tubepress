@@ -1,5 +1,98 @@
 [
     {
+        "name": "ehough/tickertape",
+        "version": "v2.4.0",
+        "version_normalized": "2.4.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/ehough/tickertape.git",
+            "reference": "d096f5591755ebc64fe67504243c413ccac79ceb"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/ehough/tickertape/zipball/d096f5591755ebc64fe67504243c413ccac79ceb",
+            "reference": "d096f5591755ebc64fe67504243c413ccac79ceb",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.2"
+        },
+        "require-dev": {
+            "ehough/iconic": "~2.3",
+            "phpunit/phpunit": "3.7.*"
+        },
+        "time": "2013-12-04 21:04:42",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "ehough_tickertape": "src/main/php"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Eric Hough",
+                "email": "eric@ehough.com",
+                "homepage": "http://ehough.com"
+            }
+        ],
+        "description": "Fork of Symfony's Event Dispatcher compatible with PHP 5.2+.",
+        "homepage": "https://github.com/ehough/tickertape"
+    },
+    {
+        "name": "ehough/epilog",
+        "version": "1.7.0",
+        "version_normalized": "1.7.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/ehough/epilog.git",
+            "reference": "dbdb5edb126d5e09fb6cb05aab11451e584f8cbd"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/ehough/epilog/zipball/dbdb5edb126d5e09fb6cb05aab11451e584f8cbd",
+            "reference": "dbdb5edb126d5e09fb6cb05aab11451e584f8cbd",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.2.0"
+        },
+        "require-dev": {
+            "aws/aws-sdk-php": "~2.4.8",
+            "doctrine/couchdb": "dev-master",
+            "ehough/pulsar": "~2.3",
+            "mlehner/gelf-php": "1.0.*",
+            "phpunit/phpunit": "~3.7.0",
+            "raven/raven": "0.5.*",
+            "ruflin/elastica": "0.90.*"
+        },
+        "time": "2013-12-05 02:07:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "ehough_epilog": "src/main/php"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Eric Hough",
+                "email": "eric@ehough.com",
+                "homepage": "http://ehough.com"
+            }
+        ],
+        "description": "Fork of seldaek/monolog compatible with PHP 5.2+.",
+        "homepage": "https://github.com/ehough/epilog"
+    },
+    {
         "name": "ehough/curly",
         "version": "1.0.3",
         "version_normalized": "1.0.3.0",
@@ -176,6 +269,194 @@
         "homepage": "https://github.com/ehough/coauthor"
     },
     {
+        "name": "ehough/filesystem",
+        "version": "v2.4.0",
+        "version_normalized": "2.4.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/ehough/filesystem.git",
+            "reference": "8efba59e82f6fc4c855acdf09387ef6aaef9f235"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/ehough/filesystem/zipball/8efba59e82f6fc4c855acdf09387ef6aaef9f235",
+            "reference": "8efba59e82f6fc4c855acdf09387ef6aaef9f235",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.2"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "3.7.*"
+        },
+        "time": "2013-12-04 20:26:38",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "ehough_filesystem": "src/main/php"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Eric Hough",
+                "email": "eric@ehough.com",
+                "homepage": "http://ehough.com"
+            }
+        ],
+        "description": "Fork of Symfony's Filesystem Component compatible with PHP 5.2+",
+        "keywords": [
+            "filesystem"
+        ]
+    },
+    {
+        "name": "ehough/finder",
+        "version": "v2.4.0",
+        "version_normalized": "2.4.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/ehough/finder.git",
+            "reference": "6070a85d73d38be99411861adfddead706833a34"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/ehough/finder/zipball/6070a85d73d38be99411861adfddead706833a34",
+            "reference": "6070a85d73d38be99411861adfddead706833a34",
+            "shasum": ""
+        },
+        "require": {
+            "ehough/filesystem": "~2.0",
+            "php": ">=5.2"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "3.7.*"
+        },
+        "time": "2013-12-05 00:28:26",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "ehough_finder": "src/main/php"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Eric Hough",
+                "email": "eric@ehough.com",
+                "homepage": "http://ehough.com"
+            }
+        ],
+        "description": "Fork of Symfony's Finder Component compatible with PHP 5.2+"
+    },
+    {
+        "name": "ehough/iconic",
+        "version": "v2.4.0",
+        "version_normalized": "2.4.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/ehough/iconic.git",
+            "reference": "6f8008253cb525d97c283b0a7809b483ce0db43f"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/ehough/iconic/zipball/6f8008253cb525d97c283b0a7809b483ce0db43f",
+            "reference": "6f8008253cb525d97c283b0a7809b483ce0db43f",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.2.0"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "3.7.*",
+            "symfony/config": "~2.2",
+            "symfony/expression-language": "~2.4",
+            "symfony/yaml": "~2.0"
+        },
+        "suggest": {
+            "symfony/config": "",
+            "symfony/proxy-manager-bridge": "Generate service proxies to lazy load them",
+            "symfony/yaml": ""
+        },
+        "time": "2013-12-05 00:04:34",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "ehough_iconic": "src/main/php"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Eric Hough",
+                "email": "eric@ehough.com",
+                "homepage": "http://ehough.com"
+            }
+        ],
+        "description": "Fork of Symfony's Dependency Injection component compatible with PHP 5.2+.",
+        "homepage": "https://github.com/ehough/iconic"
+    },
+    {
+        "name": "ehough/pulsar",
+        "version": "v2.4.0",
+        "version_normalized": "2.4.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/ehough/pulsar.git",
+            "reference": "cbc89cafa739146111dfc8127ebe318bb64c159a"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/ehough/pulsar/zipball/cbc89cafa739146111dfc8127ebe318bb64c159a",
+            "reference": "cbc89cafa739146111dfc8127ebe318bb64c159a",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.2"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "3.7.*",
+            "symfony/finder": "~2.0"
+        },
+        "time": "2013-12-04 22:08:10",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "ehough_pulsar": "src/main/php"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Eric D. Hough",
+                "email": "eric@ehough.com",
+                "homepage": "http://ehough.com"
+            }
+        ],
+        "description": "Intelligent classloaders PHP 5",
+        "homepage": "https://github.com/ehough/pulsar",
+        "keywords": [
+            "autoload",
+            "autoloader",
+            "psr-0"
+        ]
+    },
+    {
         "name": "ehough/mockery",
         "version": "0.8.0",
         "version_normalized": "0.8.0.0",
@@ -274,6 +555,58 @@
         ],
         "description": "Template library that uses pure PHP syntax. Nothing new to learn, blazingly fast, and compatible with PHP 5.2+.",
         "homepage": "https://github.com/ehough/contemplate"
+    },
+    {
+        "name": "ehough/stash",
+        "version": "v0.11.4",
+        "version_normalized": "0.11.4.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/ehough/stash.git",
+            "reference": "199a06cced0e8ba5441f2d09b9fc0fa1e1a83d6c"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/ehough/stash/zipball/199a06cced0e8ba5441f2d09b9fc0fa1e1a83d6c",
+            "reference": "199a06cced0e8ba5441f2d09b9fc0fa1e1a83d6c",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.2.0"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "3.7.*"
+        },
+        "time": "2013-12-29 23:18:35",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "ehough_stash": "src/main/php",
+                "ehough_stash_test": "src/test/php"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Eric Hough",
+                "email": "eric@ehough.com",
+                "homepage": "http://ehough.com"
+            }
+        ],
+        "description": "Fork of tedivm/stash compatible with PHP 5.2+",
+        "homepage": "http://github.com/ehough/stash",
+        "keywords": [
+            "apc",
+            "cache",
+            "caching",
+            "memcached",
+            "redis",
+            "sessions"
+        ]
     },
     {
         "name": "symfony/yaml",
@@ -703,339 +1036,6 @@
             "phpunit",
             "testing",
             "xunit"
-        ]
-    },
-    {
-        "name": "ehough/finder",
-        "version": "v2.4.0",
-        "version_normalized": "2.4.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/ehough/finder.git",
-            "reference": "6070a85d73d38be99411861adfddead706833a34"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/ehough/finder/zipball/6070a85d73d38be99411861adfddead706833a34",
-            "reference": "6070a85d73d38be99411861adfddead706833a34",
-            "shasum": ""
-        },
-        "require": {
-            "ehough/filesystem": "~2.0",
-            "php": ">=5.2"
-        },
-        "require-dev": {
-            "phpunit/phpunit": "3.7.*"
-        },
-        "time": "2013-12-05 00:28:26",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "ehough_finder": "src/main/php"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Eric Hough",
-                "email": "eric@ehough.com",
-                "homepage": "http://ehough.com"
-            }
-        ],
-        "description": "Fork of Symfony's Finder Component compatible with PHP 5.2+"
-    },
-    {
-        "name": "ehough/iconic",
-        "version": "v2.4.0",
-        "version_normalized": "2.4.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/ehough/iconic.git",
-            "reference": "6f8008253cb525d97c283b0a7809b483ce0db43f"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/ehough/iconic/zipball/6f8008253cb525d97c283b0a7809b483ce0db43f",
-            "reference": "6f8008253cb525d97c283b0a7809b483ce0db43f",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.2.0"
-        },
-        "require-dev": {
-            "phpunit/phpunit": "3.7.*",
-            "symfony/config": "~2.2",
-            "symfony/expression-language": "~2.4",
-            "symfony/yaml": "~2.0"
-        },
-        "suggest": {
-            "symfony/config": "",
-            "symfony/proxy-manager-bridge": "Generate service proxies to lazy load them",
-            "symfony/yaml": ""
-        },
-        "time": "2013-12-05 00:04:34",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "ehough_iconic": "src/main/php"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Eric Hough",
-                "email": "eric@ehough.com",
-                "homepage": "http://ehough.com"
-            }
-        ],
-        "description": "Fork of Symfony's Dependency Injection component compatible with PHP 5.2+.",
-        "homepage": "https://github.com/ehough/iconic"
-    },
-    {
-        "name": "ehough/pulsar",
-        "version": "v2.4.0",
-        "version_normalized": "2.4.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/ehough/pulsar.git",
-            "reference": "cbc89cafa739146111dfc8127ebe318bb64c159a"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/ehough/pulsar/zipball/cbc89cafa739146111dfc8127ebe318bb64c159a",
-            "reference": "cbc89cafa739146111dfc8127ebe318bb64c159a",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.2"
-        },
-        "require-dev": {
-            "phpunit/phpunit": "3.7.*",
-            "symfony/finder": "~2.0"
-        },
-        "time": "2013-12-04 22:08:10",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "ehough_pulsar": "src/main/php"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Eric D. Hough",
-                "email": "eric@ehough.com",
-                "homepage": "http://ehough.com"
-            }
-        ],
-        "description": "Intelligent classloaders PHP 5",
-        "homepage": "https://github.com/ehough/pulsar",
-        "keywords": [
-            "autoload",
-            "autoloader",
-            "psr-0"
-        ]
-    },
-    {
-        "name": "ehough/epilog",
-        "version": "1.7.0",
-        "version_normalized": "1.7.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/ehough/epilog.git",
-            "reference": "dbdb5edb126d5e09fb6cb05aab11451e584f8cbd"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/ehough/epilog/zipball/dbdb5edb126d5e09fb6cb05aab11451e584f8cbd",
-            "reference": "dbdb5edb126d5e09fb6cb05aab11451e584f8cbd",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.2.0"
-        },
-        "require-dev": {
-            "aws/aws-sdk-php": "~2.4.8",
-            "doctrine/couchdb": "dev-master",
-            "ehough/pulsar": "~2.3",
-            "mlehner/gelf-php": "1.0.*",
-            "phpunit/phpunit": "~3.7.0",
-            "raven/raven": "0.5.*",
-            "ruflin/elastica": "0.90.*"
-        },
-        "time": "2013-12-05 02:07:00",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "ehough_epilog": "src/main/php"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Eric Hough",
-                "email": "eric@ehough.com",
-                "homepage": "http://ehough.com"
-            }
-        ],
-        "description": "Fork of seldaek/monolog compatible with PHP 5.2+.",
-        "homepage": "https://github.com/ehough/epilog"
-    },
-    {
-        "name": "ehough/tickertape",
-        "version": "v2.4.0",
-        "version_normalized": "2.4.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/ehough/tickertape.git",
-            "reference": "d096f5591755ebc64fe67504243c413ccac79ceb"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/ehough/tickertape/zipball/d096f5591755ebc64fe67504243c413ccac79ceb",
-            "reference": "d096f5591755ebc64fe67504243c413ccac79ceb",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.2"
-        },
-        "require-dev": {
-            "ehough/iconic": "~2.3",
-            "phpunit/phpunit": "3.7.*"
-        },
-        "time": "2013-12-04 21:04:42",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "ehough_tickertape": "src/main/php"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Eric Hough",
-                "email": "eric@ehough.com",
-                "homepage": "http://ehough.com"
-            }
-        ],
-        "description": "Fork of Symfony's Event Dispatcher compatible with PHP 5.2+.",
-        "homepage": "https://github.com/ehough/tickertape"
-    },
-    {
-        "name": "ehough/filesystem",
-        "version": "v2.4.0",
-        "version_normalized": "2.4.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/ehough/filesystem.git",
-            "reference": "8efba59e82f6fc4c855acdf09387ef6aaef9f235"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/ehough/filesystem/zipball/8efba59e82f6fc4c855acdf09387ef6aaef9f235",
-            "reference": "8efba59e82f6fc4c855acdf09387ef6aaef9f235",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.2"
-        },
-        "require-dev": {
-            "phpunit/phpunit": "3.7.*"
-        },
-        "time": "2013-12-04 20:26:38",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "ehough_filesystem": "src/main/php"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Eric Hough",
-                "email": "eric@ehough.com",
-                "homepage": "http://ehough.com"
-            }
-        ],
-        "description": "Fork of Symfony's Filesystem Component compatible with PHP 5.2+",
-        "keywords": [
-            "filesystem"
-        ]
-    },
-    {
-        "name": "ehough/stash",
-        "version": "v0.11.2",
-        "version_normalized": "0.11.2.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/ehough/stash.git",
-            "reference": "677f6f8bded32345541fc127ae2b3bbef224f643"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/ehough/stash/zipball/677f6f8bded32345541fc127ae2b3bbef224f643",
-            "reference": "677f6f8bded32345541fc127ae2b3bbef224f643",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.2.0"
-        },
-        "require-dev": {
-            "phpunit/phpunit": "3.7.*"
-        },
-        "time": "2013-12-05 17:30:58",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "ehough_stash": "src/main/php",
-                "ehough_stash_test": "src/test/php"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "BSD-3-Clause"
-        ],
-        "authors": [
-            {
-                "name": "Eric Hough",
-                "email": "eric@ehough.com",
-                "homepage": "http://ehough.com"
-            }
-        ],
-        "description": "Fork of tedivm/stash compatible with PHP 5.2+",
-        "homepage": "http://github.com/ehough/stash",
-        "keywords": [
-            "apc",
-            "cache",
-            "caching",
-            "memcached",
-            "redis",
-            "sessions"
         ]
     }
 ]
