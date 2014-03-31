@@ -2,7 +2,7 @@
 Contributors: k2eric
 Donate link: http://tubepress.com
 Tags: video, youtube, gallery, videos, vimeo
-Requires at least: 2.2
+Requires at least: 2.8
 Tested up to: 3.8
 License: Mozilla Public License v2.0
 Stable tag: 3.1.5
@@ -10,12 +10,6 @@ Stable tag: 3.1.5
 Modern video galleries for the web. Visit us at tubepress.com for more!
 
 == Description ==
-
-Rather not host your own copy of TubePress? [TubePress Express](http://express.tubepress.com) is now available!
-TubePress Express is a cloud-hosted version of TubePress with zero installation, maximum performance, and full
-compatability with *any* website or device. Enjoy a risk free 30-day trial and flexible pricing plans.
-
-For a limited time, use coupon code `WELCOME2EXPRESS` to lock in **50% off any TubePress Express plan!**
 
 **Demos**
 
