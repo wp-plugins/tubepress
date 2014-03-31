@@ -11,12 +11,6 @@ Modern video galleries for the web. Visit us at tubepress.com for more!
 
 == Description ==
 
-Rather not host your own copy of TubePress? [TubePress Express](http://express.tubepress.com) is now available!
-TubePress Express is a cloud-hosted version of TubePress with zero installation, maximum performance, and full
-compatability with *any* website or device. Enjoy a risk free 30-day trial and flexible pricing plans.
-
-For a limited time, use coupon code `WELCOME2EXPRESS` to lock in **50% off any TubePress Express plan!**
-
 **Demos**
 
 * [Simple gallery](http://tubepress.com/demo/)
