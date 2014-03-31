@@ -599,11 +599,6 @@ Modern video galleries for the web. Visit us at tubepress.com for more!
 = 0.1 =
 * Initial release 
 
-== Upgrade Notice ==
-
-= 3.1.5 =
-Updating readme.txt
-
 == Screenshots ==
 
 1. Sample TubePress gallery
