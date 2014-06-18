@@ -2,10 +2,10 @@
 Contributors: k2eric
 Donate link: http://tubepress.com
 Tags: video, youtube, gallery, videos, vimeo
-Requires at least: 2.8
+Requires at least: 2.2
 Tested up to: 3.8
 License: Mozilla Public License v2.0
-Stable tag: 3.1.5
+Stable tag: 3.1.6
 
 Modern video galleries for the web. Visit us at tubepress.com for more!
 
@@ -31,6 +31,16 @@ Modern video galleries for the web. Visit us at tubepress.com for more!
 1. Type `[tubepress]` in a post or a page where you'd like to insert your first gallery
 
 == Changelog ==
+= 3.1.6 =
+* Bug Fixes
+    * Fixed bug that prevented fullscreen playback in Chrome
+    * Fixed bug that prevented disable of sequential playback
+    * Fixed broken activation hook in WordPress which prevented TubePress Content Directory from being created.
+    * Fixed broken translation functionality for some languages
+* Changed
+    * Updated French translation by Aurélien Denis
+    * Updated Spanish translation by Andrew Kurtis
+
 = 3.1.5 =
 * Bug Fixes
     * Fixed bug in static and solo player locations.
