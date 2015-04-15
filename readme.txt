@@ -9,6 +9,8 @@ Stable tag: 3.1.7
 
 Modern video galleries for the web. Now moved entirely to tubepress.com.
 
+== Description ==
+
 **Available for download exclusively from [tubepress.com](http://tubepress.com/).**
 
 We are no longer providing updates or support here at wordpress.org. Please see [this blog post](http://tubepress.com/blog/2015/04/the-death-of-the-youtube-api-v2-and-its-impact-on-tubepress/) for details.
