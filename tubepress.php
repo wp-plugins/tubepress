@@ -4,7 +4,7 @@ Plugin Name: TubePress
 Plugin URI: http://tubepress.com
 Description: Displays gorgeous YouTube and Vimeo galleries in your posts, pages, and/or sidebar. Upgrade to <a href="http://tubepress.com/pro/">TubePress Pro</a> for more features!
 Author: TubePress LLC
-Version: 3.1.7
+Version: 3.1.8
 Author URI: http://tubepress.com
 
 Copyright 2006 - 2014 TubePress LLC (http://tubepress.com)
@@ -17,10 +17,3 @@ file, You can obtain one at http://mozilla.org/MPL/2.0/.
 */
 
 include 'src/main/php/scripts/boot.php';
-
-require 'vendor/yahnis-elsts/plugin-update-checker/plugin-update-checker.php';
-$myUpdateChecker = PucFactory::buildUpdateChecker(
-    'http://snippets.wp.tubepress.com/update.php',
-    __FILE__,
-    plugin_basename(basename(dirname(__FILE__)) . '/tubepress.php')
-);
