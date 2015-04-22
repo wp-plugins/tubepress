@@ -5,7 +5,7 @@ Tags: video, youtube, gallery, videos, vimeo
 Requires at least: 2.2
 Tested up to: 4.2
 License: Mozilla Public License v2.0
-Stable tag: 3.1.7
+Stable tag: 3.1.8
 
 Modern video galleries for the web. Now moved entirely to tubepress.com.
 
@@ -16,6 +16,9 @@ Modern video galleries for the web. Now moved entirely to tubepress.com.
 We are no longer providing updates or support here at wordpress.org. Please see [this blog post](http://tubepress.com/blog/2015/04/the-death-of-the-youtube-api-v2-and-its-impact-on-tubepress/) for details.
 
 == Changelog ==
+= 3.1.8 =
+* Reverting to wordpress.org to handle update checks
+
 = 3.1.7 =
 * Transitional release that provides a seamless upgrade path from 3.x.x to 4.x.x. Once you upgrade to 3.1.7, you will prompted again to upgrade to the latest TubePress from the 4.x.x series.
 * Final release from wordpress.org plugin repository.
